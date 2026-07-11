@@ -1,7 +1,7 @@
-@import "tailwindcss";
-
 /* ── Google Fonts ─────────────────────────────────────────────────────────── */
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@import "tailwindcss";
 
 /* ── Design Tokens ────────────────────────────────────────────────────────── */
 @theme {
@@ -201,6 +201,20 @@ body {
 }
 .gradient-card {
   background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(180deg, #FFFFFF 0%, #A5B4FC 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-dark {
+  background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ── Glass Effect ─────────────────────────────────────────────────────────── */
