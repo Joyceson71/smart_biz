@@ -1,3 +1,7 @@
+-- Drop existing corrupted tables
+DROP TABLE IF EXISTS public.invoices CASCADE;
+DROP TABLE IF EXISTS public.customers CASCADE;
+
 -- Create customers table
 CREATE TABLE IF NOT EXISTS public.customers (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
