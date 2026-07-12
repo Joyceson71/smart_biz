@@ -8,6 +8,8 @@
 -- after creating test accounts in Supabase Dashboard.
 -- For local dev, you can use any valid UUIDs.
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 DO $$
 DECLARE
   v_org_id      UUID := 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
@@ -49,12 +51,33 @@ VALUES (v_org_id, 'INV', 50, 4);
 
 -- ── Users (NOTE: these IDs must match auth.users — update before running) ─────
 -- In Supabase, create users via Auth first, then run this seed
-INSERT INTO users (id, organization_id, email, full_name, role, is_active, onboarding_completed)
-VALUES
-  (v_owner_id, v_org_id, 'raj@rajelectronics.in', 'Rajesh Kumar', 'owner', TRUE, TRUE),
-  (v_acct_id,  v_org_id, 'priya@rajelectronics.in', 'Priya Sharma', 'accountant', TRUE, TRUE),
-  (v_viewer_id,v_org_id, 'amit@rajelectronics.in', 'Amit Patel', 'viewer', TRUE, TRUE)
-ON CONFLICT (id) DO NOTHING;
+
+  -- 1. Create in auth.users first
+  INSERT INTO auth.users (
+    instance_id, id, aud, role, email, encrypted_password, email_confirmed_at, recovery_sent_at, last_sign_in_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at, confirmation_token, email_change, email_change_token_new, recovery_token
+  )
+  VALUES
+    ('00000000-0000-0000-0000-000000000000', v_owner_id, 'authenticated', 'authenticated', 'raj@rajelectronics.in', crypt('password123', gen_salt('bf')), now(), null, now(), '{"provider":"email","providers":["email"]}', '{}', now(), now(), '', '', '', ''),
+    ('00000000-0000-0000-0000-000000000000', v_acct_id, 'authenticated', 'authenticated', 'priya@rajelectronics.in', crypt('password123', gen_salt('bf')), now(), null, now(), '{"provider":"email","providers":["email"]}', '{}', now(), now(), '', '', '', ''),
+    ('00000000-0000-0000-0000-000000000000', v_viewer_id, 'authenticated', 'authenticated', 'amit@rajelectronics.in', crypt('password123', gen_salt('bf')), now(), null, now(), '{"provider":"email","providers":["email"]}', '{}', now(), now(), '', '', '', '')
+  ON CONFLICT (id) DO NOTHING;
+
+  INSERT INTO auth.identities (
+    id, user_id, identity_data, provider, last_sign_in_at, created_at, updated_at
+  )
+  VALUES
+    (gen_random_uuid(), v_owner_id, format('{"sub":"%s","email":"%s"}', v_owner_id::text, 'raj@rajelectronics.in')::jsonb, 'email', now(), now(), now()),
+    (gen_random_uuid(), v_acct_id, format('{"sub":"%s","email":"%s"}', v_acct_id::text, 'priya@rajelectronics.in')::jsonb, 'email', now(), now(), now()),
+    (gen_random_uuid(), v_viewer_id, format('{"sub":"%s","email":"%s"}', v_viewer_id::text, 'amit@rajelectronics.in')::jsonb, 'email', now(), now(), now())
+  ON CONFLICT DO NOTHING;
+
+  -- 2. Create in public.users
+  INSERT INTO public.users (id, organization_id, email, full_name, role, is_active, onboarding_completed)
+  VALUES
+    (v_owner_id, v_org_id, 'raj@rajelectronics.in', 'Rajesh Kumar', 'owner', TRUE, TRUE),
+    (v_acct_id,  v_org_id, 'priya@rajelectronics.in', 'Priya Sharma', 'accountant', TRUE, TRUE),
+    (v_viewer_id,v_org_id, 'amit@rajelectronics.in', 'Amit Patel', 'viewer', TRUE, TRUE)
+  ON CONFLICT (id) DO NOTHING;
 
 -- ── Customers ─────────────────────────────────────────────────────────────────
 v_cust_1  := gen_random_uuid(); v_cust_2  := gen_random_uuid();
