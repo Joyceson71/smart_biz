@@ -1,5 +1,6 @@
 import { DesktopEnvironment } from "@/components/os/DesktopEnvironment";
 import { Dock } from "@/components/os/Dock";
+import { DraggableWindow } from "@/components/os/DraggableWindow";
 
 export default function OSLayout({
   children,
@@ -22,22 +23,15 @@ export default function OSLayout({
           </div>
         </div>
 
-        {/* The Desktop - renders floating windows */}
-        <DesktopEnvironment />
+        {/* Central Draggable Window */}
+        <main className="flex-1 w-full h-full relative">
+          <DraggableWindow>
+            {children}
+          </DraggableWindow>
+        </main>
         
         {/* The Dock - macOS/VisionPro style taskbar */}
         <Dock />
-      </div>
-
-      {/* 
-        We don't render standard `{children}` in the OS layout directly anymore 
-        because pages like /dashboard, /invoices, etc., will be opened 
-        as floating Windows via the Zustand store. However, we keep it here 
-        in case Next.js routing still attempts to render standard pages before 
-        we convert everything to the Zustand store logic.
-      */}
-      <div className="hidden">
-        {children}
       </div>
     </div>
   );

@@ -3,9 +3,11 @@
 import { useRef, useState, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Sphere, Line, Environment, Float } from "@react-three/drei";
+import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Mail, Phone, DollarSign, Activity, X } from "lucide-react";
+import { Search, Mail, Phone, DollarSign, Activity, X, Plus } from "lucide-react";
+import { addCustomer } from "./actions";
 
 export interface Customer {
   id: string;
@@ -84,6 +86,8 @@ function Connections({ nodes }: { nodes: Customer[] }) {
 export default function CustomersScene({ initialCustomers }: { initialCustomers: Customer[] }) {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const filteredCustomers = useMemo(() => {
     return initialCustomers.filter(c => 
@@ -121,6 +125,11 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
             autoRotate={!selectedCustomer}
             autoRotateSpeed={0.5}
           />
+
+          <EffectComposer>
+            <Bloom luminanceThreshold={0.5} mipmapBlur intensity={1.5} />
+            <Vignette eskil={false} offset={0.1} darkness={1.1} />
+          </EffectComposer>
         </Canvas>
       </div>
 
@@ -199,7 +208,73 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
               </div>
             </motion.div>
           )}
+
+          {showAddForm && (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-96 bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-6 pointer-events-auto"
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="font-bold text-white text-lg">Add New Node</h3>
+                <button onClick={() => setShowAddForm(false)} className="text-slate-400 hover:text-white transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <form 
+                action={async (formData) => {
+                  setIsSubmitting(true);
+                  try {
+                    await addCustomer(formData);
+                    setShowAddForm(false);
+                  } finally {
+                    setIsSubmitting(false);
+                  }
+                }}
+                className="space-y-4"
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">First Name</label>
+                    <input name="first_name" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Last Name</label>
+                    <input name="last_name" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Email</label>
+                  <input name="email" type="email" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Phone</label>
+                  <input name="phone" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Initial LTV ($)</label>
+                  <input name="ltv" type="number" defaultValue="0" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                </div>
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg transition-colors mt-2 disabled:opacity-50"
+                >
+                  {isSubmitting ? "Initializing..." : "Initialize Node"}
+                </button>
+              </form>
+            </motion.div>
+          )}
         </AnimatePresence>
+
+        {/* Floating Action Button */}
+        <button 
+          onClick={() => setShowAddForm(true)}
+          className="absolute bottom-6 left-6 w-12 h-12 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/20 pointer-events-auto transition-transform hover:scale-110"
+        >
+          <Plus className="w-6 h-6" />
+        </button>
       </div>
     </div>
   );

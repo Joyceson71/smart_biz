@@ -3,6 +3,7 @@
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Box, Sphere, Float } from "@react-three/drei";
+import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { motion } from "framer-motion";
 import { Activity, DollarSign, Users, CreditCard } from "lucide-react";
@@ -96,6 +97,11 @@ export default function DashboardPage() {
             maxPolarAngle={Math.PI / 2 + 0.2}
             minPolarAngle={Math.PI / 3}
           />
+
+          <EffectComposer>
+            <Bloom luminanceThreshold={0.5} mipmapBlur intensity={1.2} />
+            <Vignette eskil={false} offset={0.1} darkness={1.1} />
+          </EffectComposer>
         </Canvas>
       </div>
 

@@ -3,6 +3,7 @@
 import { useRef, useState, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Float, Text, Plane } from "@react-three/drei";
+import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileText, Search, CreditCard, Clock, AlertCircle, X, Download } from "lucide-react";
@@ -150,6 +151,11 @@ export default function InvoicesScene({ initialInvoices }: { initialInvoices: In
             minDistance={5}
             maxDistance={25}
           />
+
+          <EffectComposer>
+            <Bloom luminanceThreshold={0.5} mipmapBlur intensity={1.5} />
+            <Vignette eskil={false} offset={0.1} darkness={1.1} />
+          </EffectComposer>
         </Canvas>
       </div>
 
