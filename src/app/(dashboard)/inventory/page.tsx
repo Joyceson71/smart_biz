@@ -17,7 +17,7 @@ interface InventoryItem {
 }
 
 // Mock Inventory Data
-const INVENTORY = [
+const INVENTORY: InventoryItem[] = [
   { id: 1, name: "Premium Widget A", sku: "WGT-001", stock: 145, status: "Healthy", pos: [-3, 0, -2] },
   { id: 2, name: "Standard Gizmo", sku: "GZM-102", stock: 12, status: "Low", pos: [0, 0, -2] },
   { id: 3, name: "Enterprise Server Rack", sku: "SRV-X9", stock: 4, status: "Critical", pos: [3, 0, -2] },

@@ -18,7 +18,7 @@ interface Customer {
 }
 
 // Mock Data
-const MOCK_CUSTOMERS = [
+const MOCK_CUSTOMERS: Customer[] = [
   { id: 1, name: "Liam Johnson", email: "liam@example.com", phone: "+1 555-1234", ltv: 4250, status: "Active", pos: [0, 0, 0] },
   { id: 2, name: "Emma Williams", email: "emma@example.com", phone: "+1 555-9876", ltv: 1200, status: "Active", pos: [2.5, 1.5, -2] },
   { id: 3, name: "Noah Brown", email: "noah@example.com", phone: "+1 555-4567", ltv: 450, status: "Inactive", pos: [-2, -1, -3] },
