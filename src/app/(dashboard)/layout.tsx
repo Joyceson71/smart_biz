@@ -1,4 +1,4 @@
-import { DesktopEnvironment } from "@/components/os/DesktopEnvironment";
+
 import { Dock } from "@/components/os/Dock";
 import { DraggableWindow } from "@/components/os/DraggableWindow";
 

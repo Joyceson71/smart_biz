@@ -18,7 +18,7 @@ function HeroOrb() {
   });
 
   return (
-    <Sphere ref={meshRef} args={[1.5, 128, 128]} scale={1.5}>
+    <Sphere ref={meshRef} args={[1.5, 128, 128]} scale={1.2} position={[0, -1, -3]}>
       <MeshDistortMaterial
         color="#0ea5e9"
         emissive="#0284c7"
@@ -91,7 +91,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            className="text-6xl md:text-8xl font-bold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40"
+            className="text-6xl md:text-8xl font-bold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40 drop-shadow-2xl"
           >
             One Platform.<br />Infinite Scale.
           </motion.h1>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useTransform, useSpring, MotionValue } from "framer-motion";
-import { useWindowStore } from "@/store/useWindowStore";
+
 import { 
   LayoutDashboard, 
   FileText, 
@@ -18,7 +18,7 @@ import { logout } from "@/app/(auth)/actions";
 import { useRouter, usePathname } from "next/navigation";
 
 const APPS = [
-  { id: "ai-core", route: "/dashboard", title: "AI Command Center", icon: Cpu, color: "text-purple-500" },
+  { id: "ai-core", route: "/ai-core", title: "AI Command Center", icon: Cpu, color: "text-purple-500" },
   { id: "dashboard", route: "/dashboard", title: "Overview", icon: LayoutDashboard, color: "text-blue-500" },
   { id: "employees", route: "/employees", title: "Organization", icon: Briefcase, color: "text-purple-400" },
   { id: "inventory", route: "/inventory", title: "Inventory", icon: Package, color: "text-amber-500" },
