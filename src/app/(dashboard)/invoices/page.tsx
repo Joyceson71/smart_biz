@@ -1,123 +1,241 @@
 "use client";
 
-import { PageTransition } from "@/components/ui/page-transition";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Search, FileText, MoreHorizontal } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useRef, useState, useMemo } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Float, Text, Plane } from "@react-three/drei";
+import * as THREE from "three";
+import { motion, AnimatePresence } from "framer-motion";
+import { FileText, Search, CreditCard, Clock, AlertCircle, X, Download } from "lucide-react";
 
-const invoices = [
-  { id: "INV-001", customer: "Liam Johnson", email: "liam@example.com", date: "2026-07-10", amount: "$250.00", status: "Paid" },
-  { id: "INV-002", customer: "Emma Williams", email: "emma@example.com", date: "2026-07-11", amount: "$1,200.00", status: "Pending" },
-  { id: "INV-003", customer: "Noah Brown", email: "noah@example.com", date: "2026-07-05", amount: "$450.00", status: "Overdue" },
-  { id: "INV-004", customer: "Olivia Davis", email: "olivia@example.com", date: "2026-07-12", amount: "$890.00", status: "Paid" },
-  { id: "INV-005", customer: "William Miller", email: "william@example.com", date: "2026-07-09", amount: "$3,400.00", status: "Pending" },
-  { id: "INV-006", customer: "Sophia Wilson", email: "sophia@example.com", date: "2026-07-08", amount: "$150.00", status: "Paid" },
-  { id: "INV-007", customer: "James Moore", email: "james@example.com", date: "2026-06-25", amount: "$75.00", status: "Overdue" },
+interface Invoice {
+  id: string;
+  customer: string;
+  amount: number;
+  date: string;
+  status: 'Paid' | 'Pending' | 'Overdue';
+  pos: [number, number, number];
+}
+
+const INVOICES: Invoice[] = [
+  { id: "INV-001", customer: "Liam Johnson", amount: 250.00, date: "2026-07-10", status: "Paid", pos: [-4, 2, -2] },
+  { id: "INV-002", customer: "Emma Williams", amount: 1200.00, date: "2026-07-11", status: "Pending", pos: [-2, 0, 0] },
+  { id: "INV-003", customer: "Noah Brown", amount: 450.00, date: "2026-07-05", status: "Overdue", pos: [0, 2, 2] },
+  { id: "INV-004", customer: "Olivia Davis", amount: 890.00, date: "2026-07-12", status: "Paid", pos: [2, -1, -1] },
+  { id: "INV-005", customer: "William Miller", amount: 3400.00, date: "2026-07-09", status: "Pending", pos: [4, 1, 1] },
+  { id: "INV-006", customer: "Sophia Wilson", amount: 150.00, date: "2026-07-08", status: "Paid", pos: [-3, -2, 1] },
+  { id: "INV-007", customer: "James Moore", amount: 75.00, date: "2026-06-25", status: "Overdue", pos: [3, -2, -2] },
 ];
 
-export default function InvoicesPage() {
-  return (
-    <PageTransition>
-      <div className="flex-1 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight">Invoices</h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              Manage and track your customer invoices.
-            </p>
-          </div>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Plus className="mr-2 h-4 w-4" />
-            New Invoice
-          </Button>
-        </div>
+function InvoiceDocument({ data, isSelected, onClick }: { data: Invoice, isSelected: boolean, onClick: (data: Invoice) => void }) {
+  const groupRef = useRef<THREE.Group>(null);
+  
+  const color = data.status === 'Paid' ? '#10b981' : 
+                data.status === 'Pending' ? '#f59e0b' : '#ef4444';
+  
+  const emissiveIntensity = isSelected ? 0.8 : 0.2;
 
-        <div className="flex items-center space-x-2">
-          <div className="relative w-full max-w-sm">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-500" />
-            <Input
-              type="search"
-              placeholder="Search invoices..."
-              className="w-full bg-white dark:bg-slate-950 pl-9 border-slate-200 dark:border-slate-800"
+  useFrame((state) => {
+    if (groupRef.current && !isSelected) {
+      groupRef.current.position.y += Math.sin(state.clock.getElapsedTime() * 2 + data.pos[0]) * 0.002;
+    }
+    if (groupRef.current && isSelected) {
+      groupRef.current.rotation.y += 0.01;
+    }
+  });
+
+  return (
+    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
+      <group 
+        ref={groupRef}
+        position={new THREE.Vector3(...data.pos)}
+        onClick={(e) => { e.stopPropagation(); onClick(data); }}
+        onPointerOver={() => document.body.style.cursor = 'pointer'}
+        onPointerOut={() => document.body.style.cursor = 'auto'}
+      >
+        <mesh>
+          <boxGeometry args={[2, 2.8, 0.1]} />
+          <meshStandardMaterial 
+            color="#0f172a" 
+            emissive={color}
+            emissiveIntensity={emissiveIntensity}
+            roughness={0.1}
+            metalness={0.9}
+            transparent
+            opacity={0.9}
+          />
+        </mesh>
+        
+        {/* Holographic glowing edge */}
+        <mesh position={[0, 0, -0.06]}>
+          <boxGeometry args={[2.05, 2.85, 0.02]} />
+          <meshBasicMaterial color={color} transparent opacity={isSelected ? 0.6 : 0.2} />
+        </mesh>
+        
+        <Text
+          position={[0, 0.8, 0.06]}
+          fontSize={0.25}
+          color="#ffffff"
+          anchorX="center"
+          anchorY="middle"
+        >
+          {data.id}
+        </Text>
+        
+        <Text
+          position={[0, 0.3, 0.06]}
+          fontSize={0.15}
+          color="#94a3b8"
+          anchorX="center"
+          anchorY="middle"
+        >
+          {data.customer}
+        </Text>
+
+        <Text
+          position={[0, -0.3, 0.06]}
+          fontSize={0.3}
+          color={color}
+          anchorX="center"
+          anchorY="middle"
+        >
+          ${data.amount.toFixed(2)}
+        </Text>
+      </group>
+    </Float>
+  );
+}
+
+function DataGrid() {
+  return (
+    <group position={[0, -4, 0]}>
+      <Plane args={[40, 40]} rotation={[-Math.PI / 2, 0, 0]}>
+        <meshBasicMaterial color="#020617" />
+      </Plane>
+      <gridHelper args={[40, 40, '#1e293b', '#0f172a']} position={[0, 0.01, 0]} />
+    </group>
+  );
+}
+
+export default function InvoicesPage() {
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredInvoices = useMemo(() => {
+    return INVOICES.filter(inv => 
+      inv.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      inv.customer.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
+
+  return (
+    <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
+      {/* 3D Canvas Area */}
+      <div className="absolute inset-0 z-0">
+        <Canvas camera={{ position: [0, 2, 12], fov: 45 }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[5, 10, 5]} intensity={1.5} />
+          <pointLight position={[-5, 5, -5]} intensity={0.5} color="#3b82f6" />
+          
+          <DataGrid />
+          
+          {filteredInvoices.map((inv) => (
+            <InvoiceDocument 
+              key={inv.id} 
+              data={inv} 
+              isSelected={selectedInvoice?.id === inv.id}
+              onClick={setSelectedInvoice}
+            />
+          ))}
+          
+          <OrbitControls 
+            enablePan={true} 
+            enableZoom={true} 
+            maxPolarAngle={Math.PI / 2 - 0.1}
+            minDistance={5}
+            maxDistance={25}
+          />
+        </Canvas>
+      </div>
+
+      {/* Glassmorphic Overlay UI */}
+      <div className="relative z-10 p-6 pointer-events-none flex flex-col h-full justify-between">
+        <div className="flex justify-between items-start">
+          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-xl p-4 shadow-xl pointer-events-auto">
+            <h1 className="text-xl font-semibold text-white flex items-center gap-2">
+              <FileText className="w-5 h-5 text-indigo-400" />
+              Financial Ledger
+            </h1>
+            <p className="text-sm text-slate-400 mt-1">Immersive 3D invoice tracking</p>
+          </div>
+
+          <div className="relative pointer-events-auto w-64">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input 
+              type="text" 
+              placeholder="Search invoice or client..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-full pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors shadow-lg"
             />
           </div>
         </div>
 
-        <div className="rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-sm overflow-hidden">
-          <Table>
-            <TableHeader className="bg-slate-50 dark:bg-slate-900/50">
-              <TableRow>
-                <TableHead className="w-[100px]">Invoice</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {invoices.map((invoice) => (
-                <TableRow key={invoice.id} className="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                  <TableCell className="font-medium">
-                    <div className="flex items-center gap-2">
-                      <FileText className="h-4 w-4 text-blue-500" />
-                      {invoice.id}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex flex-col">
-                      <span className="font-medium text-slate-900 dark:text-slate-100">{invoice.customer}</span>
-                      <span className="text-xs text-slate-500">{invoice.email}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-slate-500">{invoice.date}</TableCell>
-                  <TableCell className="font-medium">{invoice.amount}</TableCell>
-                  <TableCell>
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                        invoice.status === "Paid"
-                          ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400"
-                          : invoice.status === "Pending"
-                          ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
-                          : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                      }`}
-                    >
-                      {invoice.status}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 outline-none">
-                        <span className="sr-only">Open menu</span>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                        <DropdownMenuItem>Download PDF</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        {/* Selected Invoice Panel */}
+        <AnimatePresence>
+          {selectedInvoice && (
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 50, scale: 0.9 }}
+              className="absolute left-1/2 bottom-8 -translate-x-1/2 w-96 bg-slate-900/80 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-6 pointer-events-auto"
+            >
+              <button 
+                onClick={() => setSelectedInvoice(null)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <h3 className="font-bold text-white text-xl">{selectedInvoice.id}</h3>
+                  <p className="text-sm text-slate-400 mt-1">{selectedInvoice.customer}</p>
+                </div>
+                <div className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 ${
+                  selectedInvoice.status === 'Paid' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50' : 
+                  selectedInvoice.status === 'Pending' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/50' : 
+                  'bg-red-500/20 text-red-400 border border-red-500/50'
+                }`}>
+                  {selectedInvoice.status === 'Paid' ? <CreditCard className="w-3 h-3" /> : 
+                   selectedInvoice.status === 'Pending' ? <Clock className="w-3 h-3" /> : 
+                   <AlertCircle className="w-3 h-3" />}
+                  {selectedInvoice.status}
+                </div>
+              </div>
+
+              <div className="bg-slate-950/50 rounded-xl p-4 border border-slate-800 mb-4 flex justify-between items-center">
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Issue Date</p>
+                  <p className="text-sm font-medium text-slate-300">{selectedInvoice.date}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Amount Due</p>
+                  <p className="text-2xl font-bold text-white">${selectedInvoice.amount.toFixed(2)}</p>
+                </div>
+              </div>
+              
+              <div className="flex gap-3">
+                <button className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors flex justify-center items-center gap-2">
+                  <CreditCard className="w-4 h-4" /> Process Payment
+                </button>
+                <button className="w-12 bg-slate-800 hover:bg-slate-700 text-white rounded-lg flex justify-center items-center transition-colors">
+                  <Download className="w-4 h-4" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </PageTransition>
+    </div>
   );
 }

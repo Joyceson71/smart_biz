@@ -10,7 +10,8 @@ import {
   Power,
   Wallet,
   Settings,
-  Package
+  Package,
+  Briefcase
 } from "lucide-react";
 import { useRef } from "react";
 import DashboardPage from "@/app/(dashboard)/dashboard/page";
@@ -19,12 +20,14 @@ import CustomersPage from "@/app/(dashboard)/customers/page";
 import ExpensesPage from "@/app/(dashboard)/expenses/page";
 import SettingsPage from "@/app/(dashboard)/settings/page";
 import InventoryPage from "@/app/(dashboard)/inventory/page";
+import EmployeesPage from "@/app/(dashboard)/employees/page";
 import { AICore } from "./AICore"; // We will build this next
 import { logout } from "@/app/(auth)/actions";
 
 const APPS = [
   { id: "ai-core", title: "AI Command Center", icon: Cpu, color: "text-purple-500", component: <AICore /> },
   { id: "dashboard", title: "Overview", icon: LayoutDashboard, color: "text-blue-500", component: <DashboardPage /> },
+  { id: "employees", title: "Organization", icon: Briefcase, color: "text-purple-400", component: <EmployeesPage /> },
   { id: "inventory", title: "Inventory", icon: Package, color: "text-amber-500", component: <InventoryPage /> },
   { id: "expenses", title: "Expenses", icon: Wallet, color: "text-emerald-500", component: <ExpensesPage /> },
   { id: "invoices", title: "Invoices", icon: FileText, color: "text-indigo-500", component: <InvoicesPage /> },
