@@ -1,8 +1,25 @@
+'use client'
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { login } from "../actions";
+import { useState, useTransition } from "react";
 
 export default function LoginPage() {
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = async (formData: FormData) => {
+    setError(null);
+    startTransition(async () => {
+      const result = await login(formData);
+      if (result?.error) {
+        setError(result.error);
+      }
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-2 text-center sm:text-left">
@@ -13,12 +30,17 @@ export default function LoginPage() {
           Enter your email to sign in to your account
         </p>
       </div>
-      <div className="space-y-4">
+      <form action={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="p-3 text-sm font-medium text-red-500 bg-red-100/10 border border-red-500/20 rounded-md">
+            {error}
+          </div>
+        )}
         <div className="space-y-2">
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="email">
             Email
           </label>
-          <Input id="email" placeholder="m@example.com" required type="email" />
+          <Input id="email" name="email" placeholder="m@example.com" required type="email" />
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -29,12 +51,12 @@ export default function LoginPage() {
               Forgot password?
             </Link>
           </div>
-          <Input id="password" required type="password" />
+          <Input id="password" name="password" required type="password" />
         </div>
-        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" type="button">
-          Sign in
+        <Button disabled={isPending} className="w-full bg-blue-600 hover:bg-blue-700 text-white" type="submit">
+          {isPending ? "Signing in..." : "Sign in"}
         </Button>
-      </div>
+      </form>
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-slate-200 dark:border-slate-800"></div>

@@ -10,11 +10,11 @@ import {
   Power
 } from "lucide-react";
 import { useRef } from "react";
-import { useRouter } from "next/navigation";
 import DashboardPage from "@/app/(dashboard)/dashboard/page";
 import InvoicesPage from "@/app/(dashboard)/invoices/page";
 import CustomersPage from "@/app/(dashboard)/customers/page";
 import { AICore } from "./AICore"; // We will build this next
+import { logout } from "@/app/(auth)/actions";
 
 const APPS = [
   { id: "ai-core", title: "AI Command Center", icon: Cpu, color: "text-purple-500", component: <AICore /> },
@@ -77,7 +77,6 @@ function DockIcon({
 export function Dock() {
   const mouseX = useMotionValue(Infinity);
   const { windows, openWindow, activeWindowId } = useWindowStore();
-  const router = useRouter();
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100]">
@@ -104,7 +103,9 @@ export function Dock() {
           mouseX={mouseX} 
           isOpen={false}
           isFocused={false}
-          onClick={() => router.push('/login')}
+          onClick={() => {
+            logout();
+          }}
         />
       </div>
     </div>
