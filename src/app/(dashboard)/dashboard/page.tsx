@@ -1,120 +1,143 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { OverviewChart } from "@/components/dashboard/overview-chart";
-import { PageTransition } from "@/components/ui/page-transition";
-import { DollarSign, Users, CreditCard, Activity } from "lucide-react";
+"use client";
+
+import { useRef, useMemo } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Box, Sphere, Float } from "@react-three/drei";
+import * as THREE from "three";
+import { motion } from "framer-motion";
+import { Activity, DollarSign, Users, CreditCard } from "lucide-react";
+
+function Globe() {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.1;
+      meshRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.2) * 0.1;
+    }
+  });
+
+  return (
+    <Float speed={1.5} rotationIntensity={0.5} floatIntensity={1}>
+      <mesh ref={meshRef} position={[0, 0, 0]}>
+        <sphereGeometry args={[2, 32, 32]} />
+        <meshBasicMaterial color="#1e293b" wireframe transparent opacity={0.3} />
+        {/* Core */}
+        <Sphere args={[1.9, 32, 32]}>
+          <meshStandardMaterial color="#0f172a" roughness={0.1} metalness={0.8} />
+        </Sphere>
+      </mesh>
+    </Float>
+  );
+}
+
+function FloatingChartBars() {
+  const groupRef = useRef<THREE.Group>(null);
+  const bars = useMemo(() => Array.from({ length: 12 }, () => Math.random() * 2 + 0.5), []);
+
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.05;
+    }
+  });
+
+  return (
+    <group ref={groupRef} position={[0, -1, 0]}>
+      {bars.map((height, i) => {
+        const angle = (i / bars.length) * Math.PI * 2;
+        const radius = 3;
+        const x = Math.cos(angle) * radius;
+        const z = Math.sin(angle) * radius;
+        
+        return (
+          <Float key={i} speed={2} rotationIntensity={0} floatIntensity={0.5}>
+            <Box args={[0.3, height, 0.3]} position={[x, height / 2, z]}>
+              <meshStandardMaterial 
+                color={height > 2 ? "#10b981" : "#3b82f6"} 
+                emissive={height > 2 ? "#059669" : "#2563eb"}
+                emissiveIntensity={0.5}
+                roughness={0.2}
+                transparent
+                opacity={0.8}
+              />
+            </Box>
+          </Float>
+        );
+      })}
+    </group>
+  );
+}
+
+const STATS = [
+  { label: "Total Revenue", value: "$45,231.89", icon: DollarSign, color: "text-emerald-400", bg: "bg-emerald-950/30 border-emerald-500/20" },
+  { label: "Active Nodes", value: "2,350", icon: Users, color: "text-blue-400", bg: "bg-blue-950/30 border-blue-500/20" },
+  { label: "Outstanding", value: "124", icon: CreditCard, color: "text-orange-400", bg: "bg-orange-950/30 border-orange-500/20" },
+  { label: "System Health", value: "99.9%", icon: Activity, color: "text-purple-400", bg: "bg-purple-950/30 border-purple-500/20" }
+];
 
 export default function DashboardPage() {
   return (
-    <PageTransition>
-      <div className="flex-1 space-y-6">
-        <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">Dashboard Overview</h2>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-slate-500">Live Hackathon Demo Mode 🚀</span>
-          </div>
-        </div>
+    <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
+      {/* 3D Canvas Background */}
+      <div className="absolute inset-0 z-0">
+        <Canvas camera={{ position: [0, 2, 8], fov: 45 }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 5]} intensity={1} />
+          <pointLight position={[-10, -10, -10]} color="#3b82f6" intensity={0.5} />
+          
+          <Globe />
+          <FloatingChartBars />
+          
+          <OrbitControls 
+            enablePan={false} 
+            enableZoom={false} 
+            autoRotate 
+            autoRotateSpeed={0.2} 
+            maxPolarAngle={Math.PI / 2 + 0.2}
+            minPolarAngle={Math.PI / 3}
+          />
+        </Canvas>
+      </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-              <DollarSign className="h-4 w-4 text-emerald-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">$45,231.89</div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                +20.1% from last month
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card className="hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Customers</CardTitle>
-              <Users className="h-4 w-4 text-blue-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+2,350</div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                +180 new this week
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card className="hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Outstanding Invoices</CardTitle>
-              <CreditCard className="h-4 w-4 text-orange-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">124</div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                43 overdue items
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card className="hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">System Health</CardTitle>
-              <Activity className="h-4 w-4 text-purple-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">99.9%</div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                All services operational
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+      {/* Holographic Overlay UI */}
+      <div className="relative z-10 p-8 pointer-events-none flex flex-col h-full">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-lg">
+            Command Center
+          </h1>
+          <p className="text-slate-400 font-mono text-sm mt-1 uppercase tracking-widest">
+            System Status: Nominal • Location: Alpha Base
+          </p>
+        </motion.div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-          <Card className="col-span-4 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader>
-              <CardTitle>Revenue Overview</CardTitle>
-              <CardDescription>
-                Your revenue trajectory over the past year.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pl-2">
-              <OverviewChart />
-            </CardContent>
-          </Card>
-          
-          <Card className="col-span-3 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>
-                Latest transactions from your customers.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-8">
-                {[
-                  { name: "Olivia Martin", email: "olivia.martin@email.com", amount: "+$1,999.00", img: "OM" },
-                  { name: "Jackson Lee", email: "jackson.lee@email.com", amount: "+$39.00", img: "JL" },
-                  { name: "Isabella Nguyen", email: "isabella.nguyen@email.com", amount: "+$299.00", img: "IN" },
-                  { name: "William Kim", email: "will@email.com", amount: "+$99.00", img: "WK" },
-                  { name: "Sofia Davis", email: "sofia.davis@email.com", amount: "+$39.00", img: "SD" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-medium text-slate-900 dark:text-slate-100">
-                      {item.img}
-                    </div>
-                    <div className="ml-4 space-y-1">
-                      <p className="text-sm font-medium leading-none">{item.name}</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">
-                        {item.email}
-                      </p>
-                    </div>
-                    <div className="ml-auto font-medium">{item.amount}</div>
-                  </div>
-                ))}
+        {/* Floating Metrics HUD */}
+        <div className="grid grid-cols-4 gap-6 mt-auto pointer-events-auto">
+          {STATS.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, type: "spring", stiffness: 100 }}
+              className={`p-6 rounded-2xl backdrop-blur-xl border ${stat.bg} shadow-2xl hover:-translate-y-2 transition-transform cursor-pointer group`}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className={`p-3 rounded-xl bg-slate-900/50 shadow-inner ${stat.color}`}>
+                  <stat.icon className="w-6 h-6" />
+                </div>
+                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
               </div>
-            </CardContent>
-          </Card>
+              <h3 className="text-slate-400 text-sm font-medium uppercase tracking-wider mb-1">{stat.label}</h3>
+              <p className="text-3xl font-bold text-white tracking-tight group-hover:scale-105 transition-transform origin-left">
+                {stat.value}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
-    </PageTransition>
+    </div>
   );
 }
