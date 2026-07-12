@@ -4,8 +4,8 @@ import { PageTransition } from "@/components/ui/page-transition";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Plus, Search, Mail, Phone, ExternalLink } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Plus, Search, Mail, ExternalLink } from "lucide-react";
 
 const customers = [
   { id: 1, name: "Liam Johnson", email: "liam@example.com", phone: "+1 (555) 123-4567", ltv: "$4,250.00", status: "Active", initials: "LJ" },

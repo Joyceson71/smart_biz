@@ -3,13 +3,11 @@
 import { motion, useDragControls } from "framer-motion";
 import { useWindowStore, WindowData } from "@/store/useWindowStore";
 import { X, Minus, Maximize2, Minimize2 } from "lucide-react";
-import { useRef } from "react";
 
 export function OSWindow({ windowData }: { windowData: WindowData }) {
   const { id, title, component, x, y, width, height, minimized, maximized, zIndex } = windowData;
   const { closeWindow, minimizeWindow, maximizeWindow, focusWindow, updatePosition } = useWindowStore();
   const dragControls = useDragControls();
-  const constraintsRef = useRef(null); // In a real app, pass this from DesktopEnvironment
 
   if (minimized) return null;
 

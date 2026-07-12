@@ -6,7 +6,7 @@ import { Environment, Sphere, MeshDistortMaterial, Stars, Grid } from "@react-th
 import Link from "next/link";
 import { useRef } from "react";
 import * as THREE from "three";
-import { ArrowRight, Activity, Globe, Zap, Shield } from "lucide-react";
+import { ArrowRight, Activity, Globe, Zap } from "lucide-react";
 
 function HeroOrb() {
   const meshRef = useRef<THREE.Mesh>(null);
