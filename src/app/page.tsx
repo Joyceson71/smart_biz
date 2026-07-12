@@ -1,114 +1,153 @@
-import Link from "next/link";
-import { ArrowRight, BarChart3, Receipt, Shield, Users } from "lucide-react";
+"use client";
 
-export default function Home() {
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Environment, Sphere, MeshDistortMaterial, Stars, Grid } from "@react-three/drei";
+import Link from "next/link";
+import { useRef } from "react";
+import * as THREE from "three";
+import { ArrowRight, Activity, Globe, Zap, Shield } from "lucide-react";
+
+function HeroOrb() {
+  const meshRef = useRef<THREE.Mesh>(null);
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.1;
+      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.15;
+    }
+  });
+
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-sans selection:bg-blue-500/30">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <Sphere ref={meshRef} args={[1.5, 128, 128]} scale={1.5}>
+      <MeshDistortMaterial
+        color="#0ea5e9"
+        emissive="#0284c7"
+        emissiveIntensity={1}
+        distort={0.4}
+        speed={1.5}
+        roughness={0.2}
+        metalness={0.9}
+        wireframe={true}
+      />
+    </Sphere>
+  );
+}
+
+export default function LandingPage() {
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  return (
+    <div className="bg-slate-950 min-h-screen text-slate-50 selection:bg-blue-500/30 overflow-x-hidden">
+      {/* 3D Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
+          <ambientLight intensity={0.2} />
+          <directionalLight position={[10, 10, 5]} intensity={1} />
+          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+          <HeroOrb />
+          <Grid infiniteGrid fadeDistance={20} cellColor="#1e293b" sectionColor="#334155" position={[0, -2, 0]} />
+          <Environment preset="night" />
+        </Canvas>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Navigation */}
+        <nav className="flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">S</span>
             </div>
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-              SmartBiz
-            </span>
+            <span className="text-xl font-bold tracking-tight">SmartBiz</span>
           </div>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/login"
-              className="text-sm font-medium hover:text-blue-600 transition-colors"
-            >
-              Sign In
+          <div className="flex gap-4">
+            <Link href="/login" className="px-5 py-2 rounded-full border border-white/20 hover:bg-white/10 transition-colors backdrop-blur-md">
+              Log in
             </Link>
-            <Link
-              href="/register"
-              className="text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition-all hover:shadow-lg hover:shadow-blue-600/25 active:scale-95"
-            >
+            <Link href="/register" className="px-5 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors shadow-[0_0_15px_rgba(37,99,235,0.5)]">
               Get Started
             </Link>
           </div>
-        </div>
-      </nav>
+        </nav>
 
-      {/* Hero Section */}
-      <main className="pt-32 pb-16 sm:pt-40 sm:pb-24 lg:pb-32 px-4 mx-auto max-w-7xl text-center">
-        <div className="relative inline-flex mb-8">
-          <div className="absolute inset-0 bg-blue-500/20 dark:bg-blue-400/20 blur-xl rounded-full" />
-          <span className="relative inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-300 text-sm font-medium">
-            <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
-            Next Generation MSME Platform
-          </span>
-        </div>
-
-        <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight mb-8">
-          Manage your business <br className="hidden sm:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-            smarter and faster.
-          </span>
-        </h1>
-
-        <p className="max-w-2xl mx-auto text-lg sm:text-xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed">
-          SmartBiz is the all-in-one SaaS platform designed specifically for MSMEs. Handle invoices, track expenses, manage customers, and grow your revenue seamlessly.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link
-            href="/register"
-            className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold transition-all hover:shadow-xl hover:shadow-blue-600/30 active:scale-95"
+        {/* Hero Section */}
+        <motion.main 
+          style={{ y, opacity }}
+          className="min-h-[85vh] flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 mb-8 backdrop-blur-md"
           >
-            Start for free
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <Link
-            href="/dashboard"
-            className="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-full font-semibold transition-all hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-95"
+            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+            Introducing the Business Operating System
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            className="text-6xl md:text-8xl font-bold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40"
           >
-            View Demo
-          </Link>
-        </div>
+            One Platform.<br />Infinite Scale.
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="text-xl md:text-2xl text-slate-400 mb-10 max-w-2xl font-light leading-relaxed"
+          >
+            Not a dashboard. Not a CRM. An intelligent operating system that manages, analyzes, and grows your enterprise using autonomous AI.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          >
+            <Link 
+              href="/register" 
+              className="group flex items-center gap-2 px-8 py-4 rounded-full bg-white text-slate-950 font-medium text-lg hover:bg-blue-50 transition-colors"
+            >
+              Enter the Workspace
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </motion.div>
+        </motion.main>
 
         {/* Feature Highlights */}
-        <div className="mt-24 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            {
-              icon: Receipt,
-              title: "Smart Invoicing",
-              description: "Create and send professional invoices in seconds. Get paid faster.",
-            },
-            {
-              icon: BarChart3,
-              title: "Financial Reports",
-              description: "Real-time insights into your cash flow and revenue metrics.",
-            },
-            {
-              icon: Users,
-              title: "CRM Built-in",
-              description: "Manage customer relationships and track interaction history easily.",
-            },
-            {
-              icon: Shield,
-              title: "Bank-grade Security",
-              description: "Your data is encrypted and backed up securely on the cloud.",
-            },
-          ].map((feature, i) => (
-            <div
-              key={i}
-              className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow text-left group"
-            >
-              <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <feature.icon className="w-6 h-6" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                {feature.description}
-              </p>
+        <div className="bg-slate-950/80 backdrop-blur-2xl border-t border-white/5 py-32">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                { icon: Globe, title: "Global Intelligence", desc: "Real-time sync across your entire supply chain." },
+                { icon: Activity, title: "Predictive Analytics", desc: "Forecast revenue drops before they happen." },
+                { icon: Zap, title: "Neural Automation", desc: "Automate invoice chasing and expense tracking." },
+              ].map((feat, i) => (
+                <motion.div 
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.7, delay: i * 0.2 }}
+                  key={i} 
+                  className="p-8 rounded-3xl bg-slate-900/50 border border-white/10 hover:border-blue-500/30 transition-colors group"
+                >
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform">
+                    <feat.icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">{feat.title}</h3>
+                  <p className="text-slate-400 leading-relaxed">{feat.desc}</p>
+                </motion.div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
-
