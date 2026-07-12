@@ -18,6 +18,7 @@ interface UIState {
   toggleSidebarCollapsed: () => void;
   openGlobalSearch: () => void;
   closeGlobalSearch: () => void;
+  toggleGlobalSearch: () => void;
   openNotifications: () => void;
   closeNotifications: () => void;
   setDateRange: (range: { from: Date | null; to: Date | null }) => void;
@@ -36,6 +37,7 @@ export const useUIStore = create<UIState>()((set) => ({
     set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
   openGlobalSearch: () => set({ globalSearchOpen: true }),
   closeGlobalSearch: () => set({ globalSearchOpen: false }),
+  toggleGlobalSearch: () => set((state) => ({ globalSearchOpen: !state.globalSearchOpen })),
   openNotifications: () => set({ notificationsOpen: true }),
   closeNotifications: () => set({ notificationsOpen: false }),
   setDateRange: (range) => set({ dateRange: range }),

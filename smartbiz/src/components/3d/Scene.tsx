@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Environment, ContactShadows, BakeShadows } from "@react-three/drei";
+import { Environment, ContactShadows } from "@react-three/drei";
 import { Suspense, ReactNode } from "react";
 
 interface SceneProps {
@@ -13,32 +13,21 @@ export default function Scene({ children, className = "" }: SceneProps) {
   return (
     <div className={`w-full h-full ${className}`}>
       <Canvas
-        camera={{ position: [0, 0, 10], fov: 35 }}
+        camera={{ position: [0, 0, 8], fov: 45 }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, toneMappingExposure: 1.2 }}
       >
         <Suspense fallback={null}>
-          {/* Night preset provides dark reflections */}
           <Environment preset="night" />
           
           <ambientLight intensity={0.2} color="#0f172a" />
           
-          {/* Intense directional lights to hit the chromatic aberration glass */}
           <directionalLight position={[5, 5, 5]} intensity={4} color="#3b82f6" />
           <directionalLight position={[-5, -5, 5]} intensity={3} color="#a855f7" />
           <directionalLight position={[0, 5, -5]} intensity={2} color="#ec4899" />
           
           {children}
 
-          <ContactShadows
-            position={[0, -3, 0]}
-            opacity={0.7}
-            scale={20}
-            blur={2.5}
-            far={10}
-            color="#000000"
-          />
-          <BakeShadows />
         </Suspense>
       </Canvas>
     </div>

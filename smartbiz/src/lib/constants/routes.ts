@@ -16,13 +16,13 @@ export const ROUTES = {
   AI_ASSISTANT: "/ai-assistant",
 
   // ── Finance ──────────────────────────────────────────────────────────────
-  INVOICES: "/invoices",
-  INVOICE_NEW: "/invoices/new",
-  INVOICE_UPLOAD: "/invoices/upload",
-  INVOICE_DETAIL: (id: string) => `/invoices/${id}`,
-  EXPENSES: "/expenses",
-  EXPENSE_NEW: "/expenses/new",
-  CASH_FLOW: "/cash-flow",
+  INVOICES: "/finances/invoices",
+  INVOICE_NEW: "/finances/invoices/new",
+  INVOICE_UPLOAD: "/finances/invoices/upload",
+  INVOICE_DETAIL: (id: string) => `/finances/invoices/${id}`,
+  EXPENSES: "/finances/expenses",
+  EXPENSE_NEW: "/finances/expenses/new",
+  CASH_FLOW: "/finances/cash-flow",
 
   // ── Reports ──────────────────────────────────────────────────────────────
   REPORTS: "/reports",
@@ -30,10 +30,10 @@ export const ROUTES = {
   REPORT_TAX: "/reports/tax-summary",
 
   // ── Contacts ─────────────────────────────────────────────────────────────
-  CUSTOMERS: "/customers",
-  CUSTOMER_DETAIL: (id: string) => `/customers/${id}`,
-  VENDORS: "/vendors",
-  VENDOR_DETAIL: (id: string) => `/vendors/${id}`,
+  CUSTOMERS: "/people/customers",
+  CUSTOMER_DETAIL: (id: string) => `/people/customers/${id}`,
+  VENDORS: "/people/vendors",
+  VENDOR_DETAIL: (id: string) => `/people/vendors/${id}`,
 
   // ── Settings ─────────────────────────────────────────────────────────────
   SETTINGS: "/settings",

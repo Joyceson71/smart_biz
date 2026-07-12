@@ -82,8 +82,9 @@ export function Sidebar({ className }: SidebarProps) {
       {/* ── Sidebar ─────────────────────────────────────────────────────── */}
       <aside
         className={cn(
-          "fixed left-0 top-0 bottom-0 z-40 flex flex-col bg-card border-r border-border transition-all duration-300",
-          sidebarCollapsed ? "w-16" : "w-[260px]",
+          "fixed left-0 top-0 bottom-0 z-40 flex flex-col transition-all duration-300",
+          "bg-background/80 backdrop-blur-2xl border-r border-border/40 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)]",
+          sidebarCollapsed ? "w-20" : "w-[280px]",
           // Mobile: off-canvas
           "lg:translate-x-0",
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",

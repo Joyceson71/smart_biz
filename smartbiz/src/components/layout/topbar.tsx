@@ -17,7 +17,7 @@ export function Topbar({ title, breadcrumb }: TopbarProps) {
   const { theme, setTheme } = useTheme();
 
   return (
-    <header className="h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center px-4 gap-4 sticky top-0 z-20">
+    <header className="h-20 lg:h-24 bg-transparent flex items-center px-4 lg:px-8 gap-4 sticky top-0 z-20 transition-all duration-300">
       {/* Mobile menu toggle */}
       <Button
         variant="ghost"

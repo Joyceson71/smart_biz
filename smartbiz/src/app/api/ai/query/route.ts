@@ -14,11 +14,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: userData } = await supabase
+    const { data: userDataRaw } = await supabase
       .from("users")
       .select("organization_id, role, full_name")
       .eq("id", user.id)
       .single();
+
+    const userData = userDataRaw as any;
 
     if (!userData) {
       return NextResponse.json({ error: "User data not found" }, { status: 404 });

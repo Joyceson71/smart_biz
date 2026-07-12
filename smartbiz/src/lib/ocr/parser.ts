@@ -28,7 +28,7 @@ export function parseInvoiceText(rawText: string) {
   // 3. Heuristic for Total Amount
   // Look for "Total" followed by currency/numbers
   const totalMatch = rawText.match(/(?:total|amount due|grand total)[^\d]*((?:\d{1,3}(?:,\d{3})*|\d+)(?:\.\d{2})?)/i);
-  if (totalMatch) {
+  if (totalMatch && totalMatch[1]) {
     data.totalAmount = parseFloat(totalMatch[1].replace(/,/g, ''));
   }
 

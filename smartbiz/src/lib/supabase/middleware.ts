@@ -85,7 +85,7 @@ export async function updateSession(request: NextRequest) {
         .eq("id", user.id)
         .single();
 
-      if (userData && !allowedRoles.includes(userData.role)) {
+      if (userData && !allowedRoles.includes((userData as any).role)) {
         const url = request.nextUrl.clone();
         url.pathname = ROUTES.DASHBOARD;
         return NextResponse.redirect(url);
