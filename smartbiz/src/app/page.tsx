@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/constants/routes";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -11,6 +11,11 @@ import HolographicGlobe from "@/components/marketing/holographic-globe";
 import { ArrowRight, Bot, Command, Globe, Layers, Zap } from "lucide-react";
 
 export default function CinematicLanding() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -71,13 +76,15 @@ export default function CinematicLanding() {
           className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden"
         >
           <div className="absolute inset-0 z-0 h-full w-full">
-            <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
-              <Environment preset="city" />
-              <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-                <AIOrb />
-              </Float>
-              <Preload all />
-            </Canvas>
+            {mounted && (
+              <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
+                <Environment preset="city" />
+                <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
+                  <AIOrb />
+                </Float>
+                <Preload all />
+              </Canvas>
+            )}
           </div>
           
           <div className="relative z-10 text-center max-w-4xl px-6 pointer-events-none mt-40">
@@ -146,11 +153,13 @@ export default function CinematicLanding() {
           className="sticky top-0 h-screen flex items-center justify-center overflow-hidden"
         >
            <div className="absolute inset-0 z-0 h-full w-full">
-            <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-              <Float speed={1} rotationIntensity={0.2} floatIntensity={0.5}>
-                <HolographicGlobe />
-              </Float>
-            </Canvas>
+            {mounted && (
+              <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+                <Float speed={1} rotationIntensity={0.2} floatIntensity={0.5}>
+                  <HolographicGlobe />
+                </Float>
+              </Canvas>
+            )}
           </div>
           <div className="relative z-10 text-center max-w-3xl px-6 pointer-events-none bg-black/40 backdrop-blur-xl p-12 rounded-[3rem] border border-white/10 shadow-2xl">
             <Globe className="mx-auto mb-6 text-[#00E5FF]" size={48} />

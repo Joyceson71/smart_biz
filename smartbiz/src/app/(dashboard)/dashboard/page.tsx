@@ -1,11 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useWindowStore } from "@/stores/useWindowStore";
 import OSWindow from "@/components/os/window";
-import AICore from "@/components/os/ai-command-center";
-import Warehouse3D from "@/features/inventory/Warehouse3D";
-import CustomerNetwork3D from "@/features/customers/CustomerNetwork3D";
-import SpatialFinance from "@/features/finance/SpatialFinance";
+
+const AICore = dynamic(() => import("@/components/os/ai-command-center"), { ssr: false });
+const Warehouse3D = dynamic(() => import("@/features/inventory/Warehouse3D"), { ssr: false });
+const CustomerNetwork3D = dynamic(() => import("@/features/customers/CustomerNetwork3D"), { ssr: false });
+const SpatialFinance = dynamic(() => import("@/features/finance/SpatialFinance"), { ssr: false });
 
 export default function OSDesktop() {
   const windows = useWindowStore((state) => state.windows);
