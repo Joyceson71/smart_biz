@@ -2,11 +2,12 @@
 
 import { useRef, useState, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Box, Html, Float } from "@react-three/drei";
+import { OrbitControls, Box } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
-import { Package, Search, AlertTriangle, CheckCircle } from "lucide-react";
+import { Package, Search, AlertTriangle, CheckCircle, Plus, X } from "lucide-react";
+import { addInventoryItem } from "./actions";
 
 export interface InventoryItem {
   id: string;
@@ -23,65 +24,66 @@ function InventoryCrate({ data, isSelected, onClick }: { data: InventoryItem, is
   const meshRef = useRef<THREE.Mesh>(null);
   
   // Colors based on status
-  const color = data.status === 'Healthy' ? '#10b981' : data.status === 'Low' ? '#f59e0b' : '#ef4444';
-  const emissiveIntensity = isSelected ? 0.8 : 0.3;
-
-  useFrame(() => {
+  const color = data.stock < 10 ? '#ef4444' : 
+                data.stock < 50 ? '#f59e0b' : '#10b981';
+  
+  useFrame((state) => {
+    if (meshRef.current && !isSelected) {
+      meshRef.current.position.y = 0.5 + Math.sin(state.clock.getElapsedTime() * 2 + data.pos_x) * 0.1;
+    }
     if (meshRef.current && isSelected) {
       meshRef.current.rotation.y += 0.02;
     }
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-      <mesh 
-        ref={meshRef} 
-        position={new THREE.Vector3(data.pos_x, data.pos_y, data.pos_z)}
-        onClick={(e) => { e.stopPropagation(); onClick(data); }}
-        onPointerOver={() => document.body.style.cursor = 'pointer'}
-        onPointerOut={() => document.body.style.cursor = 'auto'}
-      >
-        <boxGeometry args={[1.5, 1.5, 1.5]} />
+    <group 
+      position={[data.pos_x, 0.5, data.pos_z]}
+      onClick={(e) => { e.stopPropagation(); onClick(data); }}
+      onPointerOver={() => document.body.style.cursor = 'pointer'}
+      onPointerOut={() => document.body.style.cursor = 'auto'}
+    >
+      {/* Base Crate */}
+      <Box ref={meshRef} args={[1, 1, 1]}>
         <meshStandardMaterial 
-          color={color} 
+          color="#0f172a" 
           emissive={color}
-          emissiveIntensity={emissiveIntensity}
-          roughness={0.4}
-          metalness={0.5}
+          emissiveIntensity={isSelected ? 0.8 : 0.2}
+          roughness={0.2}
+          metalness={0.8}
           transparent
           opacity={0.9}
         />
-        {/* Wireframe outline for tech aesthetic */}
-        <Box args={[1.55, 1.55, 1.55]}>
-          <meshBasicMaterial color={color} wireframe transparent opacity={isSelected ? 0.6 : 0.2} />
-        </Box>
-        
-        {/* Holographic label */}
-        {isSelected && (
-          <Html position={[0, 1.2, 0]} center className="pointer-events-none">
-            <div className="bg-slate-900/90 backdrop-blur-sm border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-mono text-white whitespace-nowrap shadow-xl">
-              {data.sku}
-            </div>
-          </Html>
-        )}
-      </mesh>
-    </Float>
+      </Box>
+      
+      {/* Holographic glowing wireframe */}
+      <Box args={[1.05, 1.05, 1.05]} position={[0, 0, 0]}>
+        <meshBasicMaterial color={color} wireframe transparent opacity={isSelected ? 0.4 : 0.1} />
+      </Box>
+    </group>
   );
 }
 
-function GridFloor() {
+function WarehouseFloor() {
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.5, 0]}>
-      <planeGeometry args={[50, 50]} />
-      <meshBasicMaterial color="#0f172a" transparent opacity={0.8} />
+    <group position={[0, -0.5, 0]}>
+      {/* Dark Floor Plane */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[50, 50]} />
+        <meshStandardMaterial color="#020617" roughness={0.8} metalness={0.2} />
+      </mesh>
+      
+      {/* Sci-Fi Grid Line Overlay */}
       <gridHelper args={[50, 50, '#1e293b', '#0f172a']} position={[0, 0.01, 0]} />
-    </mesh>
+    </group>
   );
 }
 
 export default function InventoryScene({ initialInventory }: { initialInventory: InventoryItem[] }) {
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const filteredInventory = useMemo(() => {
     return initialInventory.filter(item => 
@@ -99,7 +101,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
           <directionalLight position={[5, 10, 5]} intensity={1.5} />
           <pointLight position={[-5, 5, -5]} intensity={0.5} color="#3b82f6" />
           
-          <GridFloor />
+          <WarehouseFloor />
           
           {filteredInventory.map((item) => (
             <InventoryCrate 
@@ -197,6 +199,70 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
             </motion.div>
           )}
         </AnimatePresence>
+        {/* Add Inventory Form */}
+        <AnimatePresence>
+          {showAddForm && (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-96 bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-6 pointer-events-auto"
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="font-bold text-white text-lg">Add Stock Item</h3>
+                <button onClick={() => setShowAddForm(false)} className="text-slate-400 hover:text-white transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <form 
+                action={async (formData) => {
+                  setIsSubmitting(true);
+                  try {
+                    await addInventoryItem(formData);
+                    setShowAddForm(false);
+                  } finally {
+                    setIsSubmitting(false);
+                  }
+                }}
+                className="space-y-4"
+              >
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">SKU</label>
+                  <input name="sku" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Item Name</label>
+                  <input name="name" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Quantity</label>
+                    <input name="quantity" type="number" required defaultValue="0" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Reorder Level</label>
+                    <input name="reorder_level" type="number" required defaultValue="10" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                  </div>
+                </div>
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded-lg transition-colors mt-2 disabled:opacity-50"
+                >
+                  {isSubmitting ? "Adding..." : "Add to Warehouse"}
+                </button>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Floating Action Button */}
+        <button 
+          onClick={() => setShowAddForm(true)}
+          className="absolute bottom-6 left-6 w-12 h-12 bg-blue-500 hover:bg-blue-400 text-slate-950 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/20 pointer-events-auto transition-transform hover:scale-110"
+        >
+          <Plus className="w-6 h-6" />
+        </button>
       </div>
     </div>
   );

@@ -6,7 +6,8 @@ import { OrbitControls, Float, Text, Plane } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Search, CreditCard, Clock, AlertCircle, X, Download } from "lucide-react";
+import { FileText, Search, CreditCard, Clock, AlertCircle, X, Download, Plus } from "lucide-react";
+import { addInvoice } from "./actions";
 
 export interface Invoice {
   id: string;
@@ -115,6 +116,8 @@ function DataGrid() {
 export default function InvoicesScene({ initialInvoices }: { initialInvoices: Invoice[] }) {
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const filteredInvoices = useMemo(() => {
     return initialInvoices.filter(inv => {
@@ -237,6 +240,68 @@ export default function InvoicesScene({ initialInvoices }: { initialInvoices: In
             </motion.div>
           )}
         </AnimatePresence>
+        {/* Add Invoice Form */}
+        <AnimatePresence>
+          {showAddForm && (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-96 bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-6 pointer-events-auto"
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="font-bold text-white text-lg">Generate Invoice</h3>
+                <button onClick={() => setShowAddForm(false)} className="text-slate-400 hover:text-white transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <form 
+                action={async (formData) => {
+                  setIsSubmitting(true);
+                  try {
+                    await addInvoice(formData);
+                    setShowAddForm(false);
+                  } finally {
+                    setIsSubmitting(false);
+                  }
+                }}
+                className="space-y-4"
+              >
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Amount ($)</label>
+                  <input name="amount" type="number" step="0.01" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Due Date</label>
+                  <input name="due_date" type="date" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500" />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Status</label>
+                  <select name="status" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                    <option value="Pending">Pending</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Overdue">Overdue</option>
+                  </select>
+                </div>
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-lg transition-colors mt-2 disabled:opacity-50"
+                >
+                  {isSubmitting ? "Generating..." : "Generate Spatial Invoice"}
+                </button>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Floating Action Button */}
+        <button 
+          onClick={() => setShowAddForm(true)}
+          className="absolute bottom-6 left-6 w-12 h-12 bg-indigo-500 hover:bg-indigo-400 text-slate-950 rounded-full flex items-center justify-center shadow-lg shadow-indigo-500/20 pointer-events-auto transition-transform hover:scale-110"
+        >
+          <Plus className="w-6 h-6" />
+        </button>
       </div>
     </div>
   );
