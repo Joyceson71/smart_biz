@@ -118,7 +118,7 @@ export default function EmployeesScene({ initialEmployees }: { initialEmployees:
     <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
       {/* 3D Canvas Area */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 2, 15], fov: 45 }}>
+        <Canvas camera={{ position: [0, 2, 15], fov: 45 }} dpr={[1, 1.5]}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <pointLight position={[-10, -5, -10]} color="#3b82f6" intensity={0.5} />

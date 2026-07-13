@@ -66,7 +66,7 @@ export function AICore() {
   return (
     <div className="w-full h-full flex flex-col bg-slate-950 text-white rounded-b-xl overflow-hidden shadow-[inset_0_0_100px_rgba(139,92,246,0.1)]">
       <div className="h-48 sm:h-64 relative w-full bg-gradient-to-b from-slate-900 to-slate-950 flex-shrink-0 border-b border-purple-500/10">
-        <Canvas camera={{ position: [0, 0, 4], fov: 45 }}>
+        <Canvas camera={{ position: [0, 0, 4], fov: 45 }} dpr={[1, 1.5]}>
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <HolographicOrb />

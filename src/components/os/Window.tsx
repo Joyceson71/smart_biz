@@ -3,13 +3,17 @@
 import { motion, useDragControls } from "framer-motion";
 import { useWindowStore, WindowData } from "@/store/useWindowStore";
 import { X, Minus, Maximize2, Minimize2 } from "lucide-react";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function OSWindow({ windowData }: { windowData: WindowData }) {
   const { id, title, component, x, y, width, height, minimized, maximized, zIndex } = windowData;
   const { closeWindow, minimizeWindow, maximizeWindow, focusWindow, updatePosition } = useWindowStore();
   const dragControls = useDragControls();
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   if (minimized) return null;
+
+  const isFullScreen = maximized || isMobile;
 
   return (
     <motion.div
@@ -17,31 +21,33 @@ export function OSWindow({ windowData }: { windowData: WindowData }) {
       animate={{ 
         opacity: 1, 
         scale: 1,
-        x: maximized ? 0 : x,
-        y: maximized ? 0 : y,
-        width: maximized ? '100vw' : width,
-        height: maximized ? 'calc(100vh - 80px)' : height, // Leave room for dock
+        x: isFullScreen ? 0 : x,
+        y: isFullScreen ? 0 : y,
+        width: isFullScreen ? '100vw' : width,
+        height: isFullScreen ? (isMobile ? 'calc(100vh - 64px)' : 'calc(100vh - 80px)') : height, 
       }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       style={{ zIndex }}
-      drag={!maximized}
+      drag={!isFullScreen}
       dragControls={dragControls}
       dragListener={false} // Drag only from header
       dragMomentum={false}
       onDragEnd={(e, info) => {
-        updatePosition(id, x + info.offset.x, y + info.offset.y);
+        if (!isFullScreen) {
+          updatePosition(id, x + info.offset.x, y + info.offset.y);
+        }
       }}
       onPointerDown={() => focusWindow(id)}
       className={`absolute flex flex-col overflow-hidden bg-white/70 dark:bg-slate-950/70 backdrop-blur-2xl border border-white/20 dark:border-slate-800/50 shadow-2xl ${
-        maximized ? 'rounded-none' : 'rounded-xl'
+        isFullScreen ? 'rounded-none' : 'rounded-xl'
       }`}
     >
       {/* Window Header */}
       <div 
         onPointerDown={(e) => {
           focusWindow(id);
-          if (!maximized) dragControls.start(e);
+          if (!isFullScreen) dragControls.start(e);
         }}
         onDoubleClick={() => maximizeWindow(id)}
         className="flex items-center justify-between px-4 py-3 bg-white/30 dark:bg-slate-900/40 border-b border-slate-200/50 dark:border-slate-800/50 cursor-grab active:cursor-grabbing backdrop-blur-md shrink-0"

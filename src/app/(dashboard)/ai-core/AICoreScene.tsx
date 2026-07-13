@@ -1,11 +1,11 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Sphere, MeshDistortMaterial, Environment, Float, Stars } from "@react-three/drei";
+import { OrbitControls, Sphere, MeshDistortMaterial, Float, Stars } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette, ChromaticAberration } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { useRef, useEffect, useState } from "react";
-import { useChat, UIMessage } from "@ai-sdk/react";
+import { useChat } from "@ai-sdk/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Bot, User, Sparkles } from "lucide-react";
 import { BlendFunction } from "postprocessing";
@@ -89,7 +89,7 @@ export default function AICoreScene() {
     <div className="w-full h-full relative flex rounded-xl overflow-hidden bg-slate-950">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
+        <Canvas camera={{ position: [0, 0, 8], fov: 60 }} dpr={[1, 1.5]}>
           <color attach="background" args={["#020617"]} />
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={2} color="#8b5cf6" />

@@ -87,7 +87,10 @@ export async function POST(req: Request) {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (result as any).toDataStreamResponse();
-  } catch (err: any) {
-    return new Response(err.stack || err.message, { status: 500 });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      return new Response(err.stack || err.message, { status: 500 });
+    }
+    return new Response(String(err), { status: 500 });
   }
 }

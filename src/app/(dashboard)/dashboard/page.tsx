@@ -3,10 +3,10 @@
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Box, Sphere, Float } from "@react-three/drei";
-import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { motion } from "framer-motion";
 import { Activity, DollarSign, Users, CreditCard } from "lucide-react";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 function Globe() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -76,34 +76,37 @@ const STATS = [
   { label: "System Health", value: "99.9%", icon: Activity, color: "text-purple-400", bg: "bg-purple-950/30 border-purple-500/20" }
 ];
 
+function DesktopCanvas() {
+  return (
+    <div className="absolute inset-0 z-0">
+      <Canvas camera={{ position: [0, 2, 8], fov: 45 }} dpr={[1, 1.5]}>
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[10, 10, 5]} intensity={1} />
+        <pointLight position={[-10, -10, -10]} color="#3b82f6" intensity={0.5} />
+        
+        <Globe />
+        <FloatingChartBars />
+        
+        <OrbitControls 
+          enablePan={false} 
+          enableZoom={false} 
+          autoRotate 
+          autoRotateSpeed={0.2} 
+          maxPolarAngle={Math.PI / 2 + 0.2}
+          minPolarAngle={Math.PI / 3}
+        />
+      </Canvas>
+    </div>
+  );
+}
+
 export default function DashboardPage() {
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   return (
     <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
-      {/* 3D Canvas Background */}
-      <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 2, 8], fov: 45 }}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
-          <pointLight position={[-10, -10, -10]} color="#3b82f6" intensity={0.5} />
-          
-          <Globe />
-          <FloatingChartBars />
-          
-          <OrbitControls 
-            enablePan={false} 
-            enableZoom={false} 
-            autoRotate 
-            autoRotateSpeed={0.2} 
-            maxPolarAngle={Math.PI / 2 + 0.2}
-            minPolarAngle={Math.PI / 3}
-          />
-
-          <EffectComposer>
-            <Bloom luminanceThreshold={0.5} mipmapBlur intensity={1.2} />
-            <Vignette eskil={false} offset={0.1} darkness={1.1} />
-          </EffectComposer>
-        </Canvas>
-      </div>
+      {/* 3D Canvas Background - Hidden on Mobile */}
+      {!isMobile && <DesktopCanvas />}
 
       {/* Holographic Overlay UI */}
       <div className="relative z-10 p-8 pointer-events-none flex flex-col h-full">
