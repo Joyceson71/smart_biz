@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { Package, AlertTriangle, IndianRupee, Layers, UploadCloud } from "lucide-react";
-import InventoryScene, { InventoryItem } from "./InventoryScene";
+import dynamic from "next/dynamic";
+import type { InventoryItem } from "./InventoryScene";
+
+const InventoryScene = dynamic(() => import("./InventoryScene"), { ssr: false });
 import { DataTable } from "@/components/inventory/data-table";
 import { columns, Product } from "@/components/inventory/columns";
 import { Button } from "@/components/ui/button";

@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { FileText, CheckCircle, Clock, AlertTriangle } from "lucide-react";
-import InvoicesScene, { Invoice as SpatialInvoice } from "./InvoicesScene";
+import dynamic from "next/dynamic";
+import type { Invoice as SpatialInvoice } from "./InvoicesScene";
+
+const InvoicesScene = dynamic(() => import("./InvoicesScene"), { ssr: false });
 import { DataTable } from "@/components/inventory/data-table";
 import { columns, InvoiceData } from "@/components/invoices/columns";
 import { Button } from "@/components/ui/button";
