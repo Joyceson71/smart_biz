@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import InvoicesScene, { Invoice } from "./InvoicesScene";
+import { InvoiceDashboard } from "./InvoiceDashboard";
 
 export const metadata = {
   title: "Invoices | SmartBiz OS",
@@ -27,5 +28,19 @@ export default async function InvoicesPage() {
     console.error("Error fetching invoices:", error);
   }
 
-  return <InvoicesScene initialInvoices={(invoices as unknown as Invoice[]) || []} />;
+  const formattedInvoices = (invoices || []).map((inv: any) => ({
+    id: inv.id,
+    invoice_number: inv.invoice_number,
+    customer_name: inv.customer ? `${inv.customer.first_name} ${inv.customer.last_name}` : "Unknown Customer",
+    amount: inv.amount,
+    status: inv.status,
+    due_date: inv.date || new Date().toISOString(),
+  }));
+
+  const spatialInvoices = (invoices || []).map((inv: any) => ({
+    ...inv,
+    customer: inv.customer ? `${inv.customer.first_name} ${inv.customer.last_name}` : "Unknown"
+  })) as Invoice[];
+
+  return <InvoiceDashboard invoices={formattedInvoices} spatialInvoices={spatialInvoices} />;
 }
