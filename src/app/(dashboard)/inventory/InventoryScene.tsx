@@ -3,7 +3,7 @@
 import { useRef, useState, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Box } from "@react-three/drei";
-import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import { Package, Search, AlertTriangle, CheckCircle, Plus, X } from "lucide-react";
@@ -124,7 +124,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
             maxDistance={25}
           />
 
-          <EffectComposer disableNormalPass>
+          <EffectComposer>
             <Bloom luminanceThreshold={0.7} mipmapBlur intensity={1.0} />
           </EffectComposer>
         </Canvas>
