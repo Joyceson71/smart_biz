@@ -101,7 +101,7 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
     <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
       {/* 3D Canvas Area */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 1.5]}>
+        <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <Environment preset="city" />
@@ -122,14 +122,9 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
             enableZoom={true} 
             maxDistance={20}
             minDistance={3}
-            autoRotate={!selectedCustomer}
-            autoRotateSpeed={0.5}
+            autoRotate={false}
+            makeDefault
           />
-
-          <EffectComposer>
-            <Bloom luminanceThreshold={0.5} mipmapBlur intensity={1.5} />
-            <Vignette eskil={false} offset={0.1} darkness={1.1} />
-          </EffectComposer>
         </Canvas>
       </div>
 

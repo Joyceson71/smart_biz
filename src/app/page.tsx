@@ -42,10 +42,10 @@ export default function LandingPage() {
     <div className="bg-slate-950 min-h-screen text-slate-50 selection:bg-blue-500/30 overflow-x-hidden">
       {/* 3D Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <Canvas camera={{ position: [0, 0, 5], fov: 60 }} dpr={[1, 1.5]}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 60 }} dpr={[1, 1.5]} frameloop="demand">
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
-          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={0} />
           <HeroOrb />
           <Grid infiniteGrid fadeDistance={20} cellColor="#1e293b" sectionColor="#334155" position={[0, -2, 0]} />
           <Environment preset="night" />

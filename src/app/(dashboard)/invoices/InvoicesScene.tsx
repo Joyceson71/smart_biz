@@ -131,7 +131,7 @@ export default function InvoicesScene({ initialInvoices }: { initialInvoices: In
     <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
       {/* 3D Canvas Area */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 2, 12], fov: 45 }} dpr={[1, 1.5]}>
+        <Canvas camera={{ position: [0, 2, 12], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
           <ambientLight intensity={0.5} />
           <directionalLight position={[5, 10, 5]} intensity={1.5} />
           <pointLight position={[-5, 5, -5]} intensity={0.5} color="#3b82f6" />
@@ -153,12 +153,8 @@ export default function InvoicesScene({ initialInvoices }: { initialInvoices: In
             maxPolarAngle={Math.PI / 2 - 0.1}
             minDistance={5}
             maxDistance={25}
+            makeDefault
           />
-
-          <EffectComposer>
-            <Bloom luminanceThreshold={0.5} mipmapBlur intensity={1.5} />
-            <Vignette eskil={false} offset={0.1} darkness={1.1} />
-          </EffectComposer>
         </Canvas>
       </div>
 

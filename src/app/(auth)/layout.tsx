@@ -13,8 +13,8 @@ export default function AuthLayout({
     <div className="relative min-h-screen bg-slate-950 flex items-center justify-center overflow-hidden selection:bg-blue-500/30">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 1.5]}>
-          <Stars radius={50} depth={50} count={3000} factor={4} saturation={0} fade speed={1.5} />
+        <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 1.5]} frameloop="demand">
+          <Stars radius={50} depth={50} count={3000} factor={4} saturation={0} fade speed={0} />
         </Canvas>
         {/* Glow effect behind the login card */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />

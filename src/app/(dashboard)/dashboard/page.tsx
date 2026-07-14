@@ -79,7 +79,7 @@ const STATS = [
 function DesktopCanvas() {
   return (
     <div className="absolute inset-0 z-0">
-      <Canvas camera={{ position: [0, 2, 8], fov: 45 }} dpr={[1, 1.5]}>
+      <Canvas camera={{ position: [0, 2, 8], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
         <pointLight position={[-10, -10, -10]} color="#3b82f6" intensity={0.5} />
@@ -90,10 +90,10 @@ function DesktopCanvas() {
         <OrbitControls 
           enablePan={false} 
           enableZoom={false} 
-          autoRotate 
-          autoRotateSpeed={0.2} 
+          autoRotate={false}
           maxPolarAngle={Math.PI / 2 + 0.2}
           minPolarAngle={Math.PI / 3}
+          makeDefault
         />
       </Canvas>
     </div>

@@ -89,28 +89,22 @@ export default function AICoreScene() {
     <div className="w-full h-full relative flex rounded-xl overflow-hidden bg-slate-950">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 8], fov: 60 }} dpr={[1, 1.5]}>
+        <Canvas camera={{ position: [0, 0, 8], fov: 60 }} dpr={[1, 1.5]} frameloop="demand">
           <color attach="background" args={["#020617"]} />
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={2} color="#8b5cf6" />
           <directionalLight position={[-10, -10, -5]} intensity={1} color="#3b82f6" />
           
-          <Stars radius={100} depth={50} count={3000} factor={4} saturation={1} fade speed={1} />
+          <Stars radius={100} depth={50} count={3000} factor={4} saturation={1} fade speed={0} />
           
           <AIBrain isThinking={isLoading} />
           
           <OrbitControls 
             enableZoom={false}
             enablePan={false}
-            autoRotate
-            autoRotateSpeed={0.5}
+            autoRotate={false}
+            makeDefault
           />
-
-          <EffectComposer>
-            <Bloom luminanceThreshold={0.2} mipmapBlur intensity={2.0} />
-            <Vignette eskil={false} offset={0.1} darkness={1.1} />
-            <ChromaticAberration blendFunction={BlendFunction.NORMAL} offset={new THREE.Vector2(0.002, 0.002)} />
-          </EffectComposer>
         </Canvas>
       </div>
 
