@@ -47,6 +47,7 @@ export function AddProductForm({ open, onOpenChange }: { open: boolean; onOpenCh
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useReactHookForm<z.infer<typeof formSchema>>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
       name: "",

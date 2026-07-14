@@ -79,6 +79,7 @@ export function DataTable<TData, TValue>({
           className="max-w-sm bg-slate-900 border-slate-800 text-white"
         />
         <DropdownMenu>
+          {/* @ts-expect-error Missing asChild type for Base UI */}
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto bg-slate-900 border-slate-800 text-white hover:bg-slate-800 hover:text-white">
               Columns

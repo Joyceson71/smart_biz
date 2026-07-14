@@ -88,6 +88,7 @@ export const columns: ColumnDef<Product>[] = [
  
       return (
         <DropdownMenu>
+          {/* @ts-expect-error Missing asChild type */}
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
