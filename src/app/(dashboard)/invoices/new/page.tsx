@@ -57,7 +57,8 @@ export default function NewInvoicePage() {
       await addInvoice(formData);
       toast.success("Invoice generated successfully!");
       router.push("/invoices");
-    } catch (error) {
+    } catch (e) {
+      console.error(e);
       toast.error("Failed to generate invoice.");
     } finally {
       setIsSubmitting(false);
@@ -163,7 +164,7 @@ export default function NewInvoicePage() {
             </div>
             
             <div className="space-y-4">
-              {items.map((item, index) => (
+              {items.map((item) => (
                 <div key={item.id} className="flex items-start gap-3 bg-slate-900/50 p-4 rounded-xl border border-slate-800">
                   <div className="flex-1 space-y-3">
                     <Input 
@@ -296,7 +297,7 @@ export default function NewInvoicePage() {
                 </tr>
               </thead>
               <tbody className="text-slate-600">
-                {items.map((item, index) => (
+                {items.map((item) => (
                   <tr key={item.id} className="border-b border-slate-200">
                     <td className="py-4">{item.description || "Item description..."}</td>
                     <td className="py-4 text-center">{item.quantity}</td>

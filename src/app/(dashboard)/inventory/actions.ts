@@ -47,6 +47,40 @@ export async function addInventoryItem(formData: FormData) {
     throw new Error(error.message);
   }
 
+  // Next we could insert items into invoice_items using data.id
+
+  revalidatePath("/dashboard");
+  revalidatePath("/inventory");
+}
+
+export async function bulkAddInventoryItems(items: { sku: string; name: string; quantity: number; purchase_price: number; selling_price?: number }[]) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  const formattedItems = items.map(item => ({
+    user_id: user.id,
+    sku: item.sku,
+    name: item.name,
+    stock: item.quantity,
+    min_stock: 5,
+    max_stock: 100,
+    purchase_price: item.purchase_price,
+    selling_price: item.selling_price || item.purchase_price * 1.5,
+    unit: 'pcs',
+    pos_x: (Math.random() - 0.5) * 16,
+    pos_y: 0.5,
+    pos_z: (Math.random() - 0.5) * 16,
+  }));
+
+  const { error } = await supabase.from("products").insert(formattedItems);
+
+  if (error) {
+    console.error("Bulk Insert error:", error);
+    throw new Error(error.message);
+  }
+
   revalidatePath("/dashboard");
   revalidatePath("/inventory");
 }

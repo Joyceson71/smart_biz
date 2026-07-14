@@ -18,7 +18,7 @@ export interface Invoice {
   pos_x: number;
   pos_y: number;
   pos_z: number;
-  customer?: { first_name: string; last_name: string }; // We might need to join this
+  customerName?: string;
 }
 
 function InvoiceDocument({ data, isSelected, onClick }: { data: Invoice, isSelected: boolean, onClick: (data: Invoice) => void }) {
@@ -38,7 +38,7 @@ function InvoiceDocument({ data, isSelected, onClick }: { data: Invoice, isSelec
     }
   });
 
-  const customerName = data.customer ? `${data.customer.first_name} ${data.customer.last_name}` : "Unknown";
+  const customerName = data.customerName || "Unknown";
 
   return (
     <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
@@ -121,7 +121,7 @@ export default function InvoicesScene({ initialInvoices }: { initialInvoices: In
 
   const filteredInvoices = useMemo(() => {
     return initialInvoices.filter(inv => {
-      const customerName = inv.customer ? `${inv.customer.first_name} ${inv.customer.last_name}`.toLowerCase() : "";
+      const customerName = inv.customerName ? inv.customerName.toLowerCase() : "";
       return inv.invoice_number.toLowerCase().includes(searchTerm.toLowerCase()) || 
              customerName.includes(searchTerm.toLowerCase());
     });
@@ -204,7 +204,7 @@ export default function InvoicesScene({ initialInvoices }: { initialInvoices: In
               <div className="flex items-start justify-between mb-6">
                 <div>
                   <h3 className="font-bold text-white text-xl">{selectedInvoice.invoice_number}</h3>
-                  <p className="text-sm text-slate-400 mt-1">{selectedInvoice.customer ? `${selectedInvoice.customer.first_name} ${selectedInvoice.customer.last_name}` : 'Unknown'}</p>
+                  <p className="text-sm text-slate-400 mt-1">{selectedInvoice.customerName || 'Unknown'}</p>
                 </div>
                 <div className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 ${
                   selectedInvoice.status === 'Paid' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50' : 

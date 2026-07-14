@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import InvoicesScene, { Invoice } from "./InvoicesScene";
+import { Invoice } from "./InvoicesScene";
 import { InvoiceDashboard } from "./InvoiceDashboard";
 
 export const metadata = {
@@ -28,18 +28,39 @@ export default async function InvoicesPage() {
     console.error("Error fetching invoices:", error);
   }
 
-  const formattedInvoices = (invoices || []).map((inv: any) => ({
+  type DbInvoice = {
+    id: string;
+    invoice_number: string;
+    amount: number;
+    status: string;
+    date?: string;
+    customer?: { first_name: string; last_name: string } | { first_name: string; last_name: string }[];
+    pos_x?: number;
+    pos_y?: number;
+    pos_z?: number;
+  };
+
+  const getCustomerName = (customer: DbInvoice['customer']) => {
+    if (!customer) return "Unknown Customer";
+    if (Array.isArray(customer)) {
+      const c = customer[0];
+      return c ? `${c.first_name} ${c.last_name}` : "Unknown Customer";
+    }
+    return `${customer.first_name} ${customer.last_name}`;
+  };
+
+  const formattedInvoices = (invoices as unknown as DbInvoice[] || []).map((inv: DbInvoice) => ({
     id: inv.id,
     invoice_number: inv.invoice_number,
-    customer_name: inv.customer ? `${inv.customer.first_name} ${inv.customer.last_name}` : "Unknown Customer",
+    customer_name: getCustomerName(inv.customer),
     amount: inv.amount,
     status: inv.status,
     due_date: inv.date || new Date().toISOString(),
   }));
 
-  const spatialInvoices = (invoices || []).map((inv: any) => ({
+  const spatialInvoices = (invoices as unknown as DbInvoice[] || []).map((inv: DbInvoice) => ({
     ...inv,
-    customer: inv.customer ? `${inv.customer.first_name} ${inv.customer.last_name}` : "Unknown"
+    customerName: getCustomerName(inv.customer)
   })) as Invoice[];
 
   return <InvoiceDashboard invoices={formattedInvoices} spatialInvoices={spatialInvoices} />;

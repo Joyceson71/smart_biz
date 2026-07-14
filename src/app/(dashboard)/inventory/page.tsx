@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import InventoryScene, { InventoryItem } from "./InventoryScene";
+import { InventoryItem } from "./InventoryScene";
 import { InventoryDashboard } from "./InventoryDashboard";
 
 export const metadata = {

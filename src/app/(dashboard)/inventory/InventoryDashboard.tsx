@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Package, AlertTriangle, IndianRupee, Layers } from "lucide-react";
+import { Package, AlertTriangle, IndianRupee, Layers, UploadCloud } from "lucide-react";
 import InventoryScene, { InventoryItem } from "./InventoryScene";
 import { DataTable } from "@/components/inventory/data-table";
 import { columns, Product } from "@/components/inventory/columns";
 import { Button } from "@/components/ui/button";
 import { AddProductForm } from "@/components/inventory/add-product-form";
+import { AIInsightsPanel } from "@/components/inventory/ai-insights";
+import { SupplierInvoiceUpload } from "@/components/inventory/supplier-invoice-upload";
 
 interface InventoryDashboardProps {
   products: Product[];
@@ -16,6 +18,7 @@ interface InventoryDashboardProps {
 export function InventoryDashboard({ products, spatialProducts }: InventoryDashboardProps) {
   const [view, setView] = useState<"table" | "spatial">("table");
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showImportForm, setShowImportForm] = useState(false);
 
   const totalProducts = products.length;
   const lowStock = products.filter(p => p.current_stock <= p.min_stock).length;
@@ -50,6 +53,9 @@ export function InventoryDashboard({ products, spatialProducts }: InventoryDashb
               Spatial View
             </button>
           </div>
+          <Button variant="outline" onClick={() => setShowImportForm(true)} className="bg-slate-900 border-slate-800 text-purple-400 hover:bg-slate-800 hover:text-purple-300">
+            <UploadCloud className="w-4 h-4 mr-2" /> Import Invoice
+          </Button>
           <Button onClick={() => setShowAddForm(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
             + Add Product
           </Button>
@@ -57,6 +63,7 @@ export function InventoryDashboard({ products, spatialProducts }: InventoryDashb
       </div>
 
       <AddProductForm open={showAddForm} onOpenChange={setShowAddForm} />
+      <SupplierInvoiceUpload open={showImportForm} onOpenChange={setShowImportForm} />
 
       {view === "table" ? (
         <div className="p-6 flex-1 space-y-6">

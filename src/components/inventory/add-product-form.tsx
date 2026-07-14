@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-form-hook"; // Actually it's react-hook-form
+// No react-form-hook
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm as useReactHookForm } from "react-hook-form";
@@ -12,7 +12,6 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,7 +23,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -49,7 +47,7 @@ export function AddProductForm({ open, onOpenChange }: { open: boolean; onOpenCh
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useReactHookForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       name: "",
       sku: "",
@@ -80,7 +78,8 @@ export function AddProductForm({ open, onOpenChange }: { open: boolean; onOpenCh
       onOpenChange(false);
       form.reset();
       setStep(1);
-    } catch (error) {
+    } catch (e) {
+      console.error(e);
       toast.error("Failed to add product.");
     } finally {
       setIsSubmitting(false);
@@ -89,7 +88,7 @@ export function AddProductForm({ open, onOpenChange }: { open: boolean; onOpenCh
 
   const nextStep = async () => {
     // Validate current step fields
-    const fieldsToValidate: any = step === 1 
+    const fieldsToValidate: (keyof z.infer<typeof formSchema>)[] = step === 1 
       ? ["name", "sku", "barcode", "category", "description"] 
       : ["purchase_price", "selling_price", "stock", "min_stock", "max_stock", "unit"];
       
