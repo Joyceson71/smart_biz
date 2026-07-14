@@ -65,6 +65,11 @@ export function AddProductForm({ open, onOpenChange }: { open: boolean; onOpenCh
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (step < 2) {
+      nextStep();
+      return;
+    }
+    
     setIsSubmitting(true);
     try {
       const formData = new FormData();
