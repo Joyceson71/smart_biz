@@ -1,10 +1,18 @@
 import { openai } from '@ai-sdk/openai';
-import { streamText, tool } from 'ai';
-import { z } from 'zod';
+import { stepCountIs, streamText, dynamicTool, jsonSchema } from 'ai';
 import { createClient } from '@/lib/supabase/server';
+import { checkRateLimit } from '@/lib/rate-limit';
+
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
+
+// Empty JSON schema for tools that take no arguments
+const noArgs = jsonSchema<Record<string, never>>({
+  type: 'object',
+  properties: {},
+  additionalProperties: false,
+});
 
 export async function POST(req: Request) {
   try {
@@ -17,6 +25,21 @@ export async function POST(req: Request) {
       return new Response('Unauthorized', { status: 401 });
     }
 
+    const userId = user.id;
+
+    const rateLimit = checkRateLimit(`chat_${userId}`, 10, 60 * 1000); // 10 reqs per minute
+    if (!rateLimit.success) {
+      return new Response('Too Many Requests', { 
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': rateLimit.limit.toString(),
+          'X-RateLimit-Remaining': rateLimit.remaining.toString(),
+          'X-RateLimit-Reset': rateLimit.reset.toString(),
+        }
+      });
+    }
+
+
     const result = streamText({
       model: openai('gpt-4o-mini'),
       messages,
@@ -24,69 +47,67 @@ export async function POST(req: Request) {
       Be extremely concise, professional, and act like a high-tech AI assistant (e.g. JARVIS). 
       If a user asks for data you don't have tools for, say you don't have access to that module yet.`,
       tools: {
-        getInventoryStatus: tool({
-          description: 'Get the current inventory status including low stock items.',
-          parameters: z.object({}),
-          // @ts-expect-error type mismatch
+        getInventoryStatus: dynamicTool({
+          description: 'Get the current inventory status including low stock items and total value.',
+          inputSchema: noArgs,
           execute: async () => {
             const { data, error } = await supabase
               .from('products')
-              .select('*')
-              .eq('user_id', user.id);
+              .select('name, stock, purchase_price, min_stock')
+              .eq('user_id', userId);
             
             if (error) throw new Error(error.message);
+            const rows = data ?? [];
             return {
-              totalProducts: data.length,
-              lowStockItems: data.filter(p => p.stock < 20).map(p => p.name),
-              totalValue: data.reduce((acc, p) => acc + (p.price * p.stock), 0)
+              totalProducts: rows.length,
+              lowStockItems: rows.filter(p => (p.stock ?? 0) < (p.min_stock ?? 10)).map(p => p.name),
+              totalValue: rows.reduce((acc, p) => acc + ((p.purchase_price ?? 0) * (p.stock ?? 0)), 0)
             };
           },
         }),
-        getCustomerStats: tool({
-          description: 'Get statistics about the customers.',
-          parameters: z.object({}),
-          // @ts-expect-error type mismatch
+        getCustomerStats: dynamicTool({
+          description: 'Get statistics about the customers including active and new counts.',
+          inputSchema: noArgs,
           execute: async () => {
             const { data, error } = await supabase
               .from('customers')
-              .select('*')
-              .eq('user_id', user.id);
+              .select('status, ltv')
+              .eq('user_id', userId);
             
             if (error) throw new Error(error.message);
+            const rows = data ?? [];
             return {
-              totalCustomers: data.length,
-              newCustomers: data.filter(c => c.status === 'New').length,
-              activeCustomers: data.filter(c => c.status === 'Active').length,
-              averageLTV: data.reduce((acc, c) => acc + c.ltv, 0) / (data.length || 1)
+              totalCustomers: rows.length,
+              newCustomers: rows.filter(c => c.status === 'New').length,
+              activeCustomers: rows.filter(c => c.status === 'Active').length,
+              averageLTV: rows.reduce((acc, c) => acc + (c.ltv ?? 0), 0) / (rows.length || 1)
             };
           },
         }),
-        getRecentInvoices: tool({
+        getRecentInvoices: dynamicTool({
           description: 'Get the 5 most recent invoices and total outstanding amount.',
-          parameters: z.object({}),
-          // @ts-expect-error type mismatch
+          inputSchema: noArgs,
           execute: async () => {
             const { data, error } = await supabase
               .from('invoices')
-              .select('*')
-              .eq('user_id', user.id)
+              .select('id, amount, status')
+              .eq('user_id', userId)
               .order('created_at', { ascending: false })
               .limit(5);
               
             if (error) throw new Error(error.message);
+            const rows = data ?? [];
             return {
-              recentInvoices: data.map(i => ({ id: i.id, amount: i.amount, status: i.status })),
-              outstandingTotal: data.filter(i => i.status === 'Pending').reduce((acc, i) => acc + i.amount, 0)
+              recentInvoices: rows.map(i => ({ id: i.id, amount: i.amount, status: i.status })),
+              outstandingTotal: rows.filter(i => i.status === 'Pending').reduce((acc, i) => acc + (i.amount ?? 0), 0)
             };
           },
         })
       },
-      // @ts-expect-error type mismatch
-      maxSteps: 3,
+      stopWhen: stepCountIs(3),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (result as any).toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (err: unknown) {
     if (err instanceof Error) {
       return new Response(err.stack || err.message, { status: 500 });

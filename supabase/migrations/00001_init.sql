@@ -1,6 +1,7 @@
--- Drop existing corrupted tables
-DROP TABLE IF EXISTS public.invoices CASCADE;
-DROP TABLE IF EXISTS public.customers CASCADE;
+-- Migration 00001: Initial schema for customers and invoices tables.
+-- SAFE TO RE-RUN: all statements are additive (IF NOT EXISTS / idempotent DO blocks).
+-- No DROP TABLE, DROP COLUMN, or TRUNCATE statements are permitted in this file
+-- per the rule in MIGRATIONS.md.
 
 -- Create customers table
 CREATE TABLE IF NOT EXISTS public.customers (
