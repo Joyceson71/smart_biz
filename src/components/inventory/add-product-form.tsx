@@ -109,7 +109,7 @@ export function AddProductForm({ open, onOpenChange }: { open: boolean; onOpenCh
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={!!open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-slate-950 border-slate-800 text-white shadow-2xl">
         <DialogHeader>
           <DialogTitle className="text-xl">Add New Product</DialogTitle>

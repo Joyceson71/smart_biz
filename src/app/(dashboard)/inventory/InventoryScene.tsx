@@ -96,7 +96,11 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
     <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
       {/* 3D Canvas Area */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 5, 12], fov: 45 }} dpr={[1, 1.5]}>
+        <Canvas 
+          camera={{ position: [0, 5, 12], fov: 45 }} 
+          dpr={[1, 1.5]}
+          gl={{ powerPreference: "high-performance", antialias: false, stencil: false, depth: true }}
+        >
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 10, 5]} intensity={1.5} />
           <pointLight position={[-5, 5, -5]} intensity={0.5} color="#3b82f6" />
@@ -120,9 +124,8 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
             maxDistance={25}
           />
 
-          <EffectComposer>
-            <Bloom luminanceThreshold={0.5} mipmapBlur intensity={1.5} />
-            <Vignette eskil={false} offset={0.1} darkness={1.1} />
+          <EffectComposer disableNormalPass>
+            <Bloom luminanceThreshold={0.7} mipmapBlur intensity={1.0} />
           </EffectComposer>
         </Canvas>
       </div>
@@ -206,7 +209,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 50 }}
-              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-96 bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-6 pointer-events-auto"
+              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-[500px] bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-6 pointer-events-auto"
             >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="font-bold text-white text-lg">Add Stock Item</h3>
@@ -226,13 +229,25 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
                 }}
                 className="space-y-4"
               >
-                <div>
-                  <label className="block text-xs text-slate-400 mb-1">SKU</label>
-                  <input name="sku" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Item Name</label>
+                    <input name="name" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">SKU</label>
+                    <input name="sku" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-xs text-slate-400 mb-1">Item Name</label>
-                  <input name="name" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Purchase Price (₹)</label>
+                    <input name="purchase_price" type="number" required defaultValue="0" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Selling Price (₹)</label>
+                    <input name="selling_price" type="number" required defaultValue="0" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                  </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>

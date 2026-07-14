@@ -83,7 +83,7 @@ export function SupplierInvoiceUpload({ open, onOpenChange }: UploadDialogProps)
   };
 
   return (
-    <Dialog open={open} onOpenChange={(val) => {
+    <Dialog open={!!open} onOpenChange={(val) => {
       if (!val) resetState();
       onOpenChange(val);
     }}>
