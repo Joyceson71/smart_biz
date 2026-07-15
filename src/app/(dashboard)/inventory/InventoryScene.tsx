@@ -252,11 +252,11 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs text-slate-400 mb-1">Quantity</label>
-                    <input name="quantity" type="number" required defaultValue="0" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                    <input name="stock" type="number" required defaultValue="0" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
                   </div>
                   <div>
                     <label className="block text-xs text-slate-400 mb-1">Reorder Level</label>
-                    <input name="reorder_level" type="number" required defaultValue="10" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                    <input name="min_stock" type="number" required defaultValue="10" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
                   </div>
                 </div>
                 <button 

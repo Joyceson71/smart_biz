@@ -23,6 +23,7 @@ const APPS = [
   { id: "dashboard", route: "/dashboard", title: "Overview", icon: LayoutDashboard, color: "text-blue-500" },
   { id: "employees", route: "/employees", title: "Organization", icon: Briefcase, color: "text-purple-400" },
   { id: "inventory", route: "/inventory", title: "Inventory", icon: Package, color: "text-amber-500" },
+  { id: "stocks", route: "/stocks", title: "Stocks", icon: Package, color: "text-orange-500" },
   { id: "expenses", route: "/expenses", title: "Expenses", icon: Wallet, color: "text-emerald-500" },
   { id: "invoices", route: "/invoices", title: "Invoices", icon: FileText, color: "text-indigo-500" },
   { id: "customers", route: "/customers", title: "Customers", icon: Users, color: "text-blue-400" },
