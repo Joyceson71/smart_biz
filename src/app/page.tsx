@@ -55,18 +55,18 @@ export default function LandingPage() {
       {/* Content */}
       <div className="relative z-10">
         {/* Navigation */}
-        <nav className="flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
+        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-6 max-w-7xl mx-auto">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 shrink-0 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">S</span>
             </div>
-            <span className="text-xl font-bold tracking-tight">SmartBiz</span>
+            <span className="text-lg sm:text-xl font-bold tracking-tight">SmartBiz</span>
           </div>
-          <div className="flex gap-4">
-            <Link href="/login" className="px-5 py-2 rounded-full border border-white/20 hover:bg-white/10 transition-colors backdrop-blur-md">
+          <div className="flex gap-2 sm:gap-4">
+            <Link href="/login" className="px-4 py-2 sm:px-5 sm:py-2 rounded-full border border-white/20 hover:bg-white/10 transition-colors backdrop-blur-md text-sm sm:text-base whitespace-nowrap">
               Log in
             </Link>
-            <Link href="/register" className="px-5 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors shadow-[0_0_15px_rgba(37,99,235,0.5)]">
+            <Link href="/register" className="px-4 py-2 sm:px-5 sm:py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors shadow-[0_0_15px_rgba(37,99,235,0.5)] text-sm sm:text-base whitespace-nowrap">
               Get Started
             </Link>
           </div>
@@ -91,7 +91,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            className="text-6xl md:text-8xl font-bold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40 drop-shadow-2xl"
+            className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40 drop-shadow-2xl"
           >
             One Platform.<br />Infinite Scale.
           </motion.h1>
@@ -100,7 +100,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-xl md:text-2xl text-slate-400 mb-10 max-w-2xl font-light leading-relaxed"
+            className="text-lg sm:text-xl md:text-2xl text-slate-400 mb-10 max-w-2xl font-light leading-relaxed"
           >
             Not a dashboard. Not a CRM. An intelligent operating system that manages, analyzes, and grows your enterprise using autonomous AI.
           </motion.p>

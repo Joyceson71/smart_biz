@@ -4,6 +4,7 @@ import { motion, useDragControls } from "framer-motion";
 import { X, Minus, Maximize2, Minimize2 } from "lucide-react";
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function DraggableWindow({ children }: { children: React.ReactNode }) {
   const [maximized, setMaximized] = useState(false);
@@ -11,6 +12,9 @@ export function DraggableWindow({ children }: { children: React.ReactNode }) {
   const dragControls = useDragControls();
   const pathname = usePathname();
   const router = useRouter();
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  const isMaximized = maximized || isMobile;
 
   // Determine window title from pathname
   const title = pathname.split('/').pop()?.toUpperCase() || 'DASHBOARD';
@@ -30,25 +34,25 @@ export function DraggableWindow({ children }: { children: React.ReactNode }) {
       animate={{ 
         opacity: 1, 
         scale: 1,
-        width: maximized ? '100%' : '80%',
-        height: maximized ? '100%' : '85%',
+        width: isMaximized ? '100%' : '80%',
+        height: isMaximized ? '100%' : '85%',
       }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      drag={!maximized}
+      drag={!isMaximized && !isMobile}
       dragControls={dragControls}
       dragListener={false} // Drag only from header
       dragMomentum={false}
       className={`absolute left-0 top-0 right-0 bottom-0 m-auto flex flex-col overflow-hidden bg-white/70 dark:bg-slate-950/70 backdrop-blur-2xl border border-white/20 dark:border-slate-800/50 shadow-2xl ${
-        maximized ? 'rounded-none' : 'rounded-2xl'
-      }`}
+        isMaximized ? 'rounded-none' : 'rounded-2xl'
+      }${isMobile ? ' pb-16' : ''}`}
     >
       {/* Window Header */}
       <div 
         onPointerDown={(e) => {
-          if (!maximized) dragControls.start(e);
+          if (!isMaximized && !isMobile) dragControls.start(e);
         }}
-        onDoubleClick={() => setMaximized(!maximized)}
-        className="flex items-center justify-between px-4 py-3 bg-white/30 dark:bg-slate-900/40 border-b border-slate-200/50 dark:border-slate-800/50 cursor-grab active:cursor-grabbing backdrop-blur-md shrink-0 z-50"
+        onDoubleClick={() => !isMobile && setMaximized(!maximized)}
+        className={`flex items-center justify-between px-4 py-3 bg-white/30 dark:bg-slate-900/40 border-b border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md shrink-0 z-50 ${isMobile ? '' : 'cursor-grab active:cursor-grabbing'}`}
       >
         <div className="flex items-center gap-2">
           {/* Mac-style traffic lights */}
@@ -60,15 +64,15 @@ export function DraggableWindow({ children }: { children: React.ReactNode }) {
           </button>
           <button 
             onClick={() => setMinimized(true)}
-            className="w-3.5 h-3.5 rounded-full bg-yellow-500 hover:bg-yellow-600 flex items-center justify-center group"
+            className={`w-3.5 h-3.5 rounded-full bg-yellow-500 hover:bg-yellow-600 flex items-center justify-center group ${isMobile ? 'hidden' : ''}`}
           >
             <Minus className="w-2.5 h-2.5 text-yellow-900 opacity-0 group-hover:opacity-100" />
           </button>
           <button 
-            onClick={() => setMaximized(!maximized)}
-            className="w-3.5 h-3.5 rounded-full bg-emerald-500 hover:bg-emerald-600 flex items-center justify-center group"
+            onClick={() => !isMobile && setMaximized(!maximized)}
+            className={`w-3.5 h-3.5 rounded-full bg-emerald-500 hover:bg-emerald-600 flex items-center justify-center group ${isMobile ? 'hidden' : ''}`}
           >
-            {maximized ? (
+            {isMaximized ? (
               <Minimize2 className="w-2.5 h-2.5 text-emerald-900 opacity-0 group-hover:opacity-100" />
             ) : (
               <Maximize2 className="w-2.5 h-2.5 text-emerald-900 opacity-0 group-hover:opacity-100" />
