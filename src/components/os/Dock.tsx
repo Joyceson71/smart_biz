@@ -13,7 +13,7 @@ import {
   Package,
   Briefcase
 } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useTransition, useEffect } from "react";
 import { logout } from "@/app/(auth)/actions";
 import { useRouter, usePathname } from "next/navigation";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -46,6 +46,7 @@ function DockIcon({
   isMobile: boolean
 }) {
   const ref = useRef<HTMLButtonElement>(null);
+  const [isPending, startTransition] = useTransition();
 
   // Distance from mouse to the center of the icon
   const distance = useTransform(mouseX, (val: number) => {
@@ -57,28 +58,40 @@ function DockIcon({
   const sizeTransform = useTransform(distance, [-150, 0, 150], [48, 80, 48]);
   const size = useSpring(sizeTransform, { mass: 0.1, stiffness: 150, damping: 12 });
 
+  const handleClick = () => {
+    startTransition(() => {
+      onClick();
+    });
+  };
+
   return (
     <div className={`relative group flex flex-col items-center justify-end ${isMobile ? 'h-14 w-14 shrink-0' : 'h-24'}`}>
       {/* Tooltip */}
       {!isMobile && (
-        <div className="absolute -top-10 px-3 py-1 bg-slate-900/90 dark:bg-slate-800/90 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl border border-white/10">
+        <div className="absolute -top-12 px-3 py-1.5 bg-slate-900 dark:bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-xl border border-slate-700 z-50">
           {app.title}
         </div>
       )}
       
       <motion.button
         ref={ref}
-        onClick={onClick}
+        onClick={handleClick}
+        whileTap={{ scale: 0.85 }}
         style={isMobile ? { width: 48, height: 48 } : { width: size, height: size }}
-        className="relative flex items-center justify-center rounded-2xl bg-white/10 dark:bg-slate-900/40 border border-white/20 dark:border-slate-800 backdrop-blur-md shadow-lg overflow-hidden group-hover:-translate-y-2 transition-transform duration-200"
+        className={`relative flex items-center justify-center rounded-2xl bg-white/10 dark:bg-slate-900/40 border border-white/20 dark:border-slate-800 backdrop-blur-md overflow-hidden transition-colors duration-200 ${isOpen ? 'ring-1 ring-white/40 dark:ring-white/20 bg-white/30 dark:bg-slate-800/80 shadow-2xl' : 'group-hover:bg-white/20 dark:group-hover:bg-slate-800/60 shadow-lg'}`}
       >
-        <app.icon className={`w-1/2 h-1/2 ${app.color} drop-shadow-md`} strokeWidth={1.5} />
+        <app.icon className={`w-1/2 h-1/2 ${app.color} drop-shadow-md transition-transform duration-200 ${isOpen && !isMobile ? 'scale-110' : ''} ${isPending ? 'opacity-30' : ''}`} strokeWidth={1.5} />
+        {isPending && (
+          <div className="absolute inset-0 flex items-center justify-center">
+             <div className="w-1/3 h-1/3 border-2 border-white/50 border-t-white rounded-full animate-spin" />
+          </div>
+        )}
       </motion.button>
 
       {/* Active Indicator */}
       <div className="h-1 mt-2 flex items-center justify-center">
         {isOpen && (
-          <div className={`w-1.5 h-1.5 rounded-full ${isFocused ? 'bg-slate-900 dark:bg-slate-200' : 'bg-slate-400 dark:bg-slate-600'}`} />
+          <motion.div layoutId="active-indicator" className={`w-1.5 h-1.5 rounded-full ${isFocused ? 'bg-slate-800 dark:bg-slate-200 shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'bg-slate-400 dark:bg-slate-600'}`} />
         )}
       </div>
     </div>
@@ -91,13 +104,18 @@ export function Dock() {
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
+  // Prefetch routes for zero-latency navigation
+  useEffect(() => {
+    APPS.forEach((app) => router.prefetch(app.route));
+  }, [router]);
+
   return (
-    <div className={`fixed z-[100] ${isMobile ? 'bottom-0 left-0 right-0' : 'bottom-4 left-1/2 -translate-x-1/2'}`}>
+    <div className={`fixed z-[100] ${isMobile ? 'bottom-0 left-0 right-0' : 'bottom-6 left-1/2 -translate-x-1/2'}`}>
       <div 
         onMouseMove={(e) => !isMobile && mouseX.set(e.pageX)}
         onMouseLeave={() => !isMobile && mouseX.set(Infinity)}
-        className={`flex items-end gap-2 sm:gap-4 bg-white/40 dark:bg-slate-950/40 backdrop-blur-2xl border-t sm:border-white/30 sm:dark:border-slate-800/50 shadow-2xl ${
-          isMobile ? 'px-2 py-2 h-16 w-full justify-between overflow-x-auto border-t border-slate-200/50 dark:border-slate-800/50' : 'px-6 h-24 rounded-3xl border border-white/30 dark:border-slate-800/50'
+        className={`flex items-end gap-2 sm:gap-4 bg-white/40 dark:bg-slate-950/40 backdrop-blur-2xl border-t sm:border-white/30 sm:dark:border-slate-800/50 shadow-2xl transition-all duration-300 ${
+          isMobile ? 'px-2 py-3 h-20 w-full justify-between overflow-x-auto border-t border-slate-200/50 dark:border-slate-800/50' : 'px-6 py-2 h-24 rounded-3xl border border-white/30 dark:border-slate-800/50'
         }`}
       >
         {APPS.map((app) => (
@@ -112,7 +130,7 @@ export function Dock() {
           />
         ))}
 
-        {!isMobile && <div className="w-[1px] h-12 bg-slate-300 dark:bg-slate-800 self-center mx-2 shrink-0" />}
+        {!isMobile && <div className="w-[1px] h-12 bg-slate-300/50 dark:bg-slate-700 self-center mx-2 shrink-0" />}
 
         <DockIcon 
           app={{ id: "logout", route: "/logout", title: "Log out", icon: Power, color: "text-red-500" }} 
