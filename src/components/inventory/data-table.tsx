@@ -69,20 +69,20 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 px-2">
         <Input
           placeholder="Filter..."
           value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(searchKey)?.setFilterValue(event.target.value)
           }
-          className="max-w-sm bg-slate-900 border-slate-800 text-white"
+          className="max-w-sm bg-slate-900/50 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-blue-500/50"
         />
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="outline" className="ml-auto bg-slate-900 border-slate-800 text-white hover:bg-slate-800 hover:text-white" />}>
+          <DropdownMenuTrigger render={<Button variant="outline" className="ml-auto bg-slate-900/50 border-white/10 text-white hover:bg-slate-800/80 hover:text-white backdrop-blur-md" />}>
             Columns
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-slate-900 border-slate-800 text-white">
+          <DropdownMenuContent align="end" className="bg-slate-900/95 backdrop-blur-xl border-white/10 text-white shadow-2xl rounded-xl">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -90,7 +90,7 @@ export function DataTable<TData, TValue>({
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize"
+                    className="capitalize focus:bg-slate-800/80 focus:text-white"
                     checked={!!column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
@@ -103,14 +103,14 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border border-slate-800 bg-slate-900/50">
+      <div className="rounded-xl border border-white/10 bg-slate-900/20 backdrop-blur-md overflow-hidden">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-slate-900/60 border-b border-white/5">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-slate-800 hover:bg-slate-800/50">
+              <TableRow key={headerGroup.id} className="border-b-0 hover:bg-transparent">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-slate-400">
+                    <TableHead key={header.id} className="text-slate-400 text-xs uppercase tracking-wider font-semibold h-12">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -129,10 +129,10 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border-slate-800 hover:bg-slate-800/50 text-slate-300"
+                  className="border-b border-white/5 hover:bg-white/5 transition-colors text-slate-300"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="py-4">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -145,22 +145,22 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-slate-400"
+                  className="h-32 text-center text-slate-400"
                 >
-                  No results.
+                  No records found.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end space-x-2 py-4 px-2">
         <Button
           variant="outline"
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className="bg-slate-900 border-slate-800 text-white hover:bg-slate-800 hover:text-white"
+          className="bg-slate-900/50 border-white/10 text-white hover:bg-slate-800/80 hover:text-white"
         >
           Previous
         </Button>
@@ -169,7 +169,7 @@ export function DataTable<TData, TValue>({
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className="bg-slate-900 border-slate-800 text-white hover:bg-slate-800 hover:text-white"
+          className="bg-slate-900/50 border-white/10 text-white hover:bg-slate-800/80 hover:text-white"
         >
           Next
         </Button>
