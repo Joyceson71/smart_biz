@@ -131,22 +131,22 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
       {/* Glassmorphic Overlay UI */}
       <div className="relative z-10 p-6 pointer-events-none flex flex-col h-full justify-between">
         <div className="flex justify-between items-start">
-          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-xl p-4 shadow-xl pointer-events-auto">
-            <h1 className="text-xl font-semibold text-white flex items-center gap-2">
-              <Activity className="w-5 h-5 text-emerald-400" />
+          <div className="bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-2xl p-5 shadow-2xl pointer-events-auto">
+            <h1 className="text-2xl font-bold text-white flex items-center gap-2 tracking-tight">
+              <Activity className="w-6 h-6 text-emerald-500" />
               Customer Nexus
             </h1>
-            <p className="text-sm text-slate-400 mt-1">Interactive relationship matrix</p>
+            <p className="text-xs text-emerald-400 mt-1 font-mono uppercase tracking-widest">Interactive relationship matrix</p>
           </div>
 
-          <div className="relative pointer-events-auto w-64">
+          <div className="relative pointer-events-auto w-72">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
               type="text" 
               placeholder="Search matrix..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-full pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors shadow-lg"
+              className="w-full bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-full pl-10 pr-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all shadow-2xl"
             />
           </div>
         </div>
@@ -155,49 +155,50 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
         <AnimatePresence>
           {selectedCustomer && (
             <motion.div
-              initial={{ opacity: 0, x: 50, scale: 0.9 }}
+              initial={{ opacity: 0, x: 50, scale: 0.95 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 50, scale: 0.9 }}
-              className="absolute right-6 bottom-6 w-80 bg-slate-900/80 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-6 pointer-events-auto"
+              exit={{ opacity: 0, x: 50, scale: 0.95 }}
+              className="absolute right-8 bottom-8 w-80 bg-slate-900/60 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-6 pointer-events-auto overflow-hidden"
             >
+              <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/80 to-transparent pointer-events-none" />
               <button 
                 onClick={() => setSelectedCustomer(null)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+                className="absolute top-4 right-4 p-2 bg-white/5 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors z-20"
               >
                 <X className="w-5 h-5" />
               </button>
               
-              <div className="flex items-center gap-4 mb-6">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-inner ${
-                  selectedCustomer.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50' :
-                  selectedCustomer.status === 'New' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50' :
-                  'bg-slate-700/20 text-slate-400 border border-slate-600'
+              <div className="relative z-10 flex items-center gap-4 mb-6">
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold shadow-inner border ${
+                  selectedCustomer.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 shadow-emerald-500/20' :
+                  selectedCustomer.status === 'New' ? 'bg-blue-500/20 text-blue-400 border-blue-500/50 shadow-blue-500/20' :
+                  'bg-slate-700/20 text-slate-400 border-slate-600 shadow-slate-900/50'
                 }`}>
                   {selectedCustomer.first_name.charAt(0)}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white text-lg">{selectedCustomer.first_name} {selectedCustomer.last_name}</h3>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${
-                    selectedCustomer.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400' :
-                    selectedCustomer.status === 'New' ? 'bg-blue-500/20 text-blue-400' :
-                    'bg-slate-700/20 text-slate-400'
+                  <h3 className="font-extrabold text-white text-xl tracking-tight">{selectedCustomer.first_name} {selectedCustomer.last_name}</h3>
+                  <span className={`text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider mt-1 inline-block ${
+                    selectedCustomer.status === 'Active' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                    selectedCustomer.status === 'New' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
+                    'bg-slate-700/20 text-slate-400 border border-slate-600/50'
                   }`}>
                     {selectedCustomer.status}
                   </span>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 text-sm text-slate-300 bg-slate-950/50 p-2.5 rounded-lg border border-slate-800">
-                  <Mail className="w-4 h-4 text-slate-500" />
+              <div className="relative z-10 space-y-3">
+                <div className="flex items-center gap-3 text-sm text-slate-300 bg-slate-900/50 p-3 rounded-xl border border-white/5 shadow-inner">
+                  <Mail className="w-4 h-4 text-emerald-500" />
                   {selectedCustomer.email || 'No email provided'}
                 </div>
-                <div className="flex items-center gap-3 text-sm text-slate-300 bg-slate-950/50 p-2.5 rounded-lg border border-slate-800">
-                  <Phone className="w-4 h-4 text-slate-500" />
+                <div className="flex items-center gap-3 text-sm text-slate-300 bg-slate-900/50 p-3 rounded-xl border border-white/5 shadow-inner">
+                  <Phone className="w-4 h-4 text-emerald-500" />
                   {selectedCustomer.phone || 'No phone provided'}
                 </div>
-                <div className="flex items-center gap-3 text-sm font-medium text-emerald-400 bg-emerald-950/20 p-2.5 rounded-lg border border-emerald-900/30">
-                  <DollarSign className="w-4 h-4" />
+                <div className="flex items-center gap-3 text-sm font-bold tracking-tight text-white bg-emerald-500/10 p-4 rounded-xl border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                  <DollarSign className="w-5 h-5 text-emerald-400" />
                   LTV: ${selectedCustomer.ltv.toLocaleString()}
                 </div>
               </div>
@@ -206,14 +207,14 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
 
           {showAddForm && (
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
-              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-96 bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-6 pointer-events-auto"
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 50, scale: 0.95 }}
+              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-96 bg-slate-900/60 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-8 pointer-events-auto"
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="font-bold text-white text-lg">Add New Node</h3>
-                <button onClick={() => setShowAddForm(false)} className="text-slate-400 hover:text-white transition-colors">
+                <h3 className="font-extrabold text-white text-2xl tracking-tight">Add New Node</h3>
+                <button onClick={() => setShowAddForm(false)} className="p-2 bg-white/5 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -227,34 +228,34 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
                     setIsSubmitting(false);
                   }
                 }}
-                className="space-y-4"
+                className="space-y-5"
               >
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs text-slate-400 mb-1">First Name</label>
-                    <input name="first_name" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                    <label className="block text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1.5">First Name</label>
+                    <input name="first_name" required className="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all" />
                   </div>
                   <div>
-                    <label className="block text-xs text-slate-400 mb-1">Last Name</label>
-                    <input name="last_name" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                    <label className="block text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1.5">Last Name</label>
+                    <input name="last_name" required className="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Email</label>
-                  <input name="email" type="email" required className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1.5">Email</label>
+                  <input name="email" type="email" required className="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all" />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Phone</label>
-                  <input name="phone" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1.5">Phone</label>
+                  <input name="phone" className="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all" />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Initial LTV ($)</label>
-                  <input name="ltv" type="number" defaultValue="0" className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
+                  <label className="block text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1.5">Initial LTV ($)</label>
+                  <input name="ltv" type="number" defaultValue="0" className="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all" />
                 </div>
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg transition-colors mt-2 disabled:opacity-50"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold uppercase tracking-widest text-sm py-3 rounded-xl transition-all mt-6 shadow-lg shadow-emerald-500/25 disabled:opacity-50"
                 >
                   {isSubmitting ? "Initializing..." : "Initialize Node"}
                 </button>
@@ -266,9 +267,9 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
         {/* Floating Action Button */}
         <button 
           onClick={() => setShowAddForm(true)}
-          className="absolute bottom-6 left-6 w-12 h-12 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/20 pointer-events-auto transition-transform hover:scale-110"
+          className="absolute bottom-8 left-8 w-14 h-14 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)] pointer-events-auto transition-transform hover:scale-110"
         >
-          <Plus className="w-6 h-6" />
+          <Plus className="w-7 h-7" />
         </button>
       </div>
     </div>

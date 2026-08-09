@@ -17,29 +17,33 @@ export default function ExpensesPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="flex flex-col h-full bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-xl">
+    <div className="flex flex-col h-full bg-slate-950 text-white w-full overflow-y-auto">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 rounded-lg">
-            <Wallet className="w-5 h-5" />
+      <div className="flex justify-between items-center p-8 border-b border-white/5 bg-slate-900/20 backdrop-blur-md sticky top-0 z-10">
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl shadow-inner">
+            <Wallet className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Expenses</h1>
-            <p className="text-sm text-slate-500">Track and manage your company outgoings.</p>
+            <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">
+              Expenses
+            </h1>
+            <p className="text-emerald-400/80 font-mono text-xs mt-2 uppercase tracking-[0.15em]">
+              Track and manage company outgoings
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input 
-              className="pl-9 w-[250px] bg-white/50 dark:bg-slate-950/50 border-slate-200 dark:border-slate-800" 
+              className="pl-10 w-[280px] bg-slate-900/40 backdrop-blur-2xl border-white/10 text-white placeholder-slate-400 focus-visible:ring-1 focus-visible:ring-emerald-500/50 rounded-full py-5" 
               placeholder="Search expenses..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2">
+          <Button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold uppercase tracking-widest text-xs py-5 px-6 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all hover:scale-105 gap-2 border border-emerald-500/20">
             <Plus className="w-4 h-4" />
             Log Expense
           </Button>
@@ -47,81 +51,90 @@ export default function ExpensesPage() {
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-3 gap-6 p-6 border-b border-slate-200 dark:border-slate-800 bg-white/30 dark:bg-slate-950/20">
-        <div className="flex flex-col gap-1 p-4 rounded-xl bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <span className="text-sm font-medium text-slate-500 flex items-center gap-2">
-            Total Spend (This Month)
-          </span>
-          <span className="text-3xl font-bold text-slate-900 dark:text-white">$212.80</span>
-          <span className="text-xs text-emerald-500 flex items-center mt-1">
-            <TrendingDown className="w-3 h-3 mr-1" /> 12% vs last month
-          </span>
+      <div className="grid grid-cols-3 gap-6 p-8 border-b border-white/5 bg-slate-900/10">
+        <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-emerald-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.05)] hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] cursor-pointer">
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-emerald-500/10 transition-opacity duration-500" />
+          <div className="relative z-10 flex flex-col gap-1">
+            <span className="text-xs font-semibold uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-2">
+              Total Spend (This Month)
+            </span>
+            <span className="text-4xl font-bold text-white tracking-tight">$212.80</span>
+            <span className="text-xs font-medium text-emerald-400 flex items-center mt-2 bg-emerald-500/10 w-fit px-2 py-1 rounded-md border border-emerald-500/20">
+              <TrendingDown className="w-3 h-3 mr-1" /> 12% vs last month
+            </span>
+          </div>
         </div>
-        <div className="flex flex-col gap-1 p-4 rounded-xl bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <span className="text-sm font-medium text-slate-500 flex items-center gap-2">
-            Largest Category
-          </span>
-          <span className="text-3xl font-bold text-slate-900 dark:text-white">Software</span>
-          <span className="text-xs text-slate-400 mt-1">
-            Accounts for 45% of total
-          </span>
+        <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-blue-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.05)] hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] cursor-pointer">
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-blue-500/10 transition-opacity duration-500" />
+          <div className="relative z-10 flex flex-col gap-1">
+            <span className="text-xs font-semibold uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-2">
+              Largest Category
+            </span>
+            <span className="text-4xl font-bold text-white tracking-tight">Software</span>
+            <span className="text-xs text-blue-400 mt-2 font-mono">
+              Accounts for 45% of total
+            </span>
+          </div>
         </div>
-        <div className="flex flex-col gap-1 p-4 rounded-xl bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <span className="text-sm font-medium text-slate-500 flex items-center gap-2">
-            Pending Reimbursements
-          </span>
-          <span className="text-3xl font-bold text-slate-900 dark:text-white">$0.00</span>
-          <span className="text-xs text-slate-400 mt-1">
-            All expenses processed
-          </span>
+        <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-purple-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.05)] hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] cursor-pointer">
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-purple-500/10 transition-opacity duration-500" />
+          <div className="relative z-10 flex flex-col gap-1">
+            <span className="text-xs font-semibold uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-2">
+              Pending Reimbursements
+            </span>
+            <span className="text-4xl font-bold text-white tracking-tight">$0.00</span>
+            <span className="text-xs text-purple-400 mt-2 font-mono">
+              All expenses processed
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 p-6 overflow-auto">
-        <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div className="flex-1 p-8 overflow-auto">
+        <div className="bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs text-slate-500 uppercase bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
+            <thead className="text-xs text-slate-400 uppercase tracking-wider font-semibold bg-slate-900/60 border-b border-white/5">
               <tr>
-                <th className="px-6 py-4 font-medium">Merchant</th>
-                <th className="px-6 py-4 font-medium">Category</th>
-                <th className="px-6 py-4 font-medium">Amount</th>
-                <th className="px-6 py-4 font-medium">Date</th>
-                <th className="px-6 py-4 font-medium">Status</th>
-                <th className="px-6 py-4 text-right font-medium">Action</th>
+                <th className="px-6 py-5">Merchant</th>
+                <th className="px-6 py-5">Category</th>
+                <th className="px-6 py-5">Amount</th>
+                <th className="px-6 py-5">Date</th>
+                <th className="px-6 py-5">Status</th>
+                <th className="px-6 py-5 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+            <tbody className="divide-y divide-white/5">
               {EXPENSES.filter(e => e.merchant.toLowerCase().includes(searchTerm.toLowerCase())).map((expense, i) => (
                 <motion.tr 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
                   key={expense.id} 
-                  className="group hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors"
+                  className="group hover:bg-white/5 transition-colors cursor-pointer"
                 >
-                  <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">
+                  <td className="px-6 py-5 font-medium text-white">
                     {expense.merchant}
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-md text-xs">
+                  <td className="px-6 py-5">
+                    <span className="px-3 py-1.5 bg-slate-800/80 border border-white/10 text-slate-300 rounded-lg text-xs tracking-wide">
                       {expense.category}
                     </span>
                   </td>
-                  <td className="px-6 py-4 font-mono font-medium text-slate-900 dark:text-white">
+                  <td className="px-6 py-5 font-mono font-bold text-white tracking-tight">
                     ${expense.amount.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 text-slate-500">
+                  <td className="px-6 py-5 text-slate-400 font-mono text-xs">
                     {expense.date}
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="px-2 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 rounded-full text-xs flex items-center w-fit gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  <td className="px-6 py-5">
+                    <span className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full text-xs font-medium flex items-center w-fit gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       {expense.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 h-8 w-8 text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                  <td className="px-6 py-5 text-right">
+                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10 transition-all rounded-full">
                       <ArrowUpRight className="w-4 h-4" />
                     </Button>
                   </td>

@@ -39,28 +39,32 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
   return (
     <div className="flex flex-col h-full bg-slate-950 text-white w-full overflow-y-auto">
       {/* Header */}
-      <div className="flex justify-between items-center p-6 border-b border-slate-800">
+      <div className="flex justify-between items-center p-8 border-b border-white/5 bg-slate-900/20 backdrop-blur-md sticky top-0 z-10">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Invoice Management</h1>
-          <p className="text-sm text-slate-400">Manage billing, track payments, and generate professional invoices.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">
+            Invoice Management
+          </h1>
+          <p className="text-purple-400/80 font-mono text-xs mt-2 uppercase tracking-[0.15em]">
+            Manage billing, track payments, and generate invoices
+          </p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="bg-slate-900 border border-slate-800 p-1 rounded-lg flex gap-1">
+          <div className="bg-slate-900/40 backdrop-blur-xl border border-white/10 p-1.5 rounded-xl flex gap-1 shadow-lg">
             <button
               onClick={() => setView("table")}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${view === "table" ? "bg-purple-600 text-white shadow" : "text-slate-400 hover:text-white"}`}
+              className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${view === "table" ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/25" : "text-slate-400 hover:text-white hover:bg-white/5"}`}
             >
               Data View
             </button>
             <button
               onClick={() => setView("spatial")}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${view === "spatial" ? "bg-purple-600 text-white shadow" : "text-slate-400 hover:text-white"}`}
+              className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${view === "spatial" ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/25" : "text-slate-400 hover:text-white hover:bg-white/5"}`}
             >
               Spatial View
             </button>
           </div>
           <Link href="/invoices/new">
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+            <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold uppercase tracking-widest text-xs py-5 px-6 rounded-xl shadow-[0_0_20px_rgba(147,51,234,0.2)] transition-all hover:scale-105 border border-purple-500/20">
               + Create Invoice
             </Button>
           </Link>
@@ -68,44 +72,56 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
       </div>
 
       {view === "table" ? (
-        <div className="p-6 flex-1 space-y-6">
+        <div className="p-8 flex-1 space-y-8">
           {/* Stat Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-slate-400">Total Invoices</h3>
-                <FileText className="w-5 h-5 text-blue-400" />
+            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-blue-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.05)] hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] cursor-pointer">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-blue-500/10 transition-opacity duration-500" />
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-xs text-slate-400 uppercase tracking-widest">Total Invoices</h3>
+                  <FileText className="w-5 h-5 text-blue-400" />
+                </div>
+                <p className="text-4xl font-bold tracking-tight text-white">{totalInvoices}</p>
               </div>
-              <p className="text-3xl font-bold">{totalInvoices}</p>
             </div>
             
-            <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-slate-400">Pending Amount</h3>
-                <Clock className="w-5 h-5 text-amber-500" />
+            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-amber-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] cursor-pointer">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-amber-500/10 transition-opacity duration-500" />
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-xs text-slate-400 uppercase tracking-widest">Pending Amount</h3>
+                  <Clock className="w-5 h-5 text-amber-500" />
+                </div>
+                <p className="text-4xl font-bold tracking-tight text-amber-400">{formatCurrency(pendingAmount)}</p>
               </div>
-              <p className="text-3xl font-bold text-amber-500">{formatCurrency(pendingAmount)}</p>
             </div>
             
-            <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-slate-400">Paid Amount</h3>
-                <CheckCircle className="w-5 h-5 text-emerald-400" />
+            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-emerald-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.05)] hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] cursor-pointer">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-emerald-500/10 transition-opacity duration-500" />
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-xs text-slate-400 uppercase tracking-widest">Paid Amount</h3>
+                  <CheckCircle className="w-5 h-5 text-emerald-400" />
+                </div>
+                <p className="text-4xl font-bold tracking-tight text-emerald-400">{formatCurrency(paidAmount)}</p>
               </div>
-              <p className="text-3xl font-bold text-emerald-400">{formatCurrency(paidAmount)}</p>
             </div>
 
-            <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-slate-400">Overdue</h3>
-                <AlertTriangle className="w-5 h-5 text-red-500" />
+            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-red-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(239,68,68,0.05)] hover:shadow-[0_0_30px_rgba(239,68,68,0.15)] cursor-pointer">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-red-500/10 transition-opacity duration-500" />
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-xs text-slate-400 uppercase tracking-widest">Overdue</h3>
+                  <AlertTriangle className="w-5 h-5 text-red-500" />
+                </div>
+                <p className="text-4xl font-bold tracking-tight text-red-500">{overdueCount} <span className="text-lg font-medium tracking-normal text-red-500/70">Invoices</span></p>
               </div>
-              <p className="text-3xl font-bold text-red-500">{overdueCount} Invoices</p>
             </div>
           </div>
 
           {/* Data Table */}
-          <div className="bg-slate-900/30 rounded-xl border border-slate-800 p-1">
+          <div className="bg-slate-900/40 backdrop-blur-xl rounded-2xl border border-white/10 p-2 shadow-2xl">
             <DataTable columns={columns} data={invoices} searchKey="invoice_number" />
           </div>
         </div>
