@@ -4,20 +4,24 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { signup } from "../actions";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 
 export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
   const handleSubmit = async (formData: FormData) => {
     setError(null);
-    startTransition(async () => {
+    setIsPending(true);
+    try {
       const result = await signup(formData);
       if (result?.error) {
         setError(result.error);
+        setIsPending(false);
       }
-    });
+    } catch (e) {
+      throw e;
+    }
   };
 
   return (
