@@ -101,6 +101,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
           dpr={[1, 1.5]}
           gl={{ powerPreference: "high-performance", antialias: false, stencil: false, depth: true }}
         >
+          <fog attach="fog" args={['#020617', 5, 30]} />
           <ambientLight intensity={0.4} />
           <directionalLight position={[5, 10, 5]} intensity={1.5} />
           <pointLight position={[-5, 5, -5]} intensity={0.5} color="#3b82f6" />
@@ -160,7 +161,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 50, scale: 0.95 }}
-              className="absolute left-1/2 bottom-8 -translate-x-1/2 w-96 bg-slate-900/60 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-6 pointer-events-auto overflow-hidden"
+              className="absolute left-1/2 bottom-8 -translate-x-1/2 w-[90vw] sm:w-96 bg-slate-900/60 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-6 pointer-events-auto overflow-hidden"
             >
               {/* Subtle radial glow inside the panel */}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent pointer-events-none" />
@@ -212,7 +213,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 50, scale: 0.95 }}
-              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-[500px] bg-slate-900/60 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-8 pointer-events-auto"
+              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-[90vw] sm:w-[500px] max-h-[90vh] overflow-y-auto bg-slate-900/60 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-8 pointer-events-auto"
             >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="font-extrabold text-white text-2xl tracking-tight">Add Stock Item</h3>

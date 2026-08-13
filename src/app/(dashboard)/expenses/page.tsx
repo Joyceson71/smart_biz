@@ -43,8 +43,8 @@ export default function ExpensesPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold uppercase tracking-widest text-xs py-5 px-6 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all hover:scale-105 gap-2 border border-emerald-500/20">
-            <Plus className="w-4 h-4" />
+          <Button className="group bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold uppercase tracking-widest text-xs py-5 px-6 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] transition-all duration-300 hover:scale-105 gap-2 border border-emerald-500/20">
+            <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
             Log Expense
           </Button>
         </div>
@@ -52,8 +52,9 @@ export default function ExpensesPage() {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-3 gap-6 p-8 border-b border-white/5 bg-slate-900/10">
-        <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-emerald-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.05)] hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] cursor-pointer">
+        <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-emerald-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.05)] hover:shadow-[0_0_40px_rgba(16,185,129,0.2)] cursor-pointer">
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-emerald-500/10 transition-opacity duration-500" />
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/20 rounded-full blur-[50px] group-hover:bg-emerald-500/30 transition-colors duration-500 animate-pulse" />
           <div className="relative z-10 flex flex-col gap-1">
             <span className="text-xs font-semibold uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-2">
               Total Spend (This Month)
@@ -64,8 +65,9 @@ export default function ExpensesPage() {
             </span>
           </div>
         </div>
-        <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-blue-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.05)] hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] cursor-pointer">
+        <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-blue-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.05)] hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] cursor-pointer">
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-blue-500/10 transition-opacity duration-500" />
+          <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-500/20 rounded-full blur-[50px] group-hover:bg-blue-500/30 transition-colors duration-500 animate-pulse" style={{ animationDelay: '1s' }} />
           <div className="relative z-10 flex flex-col gap-1">
             <span className="text-xs font-semibold uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-2">
               Largest Category
@@ -76,8 +78,9 @@ export default function ExpensesPage() {
             </span>
           </div>
         </div>
-        <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-purple-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.05)] hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] cursor-pointer">
+        <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-purple-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.05)] hover:shadow-[0_0_40px_rgba(168,85,247,0.2)] cursor-pointer">
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-purple-500/10 transition-opacity duration-500" />
+          <div className="absolute -top-12 -left-12 w-32 h-32 bg-purple-500/20 rounded-full blur-[40px] group-hover:bg-purple-500/30 transition-colors duration-500 animate-pulse" style={{ animationDelay: '0.5s' }} />
           <div className="relative z-10 flex flex-col gap-1">
             <span className="text-xs font-semibold uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-2">
               Pending Reimbursements
@@ -133,8 +136,8 @@ export default function ExpensesPage() {
                       {expense.status}
                     </span>
                   </td>
-                  <td className="px-6 py-5 text-right">
-                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10 transition-all rounded-full">
+                  <td className="px-6 py-5 text-right overflow-hidden">
+                    <Button variant="ghost" size="icon" className="opacity-0 translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-full">
                       <ArrowUpRight className="w-4 h-4" />
                     </Button>
                   </td>
