@@ -112,7 +112,7 @@ export default function LandingPage() {
           >
             <Link 
               href="/register" 
-              className="group flex items-center gap-2 px-8 py-4 rounded-full bg-white text-slate-950 font-medium text-lg hover:bg-blue-50 transition-colors"
+              className="group flex items-center gap-2 px-8 py-4 rounded-full bg-white text-slate-950 font-medium text-lg hover:bg-blue-50 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] hover:-translate-y-1"
             >
               Enter the Workspace
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -135,12 +135,14 @@ export default function LandingPage() {
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.7, delay: i * 0.2 }}
                   key={i} 
-                  className="p-8 rounded-3xl bg-slate-900/50 border border-white/10 hover:border-blue-500/30 transition-colors group"
+                  className="relative p-8 rounded-3xl bg-slate-900/50 border border-white/10 hover:border-blue-500/50 transition-all duration-300 group hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] overflow-hidden"
                 >
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform">
-                    <feat.icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{feat.title}</h3>
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-blue-500/10 transition-opacity duration-500" />
+                  <div className="relative z-10">
+                    <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-300">
+                      <feat.icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">{feat.title}</h3>
                   <p className="text-slate-400 leading-relaxed">{feat.desc}</p>
                 </motion.div>
               ))}

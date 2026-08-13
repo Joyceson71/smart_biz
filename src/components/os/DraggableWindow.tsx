@@ -42,8 +42,8 @@ export function DraggableWindow({ children }: { children: React.ReactNode }) {
       dragControls={dragControls}
       dragListener={false} // Drag only from header
       dragMomentum={false}
-      className={`absolute left-0 top-0 right-0 bottom-0 m-auto flex flex-col overflow-hidden bg-white/70 dark:bg-slate-950/70 backdrop-blur-2xl border border-white/20 dark:border-slate-800/50 shadow-2xl ${
-        isMaximized ? 'rounded-none' : 'rounded-2xl'
+      className={`absolute left-0 top-0 right-0 bottom-0 m-auto flex flex-col overflow-hidden bg-white/70 dark:bg-slate-950/60 backdrop-blur-3xl border border-white/40 dark:border-slate-700/50 shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] ${
+        isMaximized ? 'rounded-none' : 'rounded-3xl'
       }${isMobile ? ' pb-16' : ''}`}
     >
       {/* Window Header */}

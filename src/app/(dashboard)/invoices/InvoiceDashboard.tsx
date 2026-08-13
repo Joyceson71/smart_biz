@@ -75,8 +75,8 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
         <div className="p-8 flex-1 space-y-8">
           {/* Stat Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-blue-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.05)] hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] cursor-pointer">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-blue-500/10 transition-opacity duration-500" />
+            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-blue-500/20 p-6 rounded-3xl overflow-hidden hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.05)] hover:shadow-[0_0_40px_rgba(59,130,246,0.3)] hover:border-blue-500/40 cursor-pointer">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-blue-500/20 transition-opacity duration-500" />
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-xs text-slate-400 uppercase tracking-widest">Total Invoices</h3>
@@ -86,8 +86,8 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
               </div>
             </div>
             
-            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-amber-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] cursor-pointer">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-amber-500/10 transition-opacity duration-500" />
+            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-amber-500/20 p-6 rounded-3xl overflow-hidden hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(245,158,11,0.05)] hover:shadow-[0_0_40px_rgba(245,158,11,0.3)] hover:border-amber-500/40 cursor-pointer">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-amber-500/20 transition-opacity duration-500" />
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-xs text-slate-400 uppercase tracking-widest">Pending Amount</h3>
@@ -97,8 +97,8 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
               </div>
             </div>
             
-            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-emerald-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.05)] hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] cursor-pointer">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-emerald-500/10 transition-opacity duration-500" />
+            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-emerald-500/20 p-6 rounded-3xl overflow-hidden hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.05)] hover:shadow-[0_0_40px_rgba(16,185,129,0.3)] hover:border-emerald-500/40 cursor-pointer">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-emerald-500/20 transition-opacity duration-500" />
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-xs text-slate-400 uppercase tracking-widest">Paid Amount</h3>
@@ -108,8 +108,8 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
               </div>
             </div>
 
-            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-red-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(239,68,68,0.05)] hover:shadow-[0_0_30px_rgba(239,68,68,0.15)] cursor-pointer">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-red-500/10 transition-opacity duration-500" />
+            <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-red-500/20 p-6 rounded-3xl overflow-hidden hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(239,68,68,0.05)] hover:shadow-[0_0_40px_rgba(239,68,68,0.3)] hover:border-red-500/40 cursor-pointer">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-red-500/20 transition-opacity duration-500" />
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-xs text-slate-400 uppercase tracking-widest">Overdue</h3>
