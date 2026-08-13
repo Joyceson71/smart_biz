@@ -13,7 +13,7 @@ import {
   Package,
   Briefcase
 } from "lucide-react";
-import { useRef, useTransition, useEffect } from "react";
+import { useRef, useTransition, useEffect, useState } from "react";
 import { logout } from "@/app/(auth)/actions";
 import { useRouter, usePathname } from "next/navigation";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -55,7 +55,7 @@ function DockIcon({
   });
 
   // Calculate size based on distance
-  const sizeTransform = useTransform(distance, [-150, 0, 150], [48, 80, 48]);
+  const sizeTransform = useTransform(distance, [-150, 0, 150], [40, 64, 40]);
   const size = useSpring(sizeTransform, { mass: 0.1, stiffness: 150, damping: 12 });
 
   const handleClick = () => {
@@ -65,7 +65,7 @@ function DockIcon({
   };
 
   return (
-    <div className={`relative group flex flex-col items-center justify-end ${isMobile ? 'h-14 w-14 shrink-0' : 'h-24'}`}>
+    <div className={`relative group flex flex-col items-center justify-end ${isMobile ? 'h-14 w-14 shrink-0' : 'h-20'}`}>
       {/* Tooltip */}
       {!isMobile && (
         <div className="absolute -top-12 px-3 py-1.5 bg-slate-900 dark:bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-xl border border-slate-700 z-50">
@@ -103,6 +103,7 @@ export function Dock() {
   const router = useRouter();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const [isHovered, setIsHovered] = useState(false);
 
   // Prefetch routes for zero-latency navigation
   useEffect(() => {
@@ -110,12 +111,23 @@ export function Dock() {
   }, [router]);
 
   return (
-    <div className={`fixed z-[100] ${isMobile ? 'bottom-0 left-0 right-0' : 'bottom-6 left-1/2 -translate-x-1/2'}`}>
-      <div 
+    <div 
+      className={`fixed z-[100] ${isMobile ? 'bottom-0 left-0 right-0' : 'bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-32 pb-4 flex items-end justify-center'}`}
+      onMouseEnter={() => !isMobile && setIsHovered(true)}
+      onMouseLeave={() => {
+        if (!isMobile) {
+          setIsHovered(false);
+          mouseX.set(Infinity);
+        }
+      }}
+    >
+      <motion.div 
         onMouseMove={(e) => !isMobile && mouseX.set(e.pageX)}
-        onMouseLeave={() => !isMobile && mouseX.set(Infinity)}
-        className={`flex items-end gap-2 sm:gap-4 bg-white/40 dark:bg-slate-950/40 backdrop-blur-2xl border-t sm:border-white/30 sm:dark:border-slate-800/50 shadow-2xl transition-all duration-300 ${
-          isMobile ? 'px-2 py-3 h-20 w-full justify-between overflow-x-auto border-t border-slate-200/50 dark:border-slate-800/50' : 'px-6 py-2 h-24 rounded-3xl border border-white/30 dark:border-slate-800/50'
+        initial={{ y: 100 }}
+        animate={{ y: isHovered || isMobile ? 0 : 80 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className={`flex items-end gap-2 sm:gap-4 bg-white/40 dark:bg-slate-950/40 backdrop-blur-2xl border-t sm:border-white/30 sm:dark:border-slate-800/50 shadow-2xl ${
+          isMobile ? 'px-2 py-3 h-20 w-full justify-between overflow-x-auto border-t border-slate-200/50 dark:border-slate-800/50' : 'px-5 py-2 h-20 rounded-3xl border border-white/30 dark:border-slate-800/50'
         }`}
       >
         {APPS.map((app) => (
@@ -130,7 +142,7 @@ export function Dock() {
           />
         ))}
 
-        {!isMobile && <div className="w-[1px] h-12 bg-slate-300/50 dark:bg-slate-700 self-center mx-2 shrink-0" />}
+        {!isMobile && <div className="w-[1px] h-10 bg-slate-300/50 dark:bg-slate-700 self-center mx-1 shrink-0" />}
 
         <DockIcon 
           app={{ id: "logout", route: "/logout", title: "Log out", icon: Power, color: "text-red-500" }} 
@@ -142,7 +154,7 @@ export function Dock() {
           }}
           isMobile={isMobile}
         />
-      </div>
+      </motion.div>
     </div>
   );
 }
