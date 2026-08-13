@@ -39,7 +39,7 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
   return (
     <div className="flex flex-col h-full bg-slate-950 text-white w-full overflow-y-auto">
       {/* Header */}
-      <div className="flex justify-between items-center p-8 border-b border-white/5 bg-slate-900/20 backdrop-blur-md sticky top-0 z-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 md:gap-0 p-8 border-b border-white/5 bg-slate-900/20 backdrop-blur-md sticky top-0 z-10">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">
             Invoice Management
@@ -48,7 +48,7 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
             Manage billing, track payments, and generate invoices
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
           <div className="bg-slate-900/40 backdrop-blur-xl border border-white/10 p-1.5 rounded-xl flex gap-1 shadow-lg">
             <button
               onClick={() => setView("table")}

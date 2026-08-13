@@ -160,7 +160,7 @@ export default function InvoicesScene({ initialInvoices }: { initialInvoices: In
 
       {/* Glassmorphic Overlay UI */}
       <div className="relative z-10 p-6 pointer-events-none flex flex-col h-full justify-between">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-4">
           <div className="bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-2xl p-5 shadow-2xl pointer-events-auto">
             <h1 className="text-2xl font-bold text-white flex items-center gap-2 tracking-tight">
               <FileText className="w-6 h-6 text-indigo-500" />
@@ -188,7 +188,7 @@ export default function InvoicesScene({ initialInvoices }: { initialInvoices: In
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 50, scale: 0.95 }}
-              className="absolute left-1/2 bottom-8 -translate-x-1/2 w-96 bg-slate-900/60 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-6 pointer-events-auto overflow-hidden"
+              className="absolute left-1/2 bottom-8 -translate-x-1/2 w-[90vw] sm:w-96 bg-slate-900/60 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-6 pointer-events-auto overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent pointer-events-none" />
               <button 
@@ -244,7 +244,7 @@ export default function InvoicesScene({ initialInvoices }: { initialInvoices: In
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 50, scale: 0.95 }}
-              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-96 bg-slate-900/60 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-8 pointer-events-auto"
+              className="absolute left-1/2 bottom-1/2 translate-y-1/2 -translate-x-1/2 w-[90vw] sm:w-96 bg-slate-900/60 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-8 pointer-events-auto"
             >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="font-extrabold text-white text-2xl tracking-tight">Generate Invoice</h3>
