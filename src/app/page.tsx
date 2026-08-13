@@ -143,7 +143,8 @@ export default function LandingPage() {
                       <feat.icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-semibold mb-3">{feat.title}</h3>
-                  <p className="text-slate-400 leading-relaxed">{feat.desc}</p>
+                    <p className="text-slate-400 leading-relaxed">{feat.desc}</p>
+                  </div>
                 </motion.div>
               ))}
             </div>
