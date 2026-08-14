@@ -26,7 +26,7 @@ export default function AuthLayout({
         transition={{ duration: 0.8, type: "spring" }}
         className="relative z-10 w-full max-w-md mx-4"
       >
-        <div className="bg-slate-900/60 backdrop-blur-2xl border border-white/10 p-8 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+        <div className="bg-slate-900/60 backdrop-blur-2xl border border-white/10 p-6 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)]">
           <div className="flex justify-center mb-8">
             <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)]">
               <span className="text-white font-bold text-2xl">S</span>

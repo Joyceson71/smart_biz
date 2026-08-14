@@ -21,15 +21,24 @@ export function DraggableWindow({ children }: { children: React.ReactNode }) {
 
   if (minimized) {
     return (
-      <div className="fixed bottom-32 left-8 bg-slate-900/80 backdrop-blur-xl border border-slate-700 p-4 rounded-xl text-white shadow-2xl flex items-center gap-4 cursor-pointer" onClick={() => setMinimized(false)}>
-        <span className="font-semibold text-sm">{title}</span>
-        <Maximize2 className="w-4 h-4 text-slate-400" />
-      </div>
+      <motion.div 
+        layoutId="window-wrapper"
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        className="fixed bottom-36 left-1/2 -translate-x-1/2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-2xl border border-white/50 dark:border-slate-600/50 px-6 py-3 rounded-full text-slate-900 dark:text-white shadow-[0_10px_40px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)] flex items-center gap-4 cursor-pointer hover:bg-white dark:hover:bg-slate-700 transition-colors z-[100]" 
+        onClick={() => setMinimized(false)}
+      >
+        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        <span className="font-semibold text-sm tracking-wide">{title}</span>
+        <Maximize2 className="w-4 h-4 text-slate-500 dark:text-slate-400 ml-2" />
+      </motion.div>
     );
   }
 
   return (
     <motion.div
+      layoutId="window-wrapper"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ 
         opacity: 1, 
@@ -37,12 +46,15 @@ export function DraggableWindow({ children }: { children: React.ReactNode }) {
         width: isMaximized ? '100%' : '80%',
         height: isMaximized ? '100%' : '85%',
       }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      layout
+      transition={{ layout: { type: "spring", bounce: 0, duration: 0.4 }, type: "spring", stiffness: 300, damping: 30 }}
       drag={!isMaximized && !isMobile}
+      dragConstraints={{ top: 0 }}
+      dragElastic={0.1}
       dragControls={dragControls}
       dragListener={false} // Drag only from header
       dragMomentum={false}
-      className={`absolute left-0 top-0 right-0 bottom-0 m-auto flex flex-col overflow-hidden bg-white/70 dark:bg-slate-950/60 backdrop-blur-3xl border border-white/40 dark:border-slate-700/50 shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] ${
+      className={`absolute left-0 top-0 right-0 bottom-0 m-auto flex flex-col overflow-hidden bg-white/70 dark:bg-slate-900/60 backdrop-blur-[40px] border-y border-white/60 dark:border-slate-600/50 border-x border-white/40 dark:border-slate-600/30 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] ${
         isMaximized ? 'rounded-none' : 'rounded-3xl'
       }${isMobile ? ' pb-16' : ''}`}
     >
@@ -52,7 +64,7 @@ export function DraggableWindow({ children }: { children: React.ReactNode }) {
           if (!isMaximized && !isMobile) dragControls.start(e);
         }}
         onDoubleClick={() => !isMobile && setMaximized(!maximized)}
-        className={`flex items-center justify-between px-4 py-3 bg-white/30 dark:bg-slate-900/40 border-b border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md shrink-0 z-50 ${isMobile ? '' : 'cursor-grab active:cursor-grabbing'}`}
+        className={`flex items-center justify-between px-4 py-3 bg-white/40 dark:bg-slate-800/40 border-b border-white/40 dark:border-slate-600/40 backdrop-blur-xl shrink-0 z-50 ${isMobile ? '' : 'cursor-grab active:cursor-grabbing'}`}
       >
         <div className="flex items-center gap-2">
           {/* Mac-style traffic lights */}

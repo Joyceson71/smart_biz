@@ -133,8 +133,8 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
 
       {/* Glassmorphic Overlay UI */}
       <div className="relative z-10 p-6 pointer-events-none flex flex-col h-full justify-between">
-        <div className="flex justify-between items-start">
-          <div className="bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-2xl p-5 shadow-2xl pointer-events-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0">
+          <div className="bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-2xl p-5 shadow-2xl pointer-events-auto w-full md:w-auto">
             <h1 className="text-2xl font-bold text-white flex items-center gap-2 tracking-tight">
               <Package className="w-6 h-6 text-blue-500" />
               Virtual Warehouse
@@ -142,7 +142,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
             <p className="text-xs text-blue-400 mt-1 font-mono uppercase tracking-widest">Real-time 3D inventory tracking</p>
           </div>
 
-          <div className="relative pointer-events-auto w-72">
+          <div className="relative pointer-events-auto w-full md:w-72">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
               type="text" 
@@ -233,7 +233,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
                 }}
                 className="space-y-4"
               >
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1.5">Item Name</label>
                     <input name="name" required className="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" />
