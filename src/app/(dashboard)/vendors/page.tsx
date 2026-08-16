@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { VendorsClient } from "./VendorsClient";
+import dynamic from "next/dynamic";
+import { SkeletonLoader } from "@/components/ui/skeleton-loader";
+
+const VendorsClient = dynamic(
+  () => import("./VendorsClient").then((mod) => mod.VendorsClient),
+  { loading: () => <SkeletonLoader /> }
+);
 
 export const metadata = {
   title: "Vendors | SmartBiz OS",

@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { ExpensesClient } from "./ExpensesClient";
+import dynamic from "next/dynamic";
+import { SkeletonLoader } from "@/components/ui/skeleton-loader";
+
+const ExpensesClient = dynamic(
+  () => import("./ExpensesClient").then((mod) => mod.ExpensesClient),
+  { loading: () => <SkeletonLoader /> }
+);
 
 export const metadata = {
   title: "Expenses | SmartBiz OS",

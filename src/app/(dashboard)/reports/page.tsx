@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { ReportsClient } from "./ReportsClient";
+import dynamic from "next/dynamic";
+import { SkeletonLoader } from "@/components/ui/skeleton-loader";
+
+const ReportsClient = dynamic(
+  () => import("./ReportsClient").then((mod) => mod.ReportsClient),
+  { loading: () => <SkeletonLoader /> }
+);
 
 export const metadata = {
   title: "Reports | SmartBiz OS",

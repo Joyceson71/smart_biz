@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { DashboardClient } from "./DashboardClient";
+import dynamic from "next/dynamic";
+import { SkeletonLoader } from "@/components/ui/skeleton-loader";
+
+const DashboardClient = dynamic(
+  () => import("./DashboardClient").then((mod) => mod.DashboardClient), 
+  { loading: () => <SkeletonLoader /> }
+);
 
 export const metadata = {
   title: "Dashboard | SmartBiz OS",

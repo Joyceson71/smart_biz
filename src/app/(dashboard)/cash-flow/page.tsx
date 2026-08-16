@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { CashFlowClient } from "./CashFlowClient";
+import dynamic from "next/dynamic";
+import { SkeletonLoader } from "@/components/ui/skeleton-loader";
+
+const CashFlowClient = dynamic(
+  () => import("./CashFlowClient").then((mod) => mod.CashFlowClient),
+  { loading: () => <SkeletonLoader /> }
+);
 
 export const metadata = {
   title: "Cash Flow | SmartBiz OS",

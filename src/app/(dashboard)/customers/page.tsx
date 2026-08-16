@@ -1,6 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import CustomersScene, { Customer } from "./CustomersScene";
+import dynamic from "next/dynamic";
+import type { Customer } from "./CustomersScene";
+
+const CustomersScene = dynamic(() => import("./CustomersScene"), { 
+  loading: () => <SkeletonLoader /> 
+});
 import { Suspense } from "react";
 import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 
