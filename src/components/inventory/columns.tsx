@@ -13,6 +13,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
+import { ProductFormModal } from "./product-form-modal";
+import { deleteInventoryItem } from "@/app/(dashboard)/inventory/actions";
+import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 export type Product = {
   id: string;
@@ -31,6 +35,58 @@ export type Product = {
   status: string;
   last_updated: string; // mapped from created_at or updated_at
 };
+
+function ProductRowActions({ product }: { product: Product }) {
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const handleDelete = () => {
+    if (confirm("Are you sure you want to delete this product?")) {
+      startTransition(async () => {
+        try {
+          await deleteInventoryItem(product.id);
+          toast.success("Product deleted successfully");
+        } catch {
+          toast.error("Failed to delete product");
+        }
+      });
+    }
+  };
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger render={(props) => <Button {...props} variant="ghost" className="h-8 w-8 p-0" disabled={isPending} />}>
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="bg-slate-900 border-slate-800 text-white">
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(product.sku)}>
+              Copy SKU
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="bg-slate-800" />
+            <DropdownMenuItem onClick={() => setShowEditModal(true)}>
+              Edit product
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDelete} className="text-red-500 hover:text-red-600 focus:text-red-500">
+              Delete product
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      
+      {showEditModal && (
+        <ProductFormModal 
+          open={showEditModal} 
+          onOpenChange={setShowEditModal} 
+          initialData={product} 
+        />
+      )}
+    </>
+  );
+}
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -82,32 +138,12 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: "status",
     header: "Status",
   },
+
   {
     id: "actions",
     cell: ({ row }) => {
       const product = row.original;
- 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger render={(props) => <Button {...props} variant="ghost" className="h-8 w-8 p-0" />}>
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-slate-900 border-slate-800 text-white">
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(product.sku)}
-              >
-                Copy SKU
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-slate-800" />
-              <DropdownMenuItem>View details</DropdownMenuItem>
-              <DropdownMenuItem>Edit product</DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
+      return <ProductRowActions product={product} />;
     },
   },
 ];

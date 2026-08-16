@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { InventoryItem } from "./InventoryScene";
 import { DataTable } from "@/components/inventory/data-table";
 import { columns, Product } from "@/components/inventory/columns";
-import { AddProductForm } from "@/components/inventory/add-product-form";
+import { ProductFormModal } from "@/components/inventory/product-form-modal";
 import { AIInsightsPanel } from "@/components/inventory/ai-insights";
 import { SupplierInvoiceUpload } from "@/components/inventory/supplier-invoice-upload";
 import { InventoryHeader } from "@/components/inventory/InventoryHeader";
@@ -42,7 +42,7 @@ export function InventoryDashboard({ products, spatialProducts }: InventoryDashb
           onAddProduct={() => setShowAddForm(true)} 
         />
 
-        <AddProductForm open={showAddForm} onOpenChange={setShowAddForm} />
+        <ProductFormModal open={showAddForm} onOpenChange={setShowAddForm} />
         <SupplierInvoiceUpload open={showImportForm} onOpenChange={setShowImportForm} />
 
         <div className="flex-1 relative">

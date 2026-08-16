@@ -26,7 +26,8 @@ import {
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { addInventoryItem } from "@/app/(dashboard)/inventory/actions";
+import { addInventoryItem, editInventoryItem } from "@/app/(dashboard)/inventory/actions";
+import { Product } from "./columns";
 
 const formSchema = z.object({
   name: z.string().min(2, "Product name must be at least 2 characters."),
@@ -42,25 +43,26 @@ const formSchema = z.object({
   unit: z.string().default("pcs"),
 });
 
-export function AddProductForm({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+export function ProductFormModal({ open, onOpenChange, initialData }: { open: boolean; onOpenChange: (open: boolean) => void; initialData?: Product | null }) {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isEditing = !!initialData;
 
   const form = useReactHookForm<z.infer<typeof formSchema>>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
-      name: "",
-      sku: "",
-      barcode: "",
-      category: "",
+      name: initialData?.name || "",
+      sku: initialData?.sku || "",
+      barcode: initialData?.barcode || "",
+      category: "", // we don't have category in Product type yet, or maybe category_id
       description: "",
-      purchase_price: 0,
-      selling_price: 0,
-      stock: 0,
-      min_stock: 5,
-      max_stock: 100,
-      unit: "pcs",
+      purchase_price: initialData?.purchase_price || 0,
+      selling_price: initialData?.selling_price || 0,
+      stock: initialData?.current_stock || 0,
+      min_stock: initialData?.min_stock || 5,
+      max_stock: initialData?.max_stock || 100,
+      unit: initialData?.unit || "pcs",
     },
   });
 
@@ -76,17 +78,20 @@ export function AddProductForm({ open, onOpenChange }: { open: boolean; onOpenCh
       Object.entries(values).forEach(([key, value]) => {
         formData.append(key, value.toString());
       });
-      // the existing addInventoryItem takes FormData (sku, name, quantity, reorder_level)
-      // I should update actions.ts next to support the new schema.
-      await addInventoryItem(formData); 
+      if (isEditing && initialData) {
+        await editInventoryItem(initialData.id, formData);
+        toast.success("Product updated successfully!");
+      } else {
+        await addInventoryItem(formData); 
+        toast.success("Product added successfully!");
+      }
       
-      toast.success("Product added successfully!");
       onOpenChange(false);
-      form.reset();
+      if (!isEditing) form.reset();
       setStep(1);
     } catch (e) {
       console.error(e);
-      toast.error("Failed to add product.");
+      toast.error(isEditing ? "Failed to update product." : "Failed to add product.");
     } finally {
       setIsSubmitting(false);
     }
@@ -112,10 +117,12 @@ export function AddProductForm({ open, onOpenChange }: { open: boolean; onOpenCh
     <Dialog open={!!open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-slate-950 border-slate-800 text-white shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="text-xl">Add New Product</DialogTitle>
-          <DialogDescription className="text-slate-400">
-            {step === 1 ? "Step 1: General Information" : "Step 2: Inventory & Pricing"}
-          </DialogDescription>
+            <DialogTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+              {isEditing ? "Edit Product" : "Add New Product"}
+            </DialogTitle>
+            <DialogDescription className="text-slate-400">
+              {isEditing ? "Modify the product details." : "Enter the details for the new product to add it to your inventory."}
+            </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -284,7 +291,7 @@ export function AddProductForm({ open, onOpenChange }: { open: boolean; onOpenCh
                 </Button>
               ) : (
                 <Button type="submit" disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white">
-                  {isSubmitting ? "Saving..." : "Save Product"}
+                        {isSubmitting ? (isEditing ? "Updating..." : "Adding...") : (isEditing ? "Update Product" : "Add Product")}
                 </Button>
               )}
             </div>

@@ -84,3 +84,68 @@ export async function bulkAddInventoryItems(items: { sku: string; name: string; 
   revalidatePath("/dashboard");
   revalidatePath("/inventory");
 }
+
+export async function deleteInventoryItem(id: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  const { error } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    console.error("Delete error:", error);
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/inventory");
+}
+
+export async function editInventoryItem(id: string, formData: FormData) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  const sku = formData.get("sku") as string;
+  const name = formData.get("name") as string;
+  const barcode = formData.get("barcode") as string;
+  const description = formData.get("description") as string;
+  const stock = parseInt(formData.get("stock") as string, 10) || 0;
+  const min_stock = parseInt(formData.get("min_stock") as string, 10) || 5;
+  const max_stock = parseInt(formData.get("max_stock") as string, 10) || 100;
+  const purchase_price = parseFloat(formData.get("purchase_price") as string) || 0;
+  const selling_price = parseFloat(formData.get("selling_price") as string) || 0;
+  const unit = formData.get("unit") as string || "pcs";
+
+  const { error } = await supabase
+    .from("products")
+    .update({
+      sku,
+      name,
+      barcode,
+      description,
+      stock,
+      min_stock,
+      max_stock,
+      purchase_price,
+      selling_price,
+      unit,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    console.error("Update error:", error);
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/inventory");
+}
