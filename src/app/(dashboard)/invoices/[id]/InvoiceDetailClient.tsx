@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import Link from "next/link";
-import { ArrowLeft, Download, CheckCircle, Clock, AlertTriangle, Trash2, Printer, Loader2 } from "lucide-react";
+import { ArrowLeft, Download, CheckCircle, Clock, AlertTriangle, Trash2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { toast } from "sonner";

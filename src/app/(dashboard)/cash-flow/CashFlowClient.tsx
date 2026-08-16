@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, TrendingUp, TrendingDown, RefreshCw, Layers } from "lucide-react";
+import { ArrowLeft, TrendingUp, TrendingDown, Layers } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";

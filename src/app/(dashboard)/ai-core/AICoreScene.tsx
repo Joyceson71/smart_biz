@@ -2,14 +2,12 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Sphere, MeshDistortMaterial, Float, Stars } from "@react-three/drei";
-import { EffectComposer, Bloom, Vignette, ChromaticAberration } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { useRef, useEffect, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, User, Sparkles, Send } from "lucide-react";
 import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
-import { BlendFunction } from "postprocessing";
 
 function AIBrain({ isThinking }: { isThinking: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);

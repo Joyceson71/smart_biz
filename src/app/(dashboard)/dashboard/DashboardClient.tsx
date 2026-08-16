@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 import { Activity, DollarSign, Users, CreditCard } from "lucide-react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
-import { CanvasErrorBoundary } from "@/components/os/CanvasErrorBoundary";
 
 interface DashboardClientProps {
   totalRevenue: number;

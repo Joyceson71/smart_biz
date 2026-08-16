@@ -43,7 +43,7 @@ export function VendorsClient({ vendors }: VendorsClientProps) {
         await addVendor(formData);
         toast.success("Vendor added successfully");
         setShowAddModal(false);
-      } catch (err) {
+      } catch {
         toast.error("Failed to add vendor");
       }
     });
