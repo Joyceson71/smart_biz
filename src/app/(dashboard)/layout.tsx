@@ -5,6 +5,7 @@ import { Dock } from "@/components/os/Dock";
 import { DraggableWindow } from "@/components/os/DraggableWindow";
 import { Clock } from "@/components/os/Clock";
 import { CommandPalette } from "@/components/os/CommandPalette";
+import { RealtimeProvider } from "@/components/os/RealtimeProvider";
 import { Wifi, BatteryMedium, Search } from "lucide-react";
 
 export default async function OSLayout({
@@ -71,6 +72,9 @@ export default async function OSLayout({
 
         {/* Global Spotlight Search */}
         <CommandPalette />
+
+        {/* Realtime Subscription Provider */}
+        <RealtimeProvider />
       </div>
     </div>
   );

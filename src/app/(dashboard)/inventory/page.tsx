@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { InventoryItem } from "./InventoryScene";
 import { InventoryDashboard } from "./InventoryDashboard";
+import { Suspense } from "react";
+import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 
 export const metadata = {
   title: "Inventory | SmartBiz OS",
@@ -37,5 +39,9 @@ export default async function InventoryPage() {
     last_updated: p.created_at
   }));
 
-  return <InventoryDashboard products={formattedProducts} spatialProducts={(products as InventoryItem[]) || []} />;
+  return (
+    <Suspense fallback={<SkeletonLoader />}>
+      <InventoryDashboard products={formattedProducts} spatialProducts={(products as InventoryItem[]) || []} />
+    </Suspense>
+  );
 }

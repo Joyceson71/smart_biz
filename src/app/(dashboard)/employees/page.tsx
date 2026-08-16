@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import EmployeesScene, { Employee } from "./EmployeesScene";
+import { Suspense } from "react";
+import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 
 export const metadata = {
   title: "Organization | SmartBiz OS",
@@ -24,5 +26,9 @@ export default async function EmployeesPage() {
     console.error("Error fetching employees:", error);
   }
 
-  return <EmployeesScene initialEmployees={(employees as Employee[]) || []} />;
+  return (
+    <Suspense fallback={<SkeletonLoader />}>
+      <EmployeesScene initialEmployees={(employees as Employee[]) || []} />
+    </Suspense>
+  );
 }

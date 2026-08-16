@@ -116,9 +116,11 @@ export function InvoiceDetailClient({ invoice, items }: InvoiceDetailClientProps
               <AlertTriangle className="w-4 h-4" /> Mark Overdue
             </Button>
           )}
-          <Button variant="ghost" className="text-slate-400 hover:text-white gap-2" onClick={() => window.print()}>
-            <Printer className="w-4 h-4" /> Print
-          </Button>
+          <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" rel="noopener noreferrer">
+            <Button variant="ghost" className="text-slate-400 hover:text-white gap-2">
+              <Download className="w-4 h-4" /> Download PDF
+            </Button>
+          </a>
           <Button variant="ghost" className="text-red-400 hover:text-red-300 hover:bg-red-950/30 gap-2" onClick={handleDelete} disabled={isPending}>
             {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
             Delete

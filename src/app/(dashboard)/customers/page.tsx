@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import CustomersScene, { Customer } from "./CustomersScene";
+import { Suspense } from "react";
+import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 
 export const metadata = {
   title: "Customers | SmartBiz OS",
@@ -24,5 +26,9 @@ export default async function CustomersPage() {
     console.error("Error fetching customers:", error);
   }
 
-  return <CustomersScene initialCustomers={(customers as Customer[]) || []} />;
+  return (
+    <Suspense fallback={<SkeletonLoader />}>
+      <CustomersScene initialCustomers={(customers as Customer[]) || []} />
+    </Suspense>
+  );
 }
