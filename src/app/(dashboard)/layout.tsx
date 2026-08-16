@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Dock } from "@/components/os/Dock";
-import { DraggableWindow } from "@/components/os/DraggableWindow";
+import { OSContentArea } from "@/components/os/OSContentArea";
 import { Clock } from "@/components/os/Clock";
 import { CommandPalette } from "@/components/os/CommandPalette";
 import { RealtimeProvider } from "@/components/os/RealtimeProvider";
@@ -61,11 +61,9 @@ export default async function OSLayout({
         </div>
 
         {/* Central Draggable Window */}
-        <main className="flex-1 w-full h-full relative">
-          <DraggableWindow>
-            {children}
-          </DraggableWindow>
-        </main>
+        <OSContentArea>
+          {children}
+        </OSContentArea>
         
         {/* The Dock - macOS/VisionPro style taskbar */}
         <Dock />

@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
           className="max-w-sm bg-slate-900/50 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-blue-500/50"
         />
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="outline" className="ml-auto bg-slate-900/40 backdrop-blur-md border-white/10 text-white hover:bg-white/10 hover:text-white transition-all shadow-sm">Columns</Button>} />
+          <DropdownMenuTrigger render={(props) => <Button {...props} variant="outline" className="ml-auto bg-slate-900/40 backdrop-blur-md border-white/10 text-white hover:bg-white/10 hover:text-white transition-all shadow-sm">Columns</Button>} />
           <DropdownMenuContent align="end" className="bg-slate-900/90 backdrop-blur-2xl border-white/10 text-white shadow-2xl rounded-xl">
             {table
               .getAllColumns()

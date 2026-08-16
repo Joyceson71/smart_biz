@@ -7,7 +7,8 @@ import * as THREE from "three";
 import { useRef, useEffect, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Bot, User, Sparkles } from "lucide-react";
+import { Bot, User, Sparkles, Send } from "lucide-react";
+import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
 import { BlendFunction } from "postprocessing";
 
 function AIBrain({ isThinking }: { isThinking: boolean }) {
@@ -17,8 +18,8 @@ function AIBrain({ isThinking }: { isThinking: boolean }) {
 
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.2;
-      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.3;
+      meshRef.current.rotation.x = state.clock.elapsedTime * 0.2;
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.3;
     }
     if (materialRef.current) {
       // Pulse speed based on thinking state
@@ -89,7 +90,8 @@ export default function AICoreScene() {
     <div className="w-full h-full relative flex rounded-xl overflow-hidden bg-slate-950">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 8], fov: 60 }} dpr={[1, 1.5]} frameloop="demand">
+        <WebGLErrorBoundary>
+          <Canvas camera={{ position: [0, 0, 8], fov: 60 }} dpr={[1, 1.5]} frameloop="demand">
           <color attach="background" args={["#020617"]} />
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={2} color="#8b5cf6" />
@@ -105,7 +107,8 @@ export default function AICoreScene() {
             autoRotate={false}
             makeDefault
           />
-        </Canvas>
+          </Canvas>
+        </WebGLErrorBoundary>
       </div>
 
       {/* Chat Interface */}

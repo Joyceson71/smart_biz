@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Box } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
@@ -27,12 +27,16 @@ function InventoryCrate({ data, isSelected, onClick }: { data: InventoryItem, is
   const color = data.stock < 10 ? '#ef4444' : 
                 data.stock < 50 ? '#f59e0b' : '#10b981';
   
+  const { invalidate } = useThree();
+
   useFrame((state) => {
     if (meshRef.current && !isSelected) {
-      meshRef.current.position.y = 0.5 + Math.sin(state.clock.getElapsedTime() * 2 + data.pos_x) * 0.1;
+      meshRef.current.position.y = 0.5 + Math.sin(state.clock.elapsedTime * 2 + data.pos_x) * 0.1;
+      invalidate();
     }
     if (meshRef.current && isSelected) {
       meshRef.current.rotation.y += 0.02;
+      invalidate();
     }
   });
 
@@ -99,6 +103,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
         <Canvas 
           camera={{ position: [0, 5, 12], fov: 45 }} 
           dpr={[1, 1.5]}
+          frameloop="demand"
           gl={{ powerPreference: "high-performance", antialias: false, stencil: false, depth: true }}
         >
           <fog attach="fog" args={['#020617', 5, 30]} />
@@ -123,6 +128,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
             maxPolarAngle={Math.PI / 2 - 0.1}
             minDistance={4}
             maxDistance={25}
+            makeDefault
           />
 
           <EffectComposer>

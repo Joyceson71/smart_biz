@@ -31,7 +31,7 @@ function InvoiceDocument({ data, isSelected, onClick }: { data: Invoice, isSelec
 
   useFrame((state) => {
     if (groupRef.current && !isSelected) {
-      groupRef.current.position.y += Math.sin(state.clock.getElapsedTime() * 2 + data.pos_x) * 0.002;
+      groupRef.current.position.y += Math.sin(state.clock.elapsedTime * 2 + data.pos_x) * 0.002;
     }
     if (groupRef.current && isSelected) {
       groupRef.current.rotation.y += 0.01;

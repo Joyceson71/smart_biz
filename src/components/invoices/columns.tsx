@@ -12,6 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 
 export type InvoiceData = {
@@ -84,20 +85,22 @@ export const columns: ColumnDef<InvoiceData>[] = [
  
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="ghost" className="h-8 w-8 p-0" />}>
+          <DropdownMenuTrigger render={(props) => <Button {...props} variant="ghost" className="h-8 w-8 p-0" />}>
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="h-4 w-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-slate-900 border-slate-800 text-white">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(invoice.invoice_number)}
-            >
-              Copy Invoice #
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-slate-800" />
-            <DropdownMenuItem>View PDF</DropdownMenuItem>
-            <DropdownMenuItem>Record Payment</DropdownMenuItem>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(invoice.invoice_number)}
+              >
+                Copy Invoice #
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="bg-slate-800" />
+              <DropdownMenuItem>View PDF</DropdownMenuItem>
+              <DropdownMenuItem>Record Payment</DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       )

@@ -11,6 +11,7 @@ import { AIInsightsPanel } from "@/components/inventory/ai-insights";
 import { SupplierInvoiceUpload } from "@/components/inventory/supplier-invoice-upload";
 import { InventoryHeader } from "@/components/inventory/InventoryHeader";
 import { InventoryStatCards } from "@/components/inventory/InventoryStatCards";
+import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
 
 const InventoryScene = dynamic(() => import("./InventoryScene"), { ssr: false });
 
@@ -89,7 +90,9 @@ export function InventoryDashboard({ products, spatialProducts }: InventoryDashb
                 transition={{ duration: 0.4 }}
                 className="absolute inset-0"
               >
-                <InventoryScene initialInventory={spatialProducts} />
+                <WebGLErrorBoundary>
+                  <InventoryScene initialInventory={spatialProducts} />
+                </WebGLErrorBoundary>
               </motion.div>
             )}
           </AnimatePresence>

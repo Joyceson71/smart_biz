@@ -12,8 +12,8 @@ function HeroOrb() {
   const meshRef = useRef<THREE.Mesh>(null);
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.1;
-      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.15;
+      meshRef.current.rotation.x = state.clock.elapsedTime * 0.1;
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.15;
     }
   });
 

@@ -8,6 +8,7 @@ import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import { Users, Briefcase, Zap, X, Search, Plus } from "lucide-react";
 import { addEmployee } from "./actions";
+import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
 
 export interface Employee {
   id: string;
@@ -33,7 +34,7 @@ function EmployeeNode({ data, isSelected, onClick }: { data: Employee, isSelecte
 
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.getElapsedTime() * (0.2 + data.productivity * 0.5);
+      meshRef.current.rotation.y = state.clock.elapsedTime * (0.2 + data.productivity * 0.5);
     }
   });
 
@@ -121,7 +122,8 @@ export default function EmployeesScene({ initialEmployees }: { initialEmployees:
     <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
       {/* 3D Canvas Area */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 2, 15], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
+        <WebGLErrorBoundary>
+          <Canvas camera={{ position: [0, 2, 15], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
           <ambientLight intensity={0.4} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <pointLight position={[-10, -5, -10]} color="#3b82f6" intensity={0.5} />
@@ -145,7 +147,8 @@ export default function EmployeesScene({ initialEmployees }: { initialEmployees:
             maxDistance={30}
             makeDefault
           />
-        </Canvas>
+          </Canvas>
+        </WebGLErrorBoundary>
       </div>
 
       {/* Glassmorphic Overlay UI */}

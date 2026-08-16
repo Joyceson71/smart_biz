@@ -7,6 +7,7 @@ import * as THREE from "three";
 import { motion } from "framer-motion";
 import { Activity, DollarSign, Users, CreditCard } from "lucide-react";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
 import { CanvasErrorBoundary } from "@/components/os/CanvasErrorBoundary";
 
 interface DashboardClientProps {
@@ -20,8 +21,8 @@ function Globe() {
   
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.15;
-      meshRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.2) * 0.1;
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.15;
+      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.1;
     }
   });
 
@@ -47,7 +48,7 @@ function FloatingChartBars() {
 
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.08;
+      groupRef.current.rotation.y = state.clock.elapsedTime * 0.08;
     }
   });
 
@@ -81,7 +82,7 @@ function FloatingChartBars() {
 function DesktopCanvas() {
   return (
     <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
-      <CanvasErrorBoundary>
+      <WebGLErrorBoundary>
         <Canvas camera={{ position: [0, 3, 10], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
           <ambientLight intensity={0.4} />
           <directionalLight position={[10, 10, 5]} intensity={1.5} color="#e0f2fe" />
@@ -98,7 +99,7 @@ function DesktopCanvas() {
             makeDefault
           />
         </Canvas>
-      </CanvasErrorBoundary>
+      </WebGLErrorBoundary>
     </div>
   );
 }
