@@ -30,7 +30,7 @@ export async function addInventoryItem(formData: FormData) {
   const pos_y = 0.5; // Fixed y on the ground plane
   const pos_z = (Math.random() - 0.5) * 16;
 
-  const { error } = await supabase.from("products").insert({
+  const { data, error } = await supabase.from("products").insert({
     user_id: user.id,
     sku,
     name,
@@ -47,11 +47,22 @@ export async function addInventoryItem(formData: FormData) {
     pos_x,
     pos_y,
     pos_z,
-  });
+  }).select().single();
 
   if (error) {
     console.error("Insert error:", error);
     throw new Error(error.message);
+  }
+
+  // Log opening stock transaction if stock > 0
+  if (stock > 0 && data) {
+    await supabase.from("inventory_transactions").insert({
+      user_id: user.id,
+      product_id: data.id,
+      type: "IN",
+      quantity: stock,
+      reference: "Opening Stock",
+    });
   }
 
   // Next we could insert items into invoice_items using data.id
@@ -132,6 +143,16 @@ export async function editInventoryItem(id: string, formData: FormData) {
   const category_id = formData.get("category_id") as string || null;
   const supplier_id = formData.get("supplier_id") as string || null;
 
+  // Fetch current stock to calculate delta
+  const { data: currentProduct } = await supabase
+    .from("products")
+    .select("stock")
+    .eq("id", id)
+    .single();
+
+  const currentStock = currentProduct?.stock || 0;
+  const stockDelta = stock - currentStock;
+
   const { error } = await supabase
     .from("products")
     .update({
@@ -155,6 +176,17 @@ export async function editInventoryItem(id: string, formData: FormData) {
   if (error) {
     console.error("Update error:", error);
     throw new Error(error.message);
+  }
+
+  // Log transaction if stock changed
+  if (stockDelta !== 0) {
+    await supabase.from("inventory_transactions").insert({
+      user_id: user.id,
+      product_id: id,
+      type: "ADJUSTMENT",
+      quantity: stockDelta, // Positive for IN, Negative for OUT
+      reference: "Manual Adjustment",
+    });
   }
 
   revalidatePath("/dashboard");
@@ -191,4 +223,31 @@ export async function generateInventoryInsights(products: { name: string; sku: s
   });
 
   return object.insights;
+}
+
+export async function getInventoryTransactions(productId: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  const { data, error } = await supabase
+    .from("inventory_transactions")
+    .select(`
+      id,
+      type,
+      quantity,
+      reference,
+      created_at
+    `)
+    .eq("product_id", productId)
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Fetch transactions error:", error);
+    throw new Error(error.message);
+  }
+
+  return data;
 }

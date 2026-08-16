@@ -14,6 +14,7 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { ProductFormModal } from "./product-form-modal";
+import { ProductHistoryModal } from "./product-history-modal";
 import { deleteInventoryItem } from "@/app/(dashboard)/inventory/actions";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -38,6 +39,7 @@ export type Product = {
 
 function ProductRowActions({ product }: { product: Product }) {
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = () => {
@@ -70,6 +72,9 @@ function ProductRowActions({ product }: { product: Product }) {
             <DropdownMenuItem onClick={() => setShowEditModal(true)}>
               Edit product
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setShowHistoryModal(true)}>
+              View history
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleDelete} className="text-red-500 hover:text-red-600 focus:text-red-500">
               Delete product
             </DropdownMenuItem>
@@ -82,6 +87,14 @@ function ProductRowActions({ product }: { product: Product }) {
           open={showEditModal} 
           onOpenChange={setShowEditModal} 
           initialData={product} 
+        />
+      )}
+
+      {showHistoryModal && (
+        <ProductHistoryModal
+          open={showHistoryModal}
+          onOpenChange={setShowHistoryModal}
+          product={product}
         />
       )}
     </>
