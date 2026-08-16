@@ -100,7 +100,7 @@ export function DraggableWindow({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Window Content */}
-      <div className="flex-1 overflow-hidden relative">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden relative">
         {children}
       </div>
     </motion.div>

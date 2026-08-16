@@ -1,18 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(false);
+export function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState<boolean | null>(null);
 
   useEffect(() => {
     const media = window.matchMedia(query);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
+    setMatches(media.matches);
+
     const listener = () => setMatches(media.matches);
     media.addEventListener("change", listener);
     return () => media.removeEventListener("change", listener);
-  }, [matches, query]);
+  }, [query]); // Fixed: only depend on query, not matches
 
-  return matches;
+  // Return false on SSR (matches === null) to prevent hydration mismatch
+  return matches ?? false;
 }
+

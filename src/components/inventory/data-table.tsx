@@ -79,10 +79,10 @@ export function DataTable<TData, TValue>({
           className="max-w-sm bg-slate-900/50 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-blue-500/50"
         />
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="outline" className="ml-auto bg-slate-900/50 border-white/10 text-white hover:bg-slate-800/80 hover:text-white backdrop-blur-md" />}>
+          <DropdownMenuTrigger render={<Button variant="outline" className="ml-auto bg-slate-900/40 backdrop-blur-md border-white/10 text-white hover:bg-white/10 hover:text-white transition-all shadow-sm" />}>
             Columns
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-slate-900/95 backdrop-blur-xl border-white/10 text-white shadow-2xl rounded-xl">
+          <DropdownMenuContent align="end" className="bg-slate-900/90 backdrop-blur-2xl border-white/10 text-white shadow-2xl rounded-xl">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -103,9 +103,9 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-xl border border-white/10 bg-slate-900/20 backdrop-blur-md overflow-hidden">
+      <div className="rounded-xl border border-white/10 bg-slate-900/20 backdrop-blur-md overflow-hidden shadow-inner">
         <Table>
-          <TableHeader className="bg-slate-900/60 border-b border-white/5">
+          <TableHeader className="bg-slate-900/40 border-b border-white/10">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="border-b-0 hover:bg-transparent">
                 {headerGroup.headers.map((header) => {
@@ -129,7 +129,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border-b border-white/5 hover:bg-white/5 transition-colors text-slate-300"
+                  className="border-b border-white/5 hover:bg-white/10 transition-colors duration-200 text-slate-300 group"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-4">

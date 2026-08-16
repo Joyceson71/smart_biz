@@ -127,7 +127,7 @@ export function Dock() {
         animate={{ y: isHovered || isMobile ? 0 : 80 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className={`flex items-end gap-2 sm:gap-4 bg-white/40 dark:bg-slate-950/40 backdrop-blur-2xl border-t sm:border-white/30 sm:dark:border-slate-800/50 shadow-2xl ${
-          isMobile ? 'px-2 py-3 h-20 w-full justify-between overflow-x-auto border-t border-slate-200/50 dark:border-slate-800/50' : 'px-5 py-2 h-20 rounded-3xl border border-white/30 dark:border-slate-800/50'
+          isMobile ? 'px-4 py-3 h-20 w-full justify-start overflow-x-auto [&::-webkit-scrollbar]:hidden border-t border-slate-200/50 dark:border-slate-800/50' : 'px-5 py-2 h-20 rounded-3xl border border-white/30 dark:border-slate-800/50'
         }`}
       >
         {APPS.map((app) => (

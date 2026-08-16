@@ -1,21 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { Package, AlertTriangle, IndianRupee, Layers, UploadCloud } from "lucide-react";
 import dynamic from "next/dynamic";
+import { AnimatePresence, motion } from "framer-motion";
 import type { InventoryItem } from "./InventoryScene";
-
-const InventoryScene = dynamic(() => import("./InventoryScene"), { ssr: false });
 import { DataTable } from "@/components/inventory/data-table";
 import { columns, Product } from "@/components/inventory/columns";
-import { Button } from "@/components/ui/button";
 import { AddProductForm } from "@/components/inventory/add-product-form";
 import { AIInsightsPanel } from "@/components/inventory/ai-insights";
 import { SupplierInvoiceUpload } from "@/components/inventory/supplier-invoice-upload";
+import { InventoryHeader } from "@/components/inventory/InventoryHeader";
+import { InventoryStatCards } from "@/components/inventory/InventoryStatCards";
+
+const InventoryScene = dynamic(() => import("./InventoryScene"), { ssr: false });
 
 interface InventoryDashboardProps {
   products: Product[];
-  spatialProducts: InventoryItem[]; // Some overlap in types, but handled here
+  spatialProducts: InventoryItem[];
 }
 
 export function InventoryDashboard({ products, spatialProducts }: InventoryDashboardProps) {
@@ -27,98 +28,73 @@ export function InventoryDashboard({ products, spatialProducts }: InventoryDashb
   const lowStock = products.filter(p => p.current_stock <= p.min_stock).length;
   const inventoryValue = products.reduce((acc, p) => acc + (p.current_stock * p.purchase_price), 0);
 
-  const formattedValue = new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0
-  }).format(inventoryValue);
-
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-white w-full overflow-y-auto">
-      {/* Header */}
-      <div className="flex justify-between items-center p-6 border-b border-slate-800">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Inventory Management</h1>
-          <p className="text-sm text-slate-400">Manage products, stock levels, and view health scores.</p>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="bg-slate-900 border border-slate-800 p-1 rounded-lg flex gap-1">
-            <button
-              onClick={() => setView("table")}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${view === "table" ? "bg-blue-600 text-white shadow" : "text-slate-400 hover:text-white"}`}
-            >
-              Data View
-            </button>
-            <button
-              onClick={() => setView("spatial")}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${view === "spatial" ? "bg-blue-600 text-white shadow" : "text-slate-400 hover:text-white"}`}
-            >
-              Spatial View
-            </button>
-          </div>
-          <Button variant="outline" onClick={() => setShowImportForm(true)} className="bg-slate-900 border-slate-800 text-purple-400 hover:bg-slate-800 hover:text-purple-300">
-            <UploadCloud className="w-4 h-4 mr-2" /> Import Invoice
-          </Button>
-          <Button onClick={() => setShowAddForm(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
-            + Add Product
-          </Button>
+    <div className="flex flex-col h-full bg-[#030712] text-white w-full overflow-hidden relative">
+      {/* Dynamic Background Effect */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900/20 via-[#030712] to-[#030712] opacity-50 z-0" />
+      
+      <div className="relative z-10 flex flex-col h-full overflow-y-auto overflow-x-hidden">
+        <InventoryHeader 
+          view={view} 
+          setView={setView} 
+          onImport={() => setShowImportForm(true)} 
+          onAddProduct={() => setShowAddForm(true)} 
+        />
+
+        <AddProductForm open={showAddForm} onOpenChange={setShowAddForm} />
+        <SupplierInvoiceUpload open={showImportForm} onOpenChange={setShowImportForm} />
+
+        <div className="flex-1 relative">
+          <AnimatePresence mode="wait">
+            {view === "table" ? (
+              <motion.div 
+                key="table-view"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.3 }}
+                className="p-6 space-y-8"
+              >
+                <InventoryStatCards 
+                  totalProducts={totalProducts} 
+                  lowStock={lowStock} 
+                  inventoryValue={inventoryValue} 
+                />
+
+                <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
+                    className="xl:col-span-3 bg-slate-900/30 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl p-2"
+                  >
+                    <DataTable columns={columns} data={products} />
+                  </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.3 }}
+                    className="xl:col-span-1"
+                  >
+                    <AIInsightsPanel />
+                  </motion.div>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div 
+                key="spatial-view"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.4 }}
+                className="absolute inset-0"
+              >
+                <InventoryScene initialInventory={spatialProducts} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
-
-      <AddProductForm open={showAddForm} onOpenChange={setShowAddForm} />
-      <SupplierInvoiceUpload open={showImportForm} onOpenChange={setShowImportForm} />
-
-      {view === "table" ? (
-        <div className="p-6 flex-1 space-y-6">
-          {/* Stat Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-slate-400">Total Products</h3>
-                <Package className="w-5 h-5 text-blue-400" />
-              </div>
-              <p className="text-3xl font-bold">{totalProducts}</p>
-            </div>
-            
-            <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-slate-400">Low Stock Alerts</h3>
-                <AlertTriangle className="w-5 h-5 text-amber-500" />
-              </div>
-              <p className="text-3xl font-bold text-amber-500">{lowStock}</p>
-            </div>
-            
-            <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-slate-400">Inventory Value</h3>
-                <IndianRupee className="w-5 h-5 text-emerald-400" />
-              </div>
-              <p className="text-3xl font-bold text-emerald-400">{formattedValue}</p>
-            </div>
-
-            <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-slate-400">Health Score</h3>
-                <Layers className="w-5 h-5 text-purple-400" />
-              </div>
-              <p className="text-3xl font-bold text-purple-400">{lowStock > 0 ? "85%" : "100%"}</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <div className="lg:col-span-3 bg-slate-900/30 rounded-xl border border-slate-800 p-1">
-              <DataTable columns={columns} data={products} />
-            </div>
-            <div className="lg:col-span-1">
-              <AIInsightsPanel />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="flex-1 relative">
-          <InventoryScene initialInventory={spatialProducts} />
-        </div>
-      )}
     </div>
   );
 }

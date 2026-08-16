@@ -49,18 +49,18 @@ export default async function StocksPage() {
 
   return (
     <div className="flex flex-col h-full bg-slate-950 text-white w-full overflow-y-auto">
-      <div className="flex justify-between items-center p-8 border-b border-white/5 bg-slate-900/20 backdrop-blur-md sticky top-0 z-10">
+      <div className="flex justify-between items-center p-4 md:p-8 border-b border-white/5 bg-slate-900/20 backdrop-blur-md sticky top-0 z-10">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">
             Stocks Overview
           </h1>
-          <p className="text-blue-400/80 font-mono text-xs mt-2 uppercase tracking-[0.15em]">
+          <p className="text-blue-400/80 font-mono text-[10px] md:text-xs mt-1 md:mt-2 uppercase tracking-[0.15em]">
             System Inventory Management
           </p>
         </div>
       </div>
       
-      <div className="p-8 flex-1 space-y-8">
+      <div className="p-4 md:p-8 flex-1 space-y-8">
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="group relative bg-slate-900/40 backdrop-blur-2xl border border-blue-500/20 p-6 rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.05)] hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] cursor-pointer">

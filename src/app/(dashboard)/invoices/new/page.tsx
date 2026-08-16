@@ -53,6 +53,13 @@ export default function NewInvoicePage() {
       formData.append("discount", discount.toString());
       formData.append("shipping", shipping.toString());
       formData.append("total", total.toString());
+      // Serialize line items so the server action can insert them
+      formData.append("items", JSON.stringify(items.map(({ description, quantity, price, gst }) => ({
+        description,
+        quantity,
+        price,
+        gst,
+      }))));
       
       await addInvoice(formData);
       toast.success("Invoice generated successfully!");
@@ -66,9 +73,9 @@ export default function NewInvoicePage() {
   };
 
   return (
-    <div className="flex h-full bg-slate-950 text-slate-300">
+    <div className="flex flex-col lg:flex-row h-full bg-slate-950 text-slate-300 overflow-y-auto lg:overflow-hidden">
       {/* Left Pane - Builder Form */}
-      <div className="w-1/2 border-r border-slate-800 flex flex-col h-full overflow-hidden">
+      <div className="w-full lg:w-1/2 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col lg:h-full lg:overflow-hidden shrink-0">
         <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
           <div className="flex items-center gap-3">
             <Link href="/invoices">
@@ -83,11 +90,11 @@ export default function NewInvoicePage() {
           </Button>
         </div>
 
-        <div className="p-6 overflow-y-auto space-y-8 flex-1">
+        <div className="p-6 overflow-y-visible lg:overflow-y-auto space-y-8 flex-1">
           {/* Details Section */}
           <section>
             <h2 className="text-sm font-semibold text-purple-400 uppercase tracking-wider mb-4">Invoice Details</h2>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="text-xs text-slate-500 mb-1 block">Invoice No.</label>
                 <Input 
@@ -120,7 +127,7 @@ export default function NewInvoicePage() {
           {/* Customer Section */}
           <section>
             <h2 className="text-sm font-semibold text-purple-400 uppercase tracking-wider mb-4">Bill To</h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs text-slate-500 mb-1 block">Customer Name</label>
                 <Input 
@@ -173,7 +180,7 @@ export default function NewInvoicePage() {
                       value={item.description}
                       onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                     />
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <div>
                         <label className="text-xs text-slate-500 mb-1 block">Qty</label>
                         <Input 
@@ -231,7 +238,7 @@ export default function NewInvoicePage() {
           {/* Adjustments */}
           <section>
             <h2 className="text-sm font-semibold text-purple-400 uppercase tracking-wider mb-4">Adjustments</h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs text-slate-500 mb-1 block">Discount (₹)</label>
                 <Input 
@@ -258,7 +265,7 @@ export default function NewInvoicePage() {
       </div>
 
       {/* Right Pane - Live Preview (A4 Aspect Ratio container) */}
-      <div className="w-1/2 bg-slate-900 overflow-y-auto p-8 flex justify-center">
+      <div className="w-full lg:w-1/2 bg-slate-900 lg:overflow-y-auto p-4 lg:p-8 flex justify-center">
         <div className="bg-white text-black w-full max-w-[794px] min-h-[1123px] shadow-2xl p-12 flex flex-col">
           {/* Header */}
           <div className="flex justify-between items-start border-b-2 border-slate-200 pb-8">

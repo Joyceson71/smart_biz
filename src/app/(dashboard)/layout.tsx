@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Dock } from "@/components/os/Dock";
 import { DraggableWindow } from "@/components/os/DraggableWindow";
 import { Clock } from "@/components/os/Clock";
+import { CommandPalette } from "@/components/os/CommandPalette";
 import { Wifi, BatteryMedium, Search } from "lucide-react";
 
 export default async function OSLayout({
@@ -21,9 +22,14 @@ export default async function OSLayout({
   }
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat dark:bg-slate-950">
+    <div className="relative w-full h-[100dvh] overflow-hidden bg-slate-950 overscroll-none">
+      {/* Background image - local for performance */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/os-bg.jpg')" }}
+      />
       {/* Dark overlay for contrast */}
-      <div className="absolute inset-0 bg-slate-900/40 dark:bg-slate-950/80 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px]" />
       
       {/* Main OS Desktop Area */}
       <div className="relative z-10 w-full h-full flex flex-col">
@@ -62,6 +68,9 @@ export default async function OSLayout({
         
         {/* The Dock - macOS/VisionPro style taskbar */}
         <Dock />
+
+        {/* Global Spotlight Search */}
+        <CommandPalette />
       </div>
     </div>
   );
