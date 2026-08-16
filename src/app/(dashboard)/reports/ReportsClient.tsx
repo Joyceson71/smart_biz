@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Cell } from "recharts";
 import { TrendingUp, Activity, DollarSign, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -140,7 +140,7 @@ export function ReportsClient({ revenueData, expenseData, totalRevenue, totalExp
                   />
                   <Bar dataKey="profit" radius={[4, 4, 0, 0]}>
                     {combinedData.map((entry, index) => (
-                      <cell key={`cell-${index}`} fill={entry.profit >= 0 ? '#10b981' : '#ef4444'} />
+                      <Cell key={`cell-${index}`} fill={entry.profit >= 0 ? '#10b981' : '#ef4444'} />
                     ))}
                   </Bar>
                 </BarChart>
