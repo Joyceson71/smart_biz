@@ -75,7 +75,8 @@ export function CashFlowClient({ monthlyData, currentBalance, totalInflow, total
                 <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `₹${value / 1000}k`} />
                 <Tooltip 
                   contentStyle={{ backgroundColor: "#0f172a", borderColor: "#1e293b", borderRadius: "8px", color: "#fff" }}
-                  formatter={(value: number) => [fmt(value), undefined]}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  formatter={(value: any) => [fmt(value as number), undefined]}
                 />
                 <Area type="monotone" dataKey="balance" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorBalance)" name="Projected Balance" />
               </AreaChart>

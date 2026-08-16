@@ -117,7 +117,7 @@ export function NotificationsClient({ notifications: initialNotifications }: Not
                 <Bell className="w-8 h-8 text-slate-600" />
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">All caught up!</h3>
-              <p className="text-slate-500">You don't have any new notifications.</p>
+              <p className="text-slate-500">You don&apos;t have any new notifications.</p>
             </motion.div>
           )}
         </div>

@@ -109,7 +109,8 @@ export function ReportsClient({ revenueData, expenseData, totalRevenue, totalExp
                   <Tooltip 
                     contentStyle={{ backgroundColor: "#0f172a", borderColor: "#1e293b", borderRadius: "8px", color: "#fff" }}
                     itemStyle={{ color: "#e2e8f0" }}
-                    formatter={(value: number) => [fmt(value), undefined]}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    formatter={(value: any) => [fmt(value as number), undefined]}
                   />
                   <Area type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorRevenue)" name="Revenue" />
                   <Area type="monotone" dataKey="expenses" stroke="#ef4444" strokeWidth={2} fillOpacity={1} fill="url(#colorExpense)" name="Expenses" />
@@ -133,7 +134,8 @@ export function ReportsClient({ revenueData, expenseData, totalRevenue, totalExp
                   <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `₹${value / 1000}k`} />
                   <Tooltip 
                     contentStyle={{ backgroundColor: "#0f172a", borderColor: "#1e293b", borderRadius: "8px", color: "#fff" }}
-                    formatter={(value: number) => [fmt(value), "Profit"]}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    formatter={(value: any) => [fmt(value as number), "Profit"]}
                     cursor={{ fill: '#1e293b', opacity: 0.4 }}
                   />
                   <Bar dataKey="profit" radius={[4, 4, 0, 0]}>
