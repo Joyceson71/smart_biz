@@ -1,7 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { stepCountIs, streamText, dynamicTool, jsonSchema } from 'ai';
 import { createClient } from '@/lib/supabase/server';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { chatRateLimit } from '@/lib/rate-limit';
 
 
 // Allow streaming responses up to 30 seconds
@@ -27,14 +27,15 @@ export async function POST(req: Request) {
 
     const userId = user.id;
 
-    const rateLimit = checkRateLimit(`chat_${userId}`, 10, 60 * 1000); // 10 reqs per minute
-    if (!rateLimit.success) {
+    const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+    const { success, limit, remaining, reset } = await chatRateLimit.limit(ip);
+    if (!success) {
       return new Response('Too Many Requests', { 
         status: 429,
         headers: {
-          'X-RateLimit-Limit': rateLimit.limit.toString(),
-          'X-RateLimit-Remaining': rateLimit.remaining.toString(),
-          'X-RateLimit-Reset': rateLimit.reset.toString(),
+          'X-RateLimit-Limit': limit.toString(),
+          'X-RateLimit-Remaining': remaining.toString(),
+          'X-RateLimit-Reset': reset.toString(),
         }
       });
     }

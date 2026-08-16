@@ -33,7 +33,11 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
     .from("invoices")
     .select("id, invoice_number, amount, status, due_date, created_at")
     .eq("user_id", user.id)
-    .or(`customer_email.eq.${customer.email || ""},customer_id.eq.${customer.id}`)
+    .or(
+      customer.email
+        ? `customer_email.eq.${customer.email},customer_id.eq.${customer.id}`
+        : `customer_id.eq.${customer.id}`
+    )
     .order("created_at", { ascending: false })
     .limit(20);
 

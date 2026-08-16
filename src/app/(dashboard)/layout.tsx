@@ -4,7 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 import { Dock } from "@/components/os/Dock";
 import { OSContentArea } from "@/components/os/OSContentArea";
 import { Clock } from "@/components/os/Clock";
+import { PresenceBar } from "@/components/os/PresenceBar";
+import { ActivityFeedToggle } from "@/components/os/ActivityFeedToggle";
 import { CommandPalette } from "@/components/os/CommandPalette";
+import { ShortcutHelp } from "@/components/os/ShortcutHelp";
 import { RealtimeProvider } from "@/components/os/RealtimeProvider";
 import { Wifi, BatteryMedium, Search } from "lucide-react";
 
@@ -52,10 +55,12 @@ export default async function OSLayout({
           
           <div className="flex items-center gap-4 opacity-80">
             <div className="hidden sm:flex items-center gap-3 mr-2">
+              <ActivityFeedToggle />
               <Search className="w-3.5 h-3.5 cursor-pointer hover:text-white transition-colors" />
               <Wifi className="w-3.5 h-3.5 cursor-pointer hover:text-white transition-colors" />
               <BatteryMedium className="w-3.5 h-3.5 cursor-pointer hover:text-white transition-colors" />
             </div>
+            <PresenceBar />
             <Clock />
           </div>
         </div>
@@ -72,6 +77,9 @@ export default async function OSLayout({
         <CommandPalette />
 
         {/* Realtime Subscription Provider */}
+        {/* Keyboard Shortcut Help */}
+        <ShortcutHelp />
+        
         <RealtimeProvider />
       </div>
     </div>

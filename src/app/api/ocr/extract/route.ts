@@ -3,7 +3,7 @@ import { generateObject } from "ai";
 import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { ocrRateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
   try {
@@ -21,14 +21,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const rateLimit = checkRateLimit(`ocr_${user.id}`, 5, 60 * 1000); // 5 reqs per minute
-    if (!rateLimit.success) {
+    const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+    const { success, limit, remaining, reset } = await ocrRateLimit.limit(ip);
+    if (!success) {
       return NextResponse.json({ error: "Too Many Requests" }, { 
         status: 429,
         headers: {
-          'X-RateLimit-Limit': rateLimit.limit.toString(),
-          'X-RateLimit-Remaining': rateLimit.remaining.toString(),
-          'X-RateLimit-Reset': rateLimit.reset.toString(),
+          'X-RateLimit-Limit': limit.toString(),
+          'X-RateLimit-Remaining': remaining.toString(),
+          'X-RateLimit-Reset': reset.toString(),
         }
       });
     }

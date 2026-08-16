@@ -7,6 +7,7 @@ import { Plus, Search, Wallet, TrendingDown, TrendingUp, ArrowUpRight, Trash2, X
 import { motion, AnimatePresence } from "framer-motion";
 import { addExpense, deleteExpense } from "./actions";
 import { toast } from "sonner";
+import { ExpenseCategoryChart } from "@/components/expenses/ExpenseCategoryChart";
 
 type Expense = {
   id: string;
@@ -132,6 +133,10 @@ export function ExpensesClient({ expenses: initialExpenses, totalSpend, largestC
             </span>
           </div>
         </div>
+      </div>
+
+      <div className="px-6 md:px-8 pt-6">
+        <ExpenseCategoryChart expenses={initialExpenses} />
       </div>
 
       {/* Main Table */}

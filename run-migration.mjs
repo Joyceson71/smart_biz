@@ -1,4 +1,9 @@
 import postgres from 'postgres';
+// NOTE: This script requires `postgres` to be installed locally.
+// Run: npm install postgres --save-dev --legacy-peer-deps
+// It is intentionally excluded from the default devDependencies.
+// Use the Supabase dashboard SQL editor for one-off migrations instead.
+
 import fs from 'fs';
 import path from 'path';
 

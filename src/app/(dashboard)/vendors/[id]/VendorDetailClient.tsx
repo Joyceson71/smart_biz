@@ -21,11 +21,19 @@ type Vendor = {
 
 interface VendorDetailClientProps {
   vendor: Vendor;
+  expenses?: {
+    id: string;
+    merchant: string;
+    category: string;
+    amount: number;
+    date: string;
+    created_at: string;
+  }[];
 }
 
 const fmt = (n: number) => `₹${new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(n)}`;
 
-export function VendorDetailClient({ vendor }: VendorDetailClientProps) {
+export function VendorDetailClient({ vendor, expenses = [] }: VendorDetailClientProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -126,6 +134,36 @@ export function VendorDetailClient({ vendor }: VendorDetailClientProps) {
             Integration with purchase orders and expense tracking is coming in the next update.
           </p>
         </motion.div>
+
+        <div className="bg-slate-900/60 border border-white/10 rounded-2xl p-5 mt-6">
+          <h3 className="text-sm font-semibold text-slate-300 mb-4">Purchase History</h3>
+          {expenses.length === 0 ? (
+            <p className="text-xs text-slate-500">No expenses linked to this vendor yet.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-slate-500 text-xs border-b border-white/5">
+                    <th className="pb-2 font-medium">Description</th>
+                    <th className="pb-2 font-medium">Category</th>
+                    <th className="pb-2 font-medium text-right">Amount</th>
+                    <th className="pb-2 font-medium text-right">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {expenses.map(e => (
+                    <tr key={e.id} className="border-b border-white/5 last:border-0">
+                      <td className="py-3 text-white">{e.merchant}</td>
+                      <td className="py-3 text-slate-400">{e.category}</td>
+                      <td className="py-3 text-right text-emerald-400">₹{e.amount.toLocaleString()}</td>
+                      <td className="py-3 text-right text-slate-500">{new Date(e.date).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

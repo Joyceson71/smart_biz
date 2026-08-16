@@ -29,7 +29,13 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
     notFound();
   }
 
-  // We could fetch related purchase orders here in the future
+  const { data: vendorExpenses } = await supabase
+    .from("expenses")
+    .select("id, merchant, amount, category, date, created_at")
+    .eq("user_id", user.id)
+    .eq("vendor_id", vendor.id)
+    .order("date", { ascending: false })
+    .limit(25);
   
-  return <VendorDetailClient vendor={vendor} />;
+  return <VendorDetailClient vendor={vendor} expenses={vendorExpenses ?? []} />;
 }
