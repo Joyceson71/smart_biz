@@ -36,6 +36,8 @@ const APPS = [
 
 const MORE_APPS = [
   { id: "vendors", route: "/vendors", title: "Vendors", icon: Truck, color: "text-amber-600" },
+  { id: "suppliers", route: "/suppliers", title: "Suppliers", icon: Truck, color: "text-orange-400" },
+  { id: "categories", route: "/categories", title: "Categories", icon: Package, color: "text-blue-400" },
   { id: "reports", route: "/reports", title: "Reports", icon: LineChart, color: "text-rose-500" },
   { id: "notifications", route: "/notifications", title: "Notifications", icon: Bell, color: "text-yellow-500" },
   { id: "cash-flow", route: "/cash-flow", title: "Cash Flow", icon: Wallet, color: "text-emerald-400" },

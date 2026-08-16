@@ -22,6 +22,8 @@ export async function addInventoryItem(formData: FormData) {
   const purchase_price = parseFloat(formData.get("purchase_price") as string) || 0;
   const selling_price = parseFloat(formData.get("selling_price") as string) || 0;
   const unit = formData.get("unit") as string || "pcs";
+  const category_id = formData.get("category_id") as string || null;
+  const supplier_id = formData.get("supplier_id") as string || null;
   
   // Distribute the items across the 3D warehouse visually
   const pos_x = (Math.random() - 0.5) * 16;
@@ -40,6 +42,8 @@ export async function addInventoryItem(formData: FormData) {
     purchase_price,
     selling_price,
     unit,
+    category_id,
+    supplier_id,
     pos_x,
     pos_y,
     pos_z,
@@ -125,6 +129,8 @@ export async function editInventoryItem(id: string, formData: FormData) {
   const purchase_price = parseFloat(formData.get("purchase_price") as string) || 0;
   const selling_price = parseFloat(formData.get("selling_price") as string) || 0;
   const unit = formData.get("unit") as string || "pcs";
+  const category_id = formData.get("category_id") as string || null;
+  const supplier_id = formData.get("supplier_id") as string || null;
 
   const { error } = await supabase
     .from("products")
@@ -139,6 +145,8 @@ export async function editInventoryItem(id: string, formData: FormData) {
       purchase_price,
       selling_price,
       unit,
+      category_id,
+      supplier_id,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)

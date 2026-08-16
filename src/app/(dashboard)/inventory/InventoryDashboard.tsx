@@ -18,9 +18,11 @@ const InventoryScene = dynamic(() => import("./InventoryScene"), { ssr: false })
 interface InventoryDashboardProps {
   products: Product[];
   spatialProducts: InventoryItem[];
+  categories: { id: string, name: string }[];
+  suppliers: { id: string, name: string }[];
 }
 
-export function InventoryDashboard({ products, spatialProducts }: InventoryDashboardProps) {
+export function InventoryDashboard({ products, spatialProducts, categories, suppliers }: InventoryDashboardProps) {
   const [view, setView] = useState<"table" | "spatial">("table");
   const [showAddForm, setShowAddForm] = useState(false);
   const [showImportForm, setShowImportForm] = useState(false);
@@ -42,7 +44,12 @@ export function InventoryDashboard({ products, spatialProducts }: InventoryDashb
           onAddProduct={() => setShowAddForm(true)} 
         />
 
-        <ProductFormModal open={showAddForm} onOpenChange={setShowAddForm} />
+        <ProductFormModal 
+          open={showAddForm} 
+          onOpenChange={setShowAddForm} 
+          categories={categories}
+          suppliers={suppliers}
+        />
         <SupplierInvoiceUpload open={showImportForm} onOpenChange={setShowImportForm} />
 
         <div className="flex-1 relative">

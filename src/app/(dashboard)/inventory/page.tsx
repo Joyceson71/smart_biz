@@ -18,10 +18,15 @@ export default async function InventoryPage() {
   }
 
   // Fetch real data from Supabase
-  const { data: products, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("user_id", user.id);
+  const [
+    { data: products, error },
+    { data: categories },
+    { data: suppliers }
+  ] = await Promise.all([
+    supabase.from("products").select("*").eq("user_id", user.id),
+    supabase.from("categories").select("*").eq("user_id", user.id),
+    supabase.from("suppliers").select("*").eq("user_id", user.id)
+  ]);
 
   if (error) {
     console.error("Error fetching products:", error);
@@ -41,7 +46,12 @@ export default async function InventoryPage() {
 
   return (
     <Suspense fallback={<SkeletonLoader />}>
-      <InventoryDashboard products={formattedProducts} spatialProducts={(products as InventoryItem[]) || []} />
+      <InventoryDashboard 
+        products={formattedProducts}
+        spatialProducts={(products as InventoryItem[]) || []} 
+        categories={categories || []}
+        suppliers={suppliers || []}
+      />
     </Suspense>
   );
 }

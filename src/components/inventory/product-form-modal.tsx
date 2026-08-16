@@ -10,6 +10,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Form,
   FormControl,
   FormField,
@@ -33,7 +40,8 @@ const formSchema = z.object({
   name: z.string().min(2, "Product name must be at least 2 characters."),
   sku: z.string().min(2, "SKU is required."),
   barcode: z.string().optional(),
-  category: z.string().optional(),
+  category_id: z.string().optional(),
+  supplier_id: z.string().optional(),
   description: z.string().optional(),
   purchase_price: z.coerce.number().min(0),
   selling_price: z.coerce.number().min(0),
@@ -43,7 +51,19 @@ const formSchema = z.object({
   unit: z.string().default("pcs"),
 });
 
-export function ProductFormModal({ open, onOpenChange, initialData }: { open: boolean; onOpenChange: (open: boolean) => void; initialData?: Product | null }) {
+export function ProductFormModal({ 
+  open, 
+  onOpenChange, 
+  initialData, 
+  categories = [], 
+  suppliers = [] 
+}: { 
+  open: boolean; 
+  onOpenChange: (open: boolean) => void; 
+  initialData?: Product | null;
+  categories?: { id: string, name: string }[];
+  suppliers?: { id: string, name: string }[];
+}) {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEditing = !!initialData;
@@ -55,7 +75,8 @@ export function ProductFormModal({ open, onOpenChange, initialData }: { open: bo
       name: initialData?.name || "",
       sku: initialData?.sku || "",
       barcode: initialData?.barcode || "",
-      category: "", // we don't have category in Product type yet, or maybe category_id
+      category_id: initialData?.category_id || "",
+      supplier_id: initialData?.supplier_id || "",
       description: "",
       purchase_price: initialData?.purchase_price || 0,
       selling_price: initialData?.selling_price || 0,
@@ -100,7 +121,7 @@ export function ProductFormModal({ open, onOpenChange, initialData }: { open: bo
   const nextStep = async () => {
     // Validate current step fields
     const fieldsToValidate: (keyof z.infer<typeof formSchema>)[] = step === 1 
-      ? ["name", "sku", "barcode", "category", "description"] 
+      ? ["name", "sku", "barcode", "category_id", "supplier_id", "description"] 
       : ["purchase_price", "selling_price", "stock", "min_stock", "max_stock", "unit"];
       
     const isStepValid = await form.trigger(fieldsToValidate);
@@ -173,6 +194,52 @@ export function ProductFormModal({ open, onOpenChange, initialData }: { open: bo
                           <FormControl>
                             <Input placeholder="890123456789" className="bg-slate-900 border-slate-800" {...field} />
                           </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="category_id"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Category</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="bg-slate-900 border-slate-800">
+                                <SelectValue placeholder="Select category" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="bg-slate-900 border-slate-800 text-white">
+                              {categories.map((c) => (
+                                <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="supplier_id"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Supplier</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="bg-slate-900 border-slate-800">
+                                <SelectValue placeholder="Select supplier" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="bg-slate-900 border-slate-800 text-white">
+                              {suppliers.map((s) => (
+                                <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
