@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useTransform, useSpring, MotionValue } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring, MotionValue, AnimatePresence } from "framer-motion";
 
 import { 
   LayoutDashboard, 
@@ -11,7 +11,11 @@ import {
   Wallet,
   Settings,
   Package,
-  Briefcase
+  Briefcase,
+  MoreHorizontal,
+  Bell,
+  LineChart,
+  Truck
 } from "lucide-react";
 import { useRef, useTransition, useEffect, useState } from "react";
 import { logout } from "@/app/(auth)/actions";
@@ -28,6 +32,13 @@ const APPS = [
   { id: "invoices", route: "/invoices", title: "Invoices", icon: FileText, color: "text-indigo-500" },
   { id: "customers", route: "/customers", title: "Customers", icon: Users, color: "text-blue-400" },
   { id: "settings", route: "/settings", title: "Settings", icon: Settings, color: "text-slate-500" },
+];
+
+const MORE_APPS = [
+  { id: "vendors", route: "/vendors", title: "Vendors", icon: Truck, color: "text-amber-600" },
+  { id: "reports", route: "/reports", title: "Reports", icon: LineChart, color: "text-rose-500" },
+  { id: "notifications", route: "/notifications", title: "Notifications", icon: Bell, color: "text-yellow-500" },
+  { id: "cash-flow", route: "/cash-flow", title: "Cash Flow", icon: Wallet, color: "text-emerald-400" },
 ];
 
 function DockIcon({ 
@@ -99,10 +110,11 @@ function DockIcon({
 }
 
 export function Dock() {
-  const mouseX = useMotionValue(Infinity);
-  const router = useRouter();
   const pathname = usePathname();
+  const router = useRouter();
+  const mouseX = useMotionValue(Infinity);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const [isMoreAppsOpen, setIsMoreAppsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   // Prefetch routes for zero-latency navigation
@@ -121,6 +133,31 @@ export function Dock() {
         }
       }}
     >
+      <AnimatePresence>
+        {isMoreAppsOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="absolute bottom-24 left-1/2 -translate-x-1/2 w-64 bg-slate-900/90 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-4 shadow-2xl z-50 grid grid-cols-2 gap-3"
+          >
+            {MORE_APPS.map(app => (
+              <button 
+                key={app.id} 
+                onClick={() => {
+                  router.push(app.route);
+                  setIsMoreAppsOpen(false);
+                }}
+                className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl hover:bg-white/10 transition-colors"
+              >
+                <app.icon className={`w-6 h-6 ${app.color}`} />
+                <span className="text-[10px] font-medium text-white">{app.title}</span>
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <motion.div 
         onMouseMove={(e) => !isMobile && mouseX.set(e.pageX)}
         initial={{ y: 100 }}
@@ -141,6 +178,14 @@ export function Dock() {
             isMobile={isMobile}
           />
         ))}
+        <DockIcon 
+          app={{ id: "more", route: "#", title: "More", icon: MoreHorizontal, color: "text-slate-400" }} 
+          mouseX={mouseX} 
+          isOpen={isMoreAppsOpen}
+          isFocused={isMoreAppsOpen}
+          onClick={() => setIsMoreAppsOpen(!isMoreAppsOpen)}
+          isMobile={isMobile}
+        />
 
         {!isMobile && <div className="w-[1px] h-10 bg-slate-300/50 dark:bg-slate-700 self-center mx-1 shrink-0" />}
 

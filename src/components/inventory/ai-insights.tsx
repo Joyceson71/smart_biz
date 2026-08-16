@@ -7,7 +7,10 @@ export function AIInsightsPanel() {
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 h-full flex flex-col">
       <div className="flex items-center gap-2 mb-6">
         <Sparkles className="w-5 h-5 text-purple-400" />
-        <h2 className="text-lg font-bold text-white tracking-tight">AI Insights</h2>
+        <h2 className="text-lg font-bold text-white tracking-tight flex items-center">
+          AI Insights
+          <span className="text-[10px] font-mono text-slate-500 bg-slate-800 px-2 py-0.5 rounded-full ml-2">DEMO</span>
+        </h2>
       </div>
 
       <div className="flex-1 space-y-4">

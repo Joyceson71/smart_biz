@@ -39,7 +39,7 @@ export default function LandingPage() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <div className="bg-slate-950 min-h-screen text-slate-50 selection:bg-blue-500/30 overflow-x-hidden">
+    <div className="bg-slate-950 min-h-[100dvh] text-slate-50 selection:bg-blue-500/30 overflow-x-hidden">
       {/* 3D Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Canvas camera={{ position: [0, 0, 5], fov: 60 }} dpr={[1, 1.5]} frameloop="demand">
@@ -75,7 +75,7 @@ export default function LandingPage() {
         {/* Hero Section */}
         <motion.main 
           style={{ y, opacity }}
-          className="min-h-[85vh] flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto"
+          className="min-h-[85dvh] flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto"
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}

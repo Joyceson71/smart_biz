@@ -8,8 +8,10 @@ export async function middleware(request: NextRequest) {
     default-src 'self';
     script-src 'self' 'unsafe-eval' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
-    img-src 'self' blob: data: https:;
+    img-src 'self' blob: data: https://*.supabase.co https://images.unsplash.com;
     font-src 'self' data:;
+    /* NOTE: api.openai.com and api.ocr.space are called entirely server-side in API routes. 
+       Do not add them to connect-src or move those calls client-side. */
     connect-src 'self' https://*.supabase.co wss://*.supabase.co;
     object-src 'none';
     base-uri 'self';

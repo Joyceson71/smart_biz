@@ -18,7 +18,7 @@ export default async function NotificationsPage() {
   const [productsRes, invoicesRes, customersRes] = await Promise.all([
     supabase.from("products").select("id, name, stock, min_stock").eq("user_id", user.id).lte("stock", 10), // We will filter further in code
     supabase.from("invoices").select("id, invoice_number, created_at").eq("user_id", user.id).eq("status", "Overdue"),
-    supabase.from("customers").select("id, name, created_at").eq("user_id", user.id)
+    supabase.from("customers").select("id, first_name, last_name, created_at").eq("user_id", user.id)
   ]);
 
   const notifications: NotificationType[] = [];
@@ -58,7 +58,7 @@ export default async function NotificationsPage() {
       id: `cust-${c.id}`,
       type: "new_customer",
       title: "New Customer",
-      message: `${c.name} was added to your contacts.`,
+      message: `${c.first_name} ${c.last_name} was added to your contacts.`,
       date: c.created_at,
       read: false
     });

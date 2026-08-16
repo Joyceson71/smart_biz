@@ -15,21 +15,12 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [customerResult, invoicesResult] = await Promise.all([
-    supabase
-      .from("customers")
-      .select("*")
-      .eq("id", id)
-      .eq("user_id", user.id)
-      .single(),
-    supabase
-      .from("invoices")
-      .select("id, invoice_number, amount, status, due_date, created_at")
-      .eq("customer_email", "") // will match by customer name/email in a real schema
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(20),
-  ]);
+  const customerResult = await supabase
+    .from("customers")
+    .select("*")
+    .eq("id", id)
+    .eq("user_id", user.id)
+    .single();
 
   if (customerResult.error || !customerResult.data) {
     notFound();
@@ -42,7 +33,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
     .from("invoices")
     .select("id, invoice_number, amount, status, due_date, created_at")
     .eq("user_id", user.id)
-    .eq("customer_email", customer.email)
+    .or(`customer_email.eq.${customer.email || ""},customer_id.eq.${customer.id}`)
     .order("created_at", { ascending: false })
     .limit(20);
 

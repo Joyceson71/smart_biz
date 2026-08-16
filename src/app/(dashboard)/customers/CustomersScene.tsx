@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, Mail, Phone, DollarSign, Activity, X, Plus } from "lucide-react";
 import { addCustomer } from "./actions";
 import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export interface Customer {
   id: string;
@@ -89,6 +90,7 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const filteredCustomers = useMemo(() => {
     return initialCustomers.filter(c => 
@@ -101,35 +103,50 @@ export default function CustomersScene({ initialCustomers }: { initialCustomers:
   return (
     <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
       {/* 3D Canvas Area */}
-      <div className="absolute inset-0 z-0">
-        <WebGLErrorBoundary>
-          <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
-          <Environment preset="city" />
-          
-          <Connections nodes={initialCustomers} />
-          
-          {filteredCustomers.map((customer) => (
-            <CustomerNode 
-              key={customer.id} 
-              data={customer} 
-              isSelected={selectedCustomer?.id === customer.id}
-              onClick={setSelectedCustomer}
+      {!isMobile && (
+        <div className="absolute inset-0 z-0">
+          <WebGLErrorBoundary>
+            <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 10, 5]} intensity={1} />
+            <Environment preset="city" />
+            
+            <Connections nodes={initialCustomers} />
+            
+            {filteredCustomers.map((customer) => (
+              <CustomerNode 
+                key={customer.id} 
+                data={customer} 
+                isSelected={selectedCustomer?.id === customer.id}
+                onClick={setSelectedCustomer}
+              />
+            ))}
+            
+            <OrbitControls 
+              enablePan={true} 
+              enableZoom={true} 
+              maxDistance={20}
+              minDistance={3}
+              autoRotate={false}
+              makeDefault
             />
+            </Canvas>
+          </WebGLErrorBoundary>
+        </div>
+      )}
+
+      {isMobile && (
+        <div className="absolute inset-0 z-0 flex flex-col gap-3 p-6 pt-24 overflow-y-auto h-full pb-32">
+          {filteredCustomers.map(c => (
+            <button key={c.id} onClick={() => setSelectedCustomer(c)}
+              className="text-left bg-slate-900/60 border border-white/10 rounded-2xl p-4 shadow-xl pointer-events-auto">
+              <p className="font-bold text-white text-lg">{c.first_name} {c.last_name}</p>
+              <p className="text-xs text-slate-400 mt-1 mb-2">{c.email || "No email provided"}</p>
+              <span className={`text-[10px] font-bold uppercase tracking-wider inline-block px-2.5 py-1 rounded-full ${c.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'bg-slate-700 text-slate-300 border border-slate-600'}`}>{c.status}</span>
+            </button>
           ))}
-          
-          <OrbitControls 
-            enablePan={true} 
-            enableZoom={true} 
-            maxDistance={20}
-            minDistance={3}
-            autoRotate={false}
-            makeDefault
-          />
-          </Canvas>
-        </WebGLErrorBoundary>
-      </div>
+        </div>
+      )}
 
       {/* Glassmorphic Overlay UI */}
       <div className="relative z-10 p-6 pointer-events-none flex flex-col h-full justify-between">
