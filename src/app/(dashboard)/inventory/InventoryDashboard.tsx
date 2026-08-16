@@ -77,7 +77,7 @@ export function InventoryDashboard({ products, spatialProducts }: InventoryDashb
                     transition={{ duration: 0.4, delay: 0.3 }}
                     className="xl:col-span-1"
                   >
-                    <AIInsightsPanel />
+                    <AIInsightsPanel products={products} />
                   </motion.div>
                 </div>
               </motion.div>

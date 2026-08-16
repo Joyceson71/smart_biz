@@ -1,52 +1,118 @@
 "use client";
 
-import { Sparkles, TrendingUp, AlertTriangle } from "lucide-react";
+import { Sparkles, TrendingUp, AlertTriangle, RefreshCw, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { generateInventoryInsights } from "@/app/(dashboard)/inventory/actions";
+import { Button } from "@/components/ui/button";
+import type { Product } from "@/components/inventory/columns";
 
-export function AIInsightsPanel() {
+interface Insight {
+  type: "warning" | "success";
+  title: string;
+  description: string;
+  actionText?: string;
+}
+
+export function AIInsightsPanel({ products }: { products: Product[] }) {
+  const [insights, setInsights] = useState<Insight[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchInsights = async () => {
+      try {
+        setLoading(true);
+        const generated = await generateInventoryInsights(products);
+        if (isMounted) setInsights(generated);
+      } catch (e) {
+        console.error("Failed to generate insights:", e);
+        if (isMounted) {
+          setInsights([{
+            type: "warning",
+            title: "Analysis Failed",
+            description: "Failed to generate AI insights from the current inventory. Please try again.",
+          }]);
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    if (products.length > 0) {
+      fetchInsights();
+    }
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [products]);
+
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 h-full flex flex-col">
-      <div className="flex items-center gap-2 mb-6">
-        <Sparkles className="w-5 h-5 text-purple-400" />
-        <h2 className="text-lg font-bold text-white tracking-tight flex items-center">
-          AI Insights
-          <span className="text-[10px] font-mono text-slate-500 bg-slate-800 px-2 py-0.5 rounded-full ml-2">DEMO</span>
-        </h2>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-purple-400" />
+          <h2 className="text-lg font-bold text-white tracking-tight flex items-center">
+            AI Insights
+          </h2>
+        </div>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="h-8 px-2 text-slate-400 hover:text-white"
+          onClick={async () => {
+            setLoading(true);
+            try {
+              const generated = await generateInventoryInsights(products);
+              setInsights(generated);
+            } catch (e) {
+              console.error(e);
+            } finally {
+              setLoading(false);
+            }
+          }}
+          disabled={loading}
+        >
+          <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+        </Button>
       </div>
 
       <div className="flex-1 space-y-4">
-        {/* Insight 1 */}
-        <div className="bg-slate-950 p-4 rounded-lg border border-slate-800">
-          <div className="flex items-start gap-3">
-            <div className="bg-amber-500/20 p-2 rounded-md">
-              <AlertTriangle className="w-4 h-4 text-amber-500" />
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-white">Stock Depletion Warning</h4>
-              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                <strong className="text-amber-400">Wireless Mouse (WM-001)</strong> is currently selling 15% faster than last month. Current stock will be depleted in approximately <strong className="text-white">5 days</strong>.
-              </p>
-              <button className="text-xs font-medium text-amber-500 mt-2 hover:text-amber-400">
-                1-Click Restock
-              </button>
-            </div>
+        {loading ? (
+          <div className="flex flex-col items-center justify-center h-40 text-slate-500">
+            <Loader2 className="w-8 h-8 animate-spin mb-4 text-purple-500" />
+            <p className="text-sm animate-pulse">Analyzing inventory patterns...</p>
           </div>
-        </div>
-
-        {/* Insight 2 */}
-        <div className="bg-slate-950 p-4 rounded-lg border border-slate-800">
-          <div className="flex items-start gap-3">
-            <div className="bg-emerald-500/20 p-2 rounded-md">
-              <TrendingUp className="w-4 h-4 text-emerald-500" />
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-white">Demand Prediction</h4>
-              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                Based on historical sales data, demand for <strong className="text-emerald-400">Ergonomic Chairs</strong> is expected to spike by 20% next week due to upcoming office reopenings.
-              </p>
-            </div>
+        ) : insights.length === 0 ? (
+          <div className="flex items-center justify-center h-40 text-slate-500 text-sm">
+            Not enough data to generate insights.
           </div>
-        </div>
-
+        ) : (
+          insights.map((insight, idx) => (
+            <div key={idx} className="bg-slate-950 p-4 rounded-lg border border-slate-800">
+              <div className="flex items-start gap-3">
+                <div className={`p-2 rounded-md ${insight.type === 'warning' ? 'bg-amber-500/20' : 'bg-emerald-500/20'}`}>
+                  {insight.type === 'warning' ? (
+                    <AlertTriangle className="w-4 h-4 text-amber-500" />
+                  ) : (
+                    <TrendingUp className="w-4 h-4 text-emerald-500" />
+                  )}
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-white">{insight.title}</h4>
+                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    {insight.description}
+                  </p>
+                  {insight.actionText && (
+                    <button className={`text-xs font-medium mt-2 ${insight.type === 'warning' ? 'text-amber-500 hover:text-amber-400' : 'text-emerald-500 hover:text-emerald-400'}`}>
+                      {insight.actionText}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
       
       <div className="pt-4 border-t border-slate-800 mt-4 text-center">

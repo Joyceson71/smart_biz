@@ -2,6 +2,9 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { generateObject } from "ai";
+import { openai } from "@ai-sdk/openai";
+import { z } from "zod";
 
 export async function addInventoryItem(formData: FormData) {
   const supabase = await createClient();
@@ -148,4 +151,36 @@ export async function editInventoryItem(id: string, formData: FormData) {
 
   revalidatePath("/dashboard");
   revalidatePath("/inventory");
+}
+
+export async function generateInventoryInsights(products: { name: string; sku: string; current_stock?: number; stock?: number; min_stock: number; selling_price: number }[]) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  // Summarize products to save tokens
+  const summary = products.map(p => ({
+    name: p.name,
+    sku: p.sku,
+    stock: p.current_stock || p.stock,
+    min: p.min_stock,
+    price: p.selling_price
+  }));
+
+  const { object } = await generateObject({
+    model: openai("gpt-4o-mini"),
+    system: "You are an expert inventory analyst for SmartBiz OS. Analyze the provided inventory data and generate 2 highly actionable insights. Use exact SKUs and names. Insight types should be 'warning' (e.g., low stock, dead stock) or 'success' (e.g., high demand, good health). Keep the text concise and business-focused.",
+    prompt: JSON.stringify(summary),
+    schema: z.object({
+      insights: z.array(z.object({
+        type: z.enum(["warning", "success"]),
+        title: z.string(),
+        description: z.string(),
+        actionText: z.string().optional()
+      })).length(2)
+    })
+  });
+
+  return object.insights;
 }
