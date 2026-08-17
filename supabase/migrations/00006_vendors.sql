@@ -1,3 +1,4 @@
+-- Idempotent: safe to re-run
 -- Create vendors table
 CREATE TABLE IF NOT EXISTS vendors (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

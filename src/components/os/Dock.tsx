@@ -138,11 +138,16 @@ export function Dock() {
       <AnimatePresence>
         {isMoreAppsOpen && (
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="absolute bottom-24 left-1/2 -translate-x-1/2 w-64 bg-slate-900/90 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-4 shadow-2xl z-50 grid grid-cols-2 gap-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xl flex items-center justify-center"
+            onClick={() => setIsMoreAppsOpen(false)}
           >
+            <div
+              className="grid grid-cols-3 gap-6 p-8 bg-slate-900/60 border border-white/10 rounded-3xl backdrop-blur"
+              onClick={e => e.stopPropagation()}
+            >
             {MORE_APPS.map(app => (
               <button 
                 key={app.id} 
@@ -150,12 +155,15 @@ export function Dock() {
                   router.push(app.route);
                   setIsMoreAppsOpen(false);
                 }}
-                className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl hover:bg-white/10 transition-colors"
+                className="flex flex-col items-center gap-2 group cursor-pointer hover:scale-105 transition-transform"
               >
-                <app.icon className={`w-6 h-6 ${app.color}`} />
-                <span className="text-[10px] font-medium text-white">{app.title}</span>
+                <div className="w-16 h-16 rounded-2xl bg-slate-800/60 border border-white/10 flex items-center justify-center group-hover:border-white/30 transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+                  <app.icon className="w-6 h-6 text-slate-300 drop-shadow-md" />
+                </div>
+                <span className="text-xs text-slate-300 font-medium tracking-wide drop-shadow">{app.title}</span>
               </button>
             ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
