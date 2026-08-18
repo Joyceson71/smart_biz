@@ -1,48 +1,76 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Bell, Menu } from "lucide-react";
+import { Search, Bell, Menu, Package, Users, Wallet, FileText, Settings, LayoutDashboard } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+const MAIN_NAV = [
+  { id: "dashboard", route: "/dashboard", title: "Overview", icon: LayoutDashboard },
+  { id: "customers", route: "/customers", title: "Customers", icon: Users },
+  { id: "employees", route: "/employees", title: "Team", icon: Users },
+  { id: "inventory", route: "/inventory", title: "Inventory", icon: Package },
+  { id: "invoices", route: "/invoices", title: "Invoices", icon: FileText },
+  { id: "expenses", route: "/expenses", title: "Expenses", icon: Wallet },
+];
+
 export function Header() {
   const pathname = usePathname();
-  
-  // Create a nice title based on the pathname
-  const segments = pathname.split("/").filter(Boolean);
-  let title = "Dashboard";
-  
-  if (segments.length > 0) {
-    const section = segments[0];
-    title = section.charAt(0).toUpperCase() + section.slice(1).replace("-", " ");
-  }
 
   return (
-    <header className="h-16 bg-white dark:bg-slate-950/50 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-6 shrink-0 z-10 sticky top-0">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="md:hidden">
-          <Menu className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-        </Button>
-        <h1 className="text-xl font-bold text-slate-900 dark:text-white">{title}</h1>
-      </div>
-
-      <div className="flex items-center gap-4">
-        <div className="relative hidden md:block w-64">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-          <Input 
-            type="text" 
-            placeholder="Search anywhere..."
-            className="pl-9 bg-slate-50 dark:bg-slate-900 border-none focus-visible:ring-1 focus-visible:ring-primary"
-          />
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container max-w-7xl mx-auto flex h-14 items-center px-4 sm:px-6">
+        <div className="mr-4 flex">
+          <Link href="/dashboard" className="mr-6 flex items-center space-x-2">
+            <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
+              <span className="text-[10px] font-bold text-primary-foreground">SB</span>
+            </div>
+            <span className="hidden font-bold sm:inline-block">
+              SmartBiz
+            </span>
+          </Link>
+          <nav className="flex items-center space-x-6 text-sm font-medium hidden md:flex">
+            {MAIN_NAV.map((item) => {
+              const isActive = pathname.startsWith(item.route);
+              return (
+                <Link
+                  key={item.id}
+                  href={item.route}
+                  className={`transition-colors hover:text-foreground/80 ${
+                    isActive ? "text-foreground" : "text-foreground/60"
+                  }`}
+                >
+                  {item.title}
+                </Link>
+              );
+            })}
+          </nav>
         </div>
-        
-        <Button variant="ghost" size="icon" className="relative text-slate-600 dark:text-slate-400">
-          <Bell className="w-5 h-5" />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-950"></span>
-        </Button>
-
-        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold shadow-inner cursor-pointer hover:bg-primary/30 transition-colors">
-          JD
+        <div className="flex flex-1 items-center justify-end space-x-4">
+          <nav className="flex items-center space-x-2">
+            <div className="relative hidden lg:flex w-full max-w-sm items-center space-x-2">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search..."
+                className="h-9 md:w-[200px] lg:w-[300px] pl-8 bg-muted/50 border-none focus-visible:ring-1"
+              />
+            </div>
+            <Button variant="ghost" size="icon" className="h-9 w-9">
+              <Bell className="h-4 w-4" />
+              <span className="sr-only">Notifications</span>
+            </Button>
+            <Link href="/settings">
+              <Button variant="ghost" size="icon" className="h-9 w-9">
+                <Settings className="h-4 w-4" />
+                <span className="sr-only">Settings</span>
+              </Button>
+            </Link>
+            <div className="h-8 w-8 rounded-full border border-border bg-muted flex items-center justify-center text-xs font-semibold cursor-pointer ml-2 hover:bg-accent transition-colors">
+              JD
+            </div>
+          </nav>
         </div>
       </div>
     </header>

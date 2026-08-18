@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { RealtimeProvider } from "@/components/os/RealtimeProvider";
 import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
@@ -18,16 +17,15 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex h-[100dvh] w-full overflow-hidden bg-background">
-      <Sidebar />
-      <div className="flex-1 flex flex-col h-full w-full overflow-hidden relative">
-        <Header />
-        <main className="flex-1 overflow-auto bg-slate-50 dark:bg-slate-950 w-full relative">
+    <div className="flex flex-col min-h-[100dvh] w-full bg-background font-sans antialiased">
+      <Header />
+      <main className="flex-1 w-full relative">
+        <div className="container max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 h-full">
           <WebGLErrorBoundary>
             {children}
           </WebGLErrorBoundary>
-        </main>
-      </div>
+        </div>
+      </main>
       <RealtimeProvider />
     </div>
   );
