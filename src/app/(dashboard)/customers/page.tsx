@@ -1,11 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import dynamic from "next/dynamic";
-import type { Customer } from "./CustomersScene";
-
-const CustomersScene = dynamic(() => import("./CustomersScene"), { 
-  loading: () => <SkeletonLoader /> 
-});
+import CustomersClient from "./CustomersClient";
+import type { Customer } from "./CustomersClient";
 import { Suspense } from "react";
 import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 
@@ -25,7 +21,8 @@ export default async function CustomersPage() {
   const { data: customers, error } = await supabase
     .from("customers")
     .select("*")
-    .eq("user_id", user.id);
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Error fetching customers:", error);
@@ -33,7 +30,7 @@ export default async function CustomersPage() {
 
   return (
     <Suspense fallback={<SkeletonLoader />}>
-      <CustomersScene initialCustomers={(customers as Customer[]) || []} />
+      <CustomersClient initialCustomers={(customers as Customer[]) || []} />
     </Suspense>
   );
 }

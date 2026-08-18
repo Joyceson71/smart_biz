@@ -1,11 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import dynamic from "next/dynamic";
-import type { Employee } from "./EmployeesScene";
-
-const EmployeesScene = dynamic(() => import("./EmployeesScene"), { 
-  loading: () => <SkeletonLoader /> 
-});
+import EmployeesClient from "./EmployeesClient";
+import type { Employee } from "./EmployeesClient";
 import { Suspense } from "react";
 import { SkeletonLoader } from "@/components/ui/skeleton-loader";
 
@@ -25,7 +21,8 @@ export default async function EmployeesPage() {
   const { data: employees, error } = await supabase
     .from("employees")
     .select("*")
-    .eq("user_id", user.id);
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Error fetching employees:", error);
@@ -33,7 +30,7 @@ export default async function EmployeesPage() {
 
   return (
     <Suspense fallback={<SkeletonLoader />}>
-      <EmployeesScene initialEmployees={(employees as Employee[]) || []} />
+      <EmployeesClient initialEmployees={(employees as Employee[]) || []} />
     </Suspense>
   );
 }
