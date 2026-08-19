@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Header } from "@/components/layout/Header";
 import { RealtimeProvider } from "@/components/os/RealtimeProvider";
 import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
+import { ShortcutHelp } from "@/components/os/ShortcutHelp";
 
 export default async function DashboardLayout({
   children,
@@ -27,7 +28,7 @@ export default async function DashboardLayout({
         </div>
       </main>
       <RealtimeProvider />
+      <ShortcutHelp />
     </div>
   );
 }
-

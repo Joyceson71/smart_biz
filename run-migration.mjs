@@ -1,28 +1,32 @@
 import postgres from 'postgres';
-// NOTE: This script requires `postgres` to be installed locally.
-// Run: npm install postgres --save-dev --legacy-peer-deps
-// It is intentionally excluded from the default devDependencies.
-// Use the Supabase dashboard SQL editor for one-off migrations instead.
-
 import fs from 'fs';
 import path from 'path';
 
-const sqlText = fs.readFileSync(path.join(process.cwd(), 'supabase', 'migrations', '00003_advanced_inventory_invoicing.sql'), 'utf-8');
+// NOTE: postgres devDep is intentional — used only by this script.
+// Run: npm install postgres --save-dev --legacy-peer-deps
+// For one-off migrations, prefer the Supabase dashboard SQL editor.
+
+const migrationsDir = path.join(process.cwd(), 'supabase', 'migrations');
+const files = fs.readdirSync(migrationsDir)
+  .filter(f => f.endsWith('.sql'))
+  .sort();
 
 const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' });
 
 async function main() {
-  try {
-    console.log("Running migration...");
-    // Split by semicolons and run queries one by one or run as a single string
-    // postgres.js handles multiple queries in one string if used carefully, or we can use sql.unsafe
-    await sql.unsafe(sqlText);
-    console.log("Migration executed successfully.");
-  } catch (err) {
-    console.error("Migration failed:", err);
-  } finally {
-    await sql.end();
+  for (const file of files) {
+    const filePath = path.join(migrationsDir, file);
+    const sqlText = fs.readFileSync(filePath, 'utf-8');
+    try {
+      console.log(`Running ${file}...`);
+      await sql.unsafe(sqlText);
+      console.log(`✓ ${file}`);
+    } catch (err) {
+      console.error(`✗ ${file}:`, err.message);
+      // Continue — all migrations are idempotent
+    }
   }
+  await sql.end();
 }
 
 main();
