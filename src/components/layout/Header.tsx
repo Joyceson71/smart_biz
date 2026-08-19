@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Bell, Menu, Package, Users, Wallet, FileText, Settings, LayoutDashboard } from "lucide-react";
+import { Search, Bell, Package, Users, Wallet, FileText, Settings, LayoutDashboard } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
