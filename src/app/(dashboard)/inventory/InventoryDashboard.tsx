@@ -32,10 +32,7 @@ export function InventoryDashboard({ products, spatialProducts, categories, supp
   const inventoryValue = products.reduce((acc, p) => acc + (p.current_stock * p.purchase_price), 0);
 
   return (
-    <div className="flex flex-col h-full bg-[#030712] text-white w-full overflow-hidden relative">
-      {/* Dynamic Background Effect */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900/20 via-[#030712] to-[#030712] opacity-50 z-0" />
-      
+    <div className="flex flex-col h-full text-white w-full overflow-hidden relative">
       <div className="relative z-10 flex flex-col h-full overflow-y-auto overflow-x-hidden">
         <InventoryHeader 
           view={view} 
@@ -74,7 +71,7 @@ export function InventoryDashboard({ products, spatialProducts, categories, supp
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.2 }}
-                    className="xl:col-span-3 bg-slate-900/30 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl p-2"
+                    className="xl:col-span-3 clay-card p-6"
                   >
                     <DataTable columns={columns} data={products} />
                   </motion.div>

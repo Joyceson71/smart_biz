@@ -20,7 +20,6 @@ export function InventoryStatCards({ totalProducts, lowStock, inventoryValue }: 
       value: totalProducts,
       icon: Package,
       color: "text-blue-400",
-      bgClass: "bg-blue-400/10",
       delay: 0.1
     },
     {
@@ -28,7 +27,6 @@ export function InventoryStatCards({ totalProducts, lowStock, inventoryValue }: 
       value: lowStock,
       icon: AlertTriangle,
       color: "text-amber-500",
-      bgClass: "bg-amber-500/10",
       delay: 0.2
     },
     {
@@ -36,7 +34,6 @@ export function InventoryStatCards({ totalProducts, lowStock, inventoryValue }: 
       value: formattedValue,
       icon: IndianRupee,
       color: "text-emerald-400",
-      bgClass: "bg-emerald-400/10",
       delay: 0.3
     },
     {
@@ -44,7 +41,6 @@ export function InventoryStatCards({ totalProducts, lowStock, inventoryValue }: 
       value: lowStock > 0 ? "85%" : "100%",
       icon: Layers,
       color: "text-purple-400",
-      bgClass: "bg-purple-400/10",
       delay: 0.4
     }
   ];
@@ -59,19 +55,19 @@ export function InventoryStatCards({ totalProducts, lowStock, inventoryValue }: 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: stat.delay, ease: "easeOut" }}
-            whileHover={{ y: -5, scale: 1.02 }}
-            className="relative overflow-hidden rounded-2xl bg-slate-900/40 backdrop-blur-xl border border-white/10 p-6 group shadow-lg"
+            whileHover={{ y: -5 }}
+            className="clay-card p-6 flex flex-col relative overflow-hidden group cursor-pointer"
           >
-            {/* Subtle gradient glow effect on hover */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-            
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium text-slate-400 text-sm tracking-wide">{stat.title}</h3>
-              <div className={`p-2 rounded-xl ${stat.bgClass}`}>
-                <Icon className={`w-5 h-5 ${stat.color}`} />
+            <div className="flex items-start justify-between mb-8">
+              <div className={`w-12 h-12 neo-flat rounded-2xl flex items-center justify-center ${stat.color}`}>
+                <Icon className="w-6 h-6" />
               </div>
             </div>
-            <p className={`text-3xl font-bold tracking-tight ${stat.color === 'text-blue-400' ? 'text-white' : stat.color}`}>
+            
+            <h3 className="text-slate-400 text-sm font-bold uppercase tracking-wider mb-2">
+              {stat.title}
+            </h3>
+            <p className="text-3xl font-black tracking-tight text-white">
               {stat.value}
             </p>
           </motion.div>
