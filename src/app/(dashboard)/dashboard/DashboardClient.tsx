@@ -147,24 +147,56 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
         </motion.div>
 
         {/* CHART AREA BENTO */}
-        <motion.div variants={itemVariants} className="md:col-span-3 md:row-span-2 clay-card p-8 flex flex-col relative overflow-hidden min-h-[350px]">
+        <motion.div variants={itemVariants} className="md:col-span-2 md:row-span-2 clay-card p-8 flex flex-col relative overflow-hidden min-h-[350px]">
           <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(56,189,248,0.03)_50%,transparent_75%,transparent_100%)] bg-[length:250px_250px] animate-[gradient_3s_linear_infinite]" />
           
           <div className="flex items-center justify-between mb-8 relative z-10">
-            <h3 className="text-2xl font-black text-white flex items-center gap-3 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
-              <BarChart3 className="w-6 h-6 text-cyan-400" />
+            <h3 className="text-xl font-black text-white flex items-center gap-3 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+              <BarChart3 className="w-5 h-5 text-cyan-400" />
               Velocity Forecast
             </h3>
-            <div className="neo-pressed px-6 py-2 rounded-full text-xs font-black text-cyan-400 uppercase tracking-widest border border-cyan-500/20">
-              Q3 Projection
+            <div className="neo-pressed px-4 py-2 rounded-full text-[10px] font-black text-cyan-400 uppercase tracking-widest border border-cyan-500/20">
+              Q3 Proj
             </div>
           </div>
           
-          <div className="flex-1 neo-pressed rounded-3xl flex flex-col items-center justify-center border border-white/5 relative z-10">
-            <div className="flex items-end gap-3 h-32 w-full max-w-lg px-8">
-              {[40, 65, 45, 80, 55, 90, 70].map((height, i) => (
+          <div className="flex-1 neo-pressed rounded-3xl flex flex-col items-center justify-center border border-white/5 relative z-10 p-4">
+            <div className="flex items-end gap-2 h-24 w-full px-2">
+              {[40, 65, 45, 80, 55].map((height, i) => (
                 <div key={i} className="flex-1 neo-flat rounded-t-lg bg-cyan-500/20 border-t border-cyan-400/50 transition-all hover:bg-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.6)]" style={{ height: `${height}%` }} />
               ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* NEURAL RECOMMENDATIONS BENTO */}
+        <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-2 clay-card p-6 flex flex-col relative overflow-hidden min-h-[350px] group cursor-pointer">
+          <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          
+          <div className="flex items-center justify-between mb-6 relative z-10">
+            <h3 className="text-lg font-black text-white flex items-center gap-2 drop-shadow-md">
+              <Bot className="w-5 h-5 text-blue-400" />
+              JARVIS AI
+            </h3>
+          </div>
+          
+          <div className="flex flex-col gap-4 flex-1 relative z-10">
+            <div className="p-4 rounded-2xl neo-pressed border border-white/5 border-l-2 border-l-blue-500">
+              <p className="text-xs text-slate-300 font-bold mb-1 leading-relaxed">
+                Inventory for <span className="text-blue-400">Mechanical Keyboards</span> is running 15% lower than anticipated demand for Q4.
+              </p>
+              <button className="text-[10px] uppercase tracking-widest text-blue-400 font-black mt-2 hover:text-blue-300">
+                Draft Purchase Order →
+              </button>
+            </div>
+            
+            <div className="p-4 rounded-2xl neo-pressed border border-white/5 border-l-2 border-l-amber-500">
+              <p className="text-xs text-slate-300 font-bold mb-1 leading-relaxed">
+                2 High-value clients have invoices overdue by 10+ days.
+              </p>
+              <button className="text-[10px] uppercase tracking-widest text-amber-400 font-black mt-2 hover:text-amber-300">
+                Send Reminders →
+              </button>
             </div>
           </div>
         </motion.div>

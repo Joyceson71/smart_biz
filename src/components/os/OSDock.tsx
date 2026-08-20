@@ -10,7 +10,8 @@ import {
   FileText, 
   Wallet,
   Settings,
-  UserCircle
+  UserCircle,
+  Bot
 } from "lucide-react";
 import { useState } from "react";
 
@@ -18,6 +19,7 @@ const DOCK_ITEMS = [
   { id: "dashboard", label: "Overview", icon: LayoutDashboard, href: "/dashboard", color: "text-blue-400" },
   { id: "customers", label: "Customers", icon: Users, href: "/customers", color: "text-purple-400" },
   { id: "inventory", label: "Inventory", icon: Package, href: "/inventory", color: "text-emerald-400" },
+  { id: "ai-core", label: "JARVIS Core", icon: Bot, href: "/ai-core", color: "text-cyan-400" },
   { id: "invoices", label: "Invoices", icon: FileText, href: "/invoices", color: "text-amber-400" },
   { id: "expenses", label: "Expenses", icon: Wallet, href: "/expenses", color: "text-red-400" },
   { id: "employees", label: "Team", icon: UserCircle, href: "/employees", color: "text-indigo-400" },
