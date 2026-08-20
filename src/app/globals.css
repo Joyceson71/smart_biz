@@ -134,69 +134,80 @@
 @layer utilities {
   .neo-flat {
     background: linear-gradient(145deg, #1b2535, #202c40);
-    box-shadow: 10px 10px 20px #151d2a, 
-               -10px -10px 20px #27354c;
-    border: 1px solid rgba(255, 255, 255, 0.02);
+    box-shadow: 12px 12px 30px #111827, 
+               -12px -12px 30px #2a3952,
+               0 0 20px rgba(56, 189, 248, 0.15); /* Cyberpunk Cyan Glow */
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
   
   .neo-pressed {
     background: #1e293b;
-    box-shadow: inset 8px 8px 16px #151d2a, 
-                inset -8px -8px 16px #27354c;
+    box-shadow: inset 12px 12px 24px #111827, 
+                inset -12px -12px 24px #2a3952,
+                inset 0 0 15px rgba(168, 85, 247, 0.2); /* Cyberpunk Purple inner glow */
   }
 
   .clay-card {
-    background: linear-gradient(145deg, #1b2535, #202c40);
+    background: linear-gradient(145deg, #1a2333, #222f44);
     border-radius: 2rem;
-    box-shadow: 12px 12px 24px #151d2a, 
-               -12px -12px 24px #27354c,
-               inset 2px 2px 5px rgba(255, 255, 255, 0.03), 
-               inset -3px -3px 7px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.02);
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 20px 20px 40px #111827, 
+               -20px -20px 40px #2a3952,
+               0 0 30px rgba(168, 85, 247, 0.1), /* Purple outer aura */
+               inset 3px 3px 6px rgba(255, 255, 255, 0.08), 
+               inset -5px -5px 12px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .clay-card:hover {
-    box-shadow: 16px 16px 32px #121924, 
-               -16px -16px 32px #2a3952,
-               inset 2px 2px 5px rgba(255, 255, 255, 0.04), 
-               inset -3px -3px 7px rgba(0, 0, 0, 0.15);
-    transform: translateY(-3px);
+    box-shadow: 25px 25px 50px #0f172a, 
+               -25px -25px 50px #2e3f5c,
+               0 0 50px rgba(56, 189, 248, 0.25), /* Cyan outer aura on hover */
+               inset 3px 3px 6px rgba(255, 255, 255, 0.1), 
+               inset -5px -5px 15px rgba(0, 0, 0, 0.5);
+    transform: translateY(-5px) scale(1.01);
   }
   
   .clay-btn {
-    background: linear-gradient(145deg, #1b2535, #202c40);
+    background: linear-gradient(145deg, #1a2333, #222f44);
     border-radius: 9999px;
-    box-shadow: 6px 6px 12px #151d2a, 
-               -6px -6px 12px #27354c;
-    transition: all 0.2s ease;
-    font-weight: 600;
-    color: #cbd5e1;
-    border: 1px solid rgba(255, 255, 255, 0.02);
+    box-shadow: 8px 8px 16px #111827, 
+               -8px -8px 16px #2a3952,
+               0 0 15px rgba(168, 85, 247, 0.15);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-weight: 700;
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
   
   .clay-btn:active {
     background: #1e293b;
-    box-shadow: inset 5px 5px 10px #151d2a, 
-                inset -5px -5px 10px #27354c;
+    box-shadow: inset 8px 8px 16px #111827, 
+                inset -8px -8px 16px #2a3952,
+                inset 0 0 20px rgba(56, 189, 248, 0.3);
     border: 1px solid transparent;
+    transform: scale(0.95);
   }
 
   .clay-btn-primary {
-    background: linear-gradient(145deg, #3575dd, #3f8bff);
+    background: linear-gradient(145deg, #3b82f6, #8b5cf6); /* Blue to Purple */
     border-radius: 9999px;
-    box-shadow: 6px 6px 12px #151d2a, 
-               -6px -6px 12px #27354c,
-               inset 2px 2px 4px rgba(255,255,255,0.2),
-               inset -2px -2px 4px rgba(0,0,0,0.1);
-    transition: all 0.2s ease;
-    font-weight: 600;
+    box-shadow: 10px 10px 20px #111827, 
+               -10px -10px 20px #2a3952,
+               0 0 25px rgba(139, 92, 246, 0.5), /* Intense purple glow */
+               inset 3px 3px 6px rgba(255,255,255,0.4),
+               inset -3px -3px 8px rgba(0,0,0,0.3);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-weight: 800;
     color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
   }
 
   .clay-btn-primary:active {
-    background: #3b82f6;
-    box-shadow: inset 4px 4px 8px #2d63bb, 
-                inset -4px -4px 8px #49a1ff;
+    background: linear-gradient(145deg, #2563eb, #7c3aed);
+    box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.6), 
+                inset -6px -6px 12px rgba(255, 255, 255, 0.2),
+                0 0 10px rgba(139, 92, 246, 0.8);
+    transform: scale(0.95);
   }
 }
