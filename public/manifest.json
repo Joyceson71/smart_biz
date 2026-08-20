@@ -1,0 +1,18 @@
+{
+  "name": "SmartBiz OS",
+  "short_name": "SmartBiz",
+  "description": "The Neomorphic Operating System for your Business",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e293b",
+  "theme_color": "#1e293b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
