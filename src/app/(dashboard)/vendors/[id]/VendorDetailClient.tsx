@@ -51,8 +51,8 @@ export function VendorDetailClient({ vendor, expenses = [] }: VendorDetailClient
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-white overflow-y-auto">
-      <div className="sticky top-0 z-10 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+    <div className="flex flex-col h-full text-white overflow-y-auto">
+      <div className="sticky top-0 z-10  px-6 py-4 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link href="/vendors">
             <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">

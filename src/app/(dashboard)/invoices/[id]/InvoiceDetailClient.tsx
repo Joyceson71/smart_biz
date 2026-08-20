@@ -84,7 +84,7 @@ export function InvoiceDetailClient({ invoice, items }: InvoiceDetailClientProps
   return (
     <div className="flex flex-col h-full bg-slate-950 overflow-hidden">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+      <div className="sticky top-0 z-10  px-6 py-4 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link href="/invoices">
             <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">

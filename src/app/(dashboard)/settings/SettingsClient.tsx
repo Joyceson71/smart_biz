@@ -95,7 +95,7 @@ export function SettingsClient({ firstName, lastName, email, avatarUrl }: Settin
   return (
     <div className="flex flex-col md:flex-row h-full bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-xl overflow-hidden">
       {/* Mobile: Horizontal pill tabs */}
-      <div className="md:hidden flex gap-1 p-3 border-b border-slate-200 dark:border-slate-800 bg-white/30 dark:bg-slate-950/20 overflow-x-auto">
+      <div className="md:hidden flex gap-1 p-3  clay-card overflow-x-auto">
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -116,7 +116,7 @@ export function SettingsClient({ firstName, lastName, email, avatarUrl }: Settin
       </div>
 
       {/* Desktop: Sidebar navigation */}
-      <div className="hidden md:block w-64 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white/30 dark:bg-slate-950/20 p-4">
+      <div className="hidden md:block w-64 shrink-0 border-r border-white/5 clay-card p-4">
         <div className="flex items-center gap-3 mb-8 px-2">
           <div className="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-lg">
             <Settings className="w-5 h-5" />
@@ -198,7 +198,7 @@ export function SettingsClient({ firstName, lastName, email, avatarUrl }: Settin
                         name="first_name"
                         value={profileForm.first_name}
                         onChange={e => setProfileForm({ ...profileForm, first_name: e.target.value })}
-                        className="bg-white/50 dark:bg-slate-950/50"
+                        className="neo-pressed border-none bg-transparent"
                       />
                     </div>
                     <div className="space-y-2">
@@ -207,7 +207,7 @@ export function SettingsClient({ firstName, lastName, email, avatarUrl }: Settin
                         name="last_name"
                         value={profileForm.last_name}
                         onChange={e => setProfileForm({ ...profileForm, last_name: e.target.value })}
-                        className="bg-white/50 dark:bg-slate-950/50"
+                        className="neo-pressed border-none bg-transparent"
                       />
                     </div>
                   </div>
@@ -306,7 +306,7 @@ export function SettingsClient({ firstName, lastName, email, avatarUrl }: Settin
                         required
                         type={showNewPw ? "text" : "password"}
                         placeholder="Min. 8 characters"
-                        className="bg-white/50 dark:bg-slate-950/50 pr-10"
+                        className="neo-pressed border-none bg-transparent pr-10"
                         value={securityForm.new_password}
                         onChange={e => setSecurityForm({ ...securityForm, new_password: e.target.value })}
                       />
@@ -322,7 +322,7 @@ export function SettingsClient({ firstName, lastName, email, avatarUrl }: Settin
                         required
                         type={showCurrentPw ? "text" : "password"}
                         placeholder="Repeat new password"
-                        className="bg-white/50 dark:bg-slate-950/50 pr-10"
+                        className="neo-pressed border-none bg-transparent pr-10"
                         value={securityForm.confirm_password}
                         onChange={e => setSecurityForm({ ...securityForm, confirm_password: e.target.value })}
                       />

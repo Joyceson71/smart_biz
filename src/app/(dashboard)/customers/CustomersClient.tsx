@@ -32,7 +32,7 @@ export default function CustomersClient({ initialCustomers }: { initialCustomers
   );
 
   return (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-950 p-6">
+    <div className="flex flex-col h-full p-6">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Customers</h1>
@@ -41,7 +41,7 @@ export default function CustomersClient({ initialCustomers }: { initialCustomers
         
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
           <DialogTrigger render={(props) => (
-            <Button {...props} className="gap-2">
+            <Button {...props} className="gap-2 clay-btn-primary px-4">
               <Plus className="w-4 h-4" /> Add Customer
             </Button>
           )} />
@@ -80,7 +80,7 @@ export default function CustomersClient({ initialCustomers }: { initialCustomers
                 <Label htmlFor="ltv">Initial LTV ($)</Label>
                 <Input id="ltv" name="ltv" type="number" defaultValue="0" min="0" step="0.01" />
               </div>
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
+              <Button type="submit" className="w-full clay-btn-primary" disabled={isSubmitting}>
                 {isSubmitting ? "Adding..." : "Add Customer"}
               </Button>
             </form>
@@ -88,8 +88,8 @@ export default function CustomersClient({ initialCustomers }: { initialCustomers
         </Dialog>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 flex-1 flex flex-col overflow-hidden">
-        <div className="p-4 border-b border-slate-200 dark:border-slate-800">
+      <div className="clay-card p-6 flex-1 flex flex-col overflow-hidden">
+        <div className="p-4 ">
           <div className="relative max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input 
@@ -224,7 +224,7 @@ export default function CustomersClient({ initialCustomers }: { initialCustomers
                   <Input id="edit_ltv" name="ltv" type="number" defaultValue={editingCustomer.ltv} min="0" step="0.01" />
                 </div>
               </div>
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
+              <Button type="submit" className="w-full clay-btn-primary" disabled={isSubmitting}>
                 {isSubmitting ? "Saving..." : "Save Changes"}
               </Button>
             </form>

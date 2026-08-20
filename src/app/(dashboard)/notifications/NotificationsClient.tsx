@@ -45,8 +45,8 @@ export function NotificationsClient({ notifications: initialNotifications }: Not
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-white overflow-y-auto">
-      <div className="sticky top-0 z-10 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+    <div className="flex flex-col h-full text-white overflow-y-auto">
+      <div className="sticky top-0 z-10  px-6 py-4 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/50 tracking-tight flex items-center gap-3">
             <Bell className="w-6 h-6 text-white/80" /> Notifications

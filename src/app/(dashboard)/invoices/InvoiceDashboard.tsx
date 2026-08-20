@@ -37,9 +37,9 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-white w-full overflow-y-auto">
+    <div className="flex flex-col h-full text-white w-full overflow-y-auto">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 md:gap-0 p-8 border-b border-white/5 bg-slate-900/20 backdrop-blur-md sticky top-0 z-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 md:gap-0 p-8 border-b border-white/5  sticky top-0 z-10">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">
             Invoice Management
@@ -49,7 +49,7 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
-          <div className="bg-slate-900/40 backdrop-blur-xl border border-white/10 p-1.5 rounded-xl flex gap-1 shadow-lg">
+          <div className="neo-pressed p-1 rounded-2xl flex gap-1 shadow-lg">
             <button
               onClick={() => setView("table")}
               className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${view === "table" ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/25" : "text-slate-400 hover:text-white hover:bg-white/5"}`}
@@ -121,7 +121,7 @@ export function InvoiceDashboard({ invoices, spatialInvoices }: InvoiceDashboard
           </div>
 
           {/* Data Table */}
-          <div className="bg-slate-900/40 backdrop-blur-xl rounded-2xl border border-white/10 p-2 shadow-2xl">
+          <div className="clay-card p-6">
             <DataTable columns={columns} data={invoices} searchKey="invoice_number" />
           </div>
         </div>

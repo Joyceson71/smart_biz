@@ -19,8 +19,8 @@ export function ProfitLossClient({ incomeItems, expenseItems, totalIncome, total
   const margin = totalIncome > 0 ? (netProfit / totalIncome) * 100 : 0;
 
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-white overflow-y-auto">
-      <div className="sticky top-0 z-10 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex items-center gap-4">
+    <div className="flex flex-col h-full text-white overflow-y-auto">
+      <div className="sticky top-0 z-10  px-6 py-4 flex items-center gap-4">
         <Link href="/reports">
           <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">
             <ArrowLeft className="w-5 h-5" />

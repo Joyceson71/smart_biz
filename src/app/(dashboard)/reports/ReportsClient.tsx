@@ -29,9 +29,9 @@ export function ReportsClient({ revenueData, expenseData, totalRevenue, totalExp
   });
 
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-white overflow-y-auto">
+    <div className="flex flex-col h-full text-white overflow-y-auto">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 px-6 py-4 md:px-8 md:py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="sticky top-0 z-10  px-6 py-4 md:px-8 md:py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60 tracking-tight">Reports Overview</h1>
           <p className="text-slate-400 text-sm mt-1">Financial performance and metrics</p>

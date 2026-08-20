@@ -67,9 +67,9 @@ export function ExpensesClient({ expenses: initialExpenses, totalSpend, largestC
   const fmt = (n: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
 
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-white w-full overflow-y-auto">
+    <div className="flex flex-col h-full text-white w-full overflow-y-auto">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 md:gap-0 p-6 md:p-8 border-b border-white/5 bg-slate-900/20 backdrop-blur-md sticky top-0 z-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 md:gap-0 p-6 md:p-8 border-b border-white/5  sticky top-0 z-10">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl shadow-inner">
             <Wallet className="w-6 h-6" />

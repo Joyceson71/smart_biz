@@ -17,8 +17,8 @@ const fmt = (n: number) => `₹${new Intl.NumberFormat("en-IN", { maximumFractio
 
 export function CashFlowClient({ monthlyData, currentBalance, totalInflow, totalOutflow }: CashFlowClientProps) {
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-white overflow-y-auto">
-      <div className="sticky top-0 z-10 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex items-center justify-between gap-4">
+    <div className="flex flex-col h-full text-white overflow-y-auto">
+      <div className="sticky top-0 z-10  px-6 py-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link href="/dashboard">
             <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">
@@ -34,7 +34,7 @@ export function CashFlowClient({ monthlyData, currentBalance, totalInflow, total
 
       <div className="p-6 md:p-8 max-w-6xl mx-auto w-full space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-slate-900/40 border border-white/10 rounded-2xl p-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="clay-card p-6">
             <p className="text-sm text-slate-400 uppercase tracking-wider mb-2 font-semibold flex items-center gap-2">
               <Layers className="w-4 h-4 text-blue-400" /> Current Balance
             </p>
@@ -42,7 +42,7 @@ export function CashFlowClient({ monthlyData, currentBalance, totalInflow, total
             <p className="text-xs text-slate-500 mt-2">Projected end of period</p>
           </motion.div>
           
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-emerald-950/20 border border-emerald-500/20 rounded-2xl p-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="clay-card border border-emerald-500/20 p-6">
             <p className="text-sm text-slate-400 uppercase tracking-wider mb-2 font-semibold flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-emerald-400" /> Cash Inflow (6M)
             </p>
@@ -50,7 +50,7 @@ export function CashFlowClient({ monthlyData, currentBalance, totalInflow, total
             <p className="text-xs text-emerald-500/50 mt-2">From paid invoices</p>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-red-950/20 border border-red-500/20 rounded-2xl p-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="clay-card border border-red-500/20 p-6">
             <p className="text-sm text-slate-400 uppercase tracking-wider mb-2 font-semibold flex items-center gap-2">
               <TrendingDown className="w-4 h-4 text-red-400" /> Cash Outflow (6M)
             </p>
@@ -59,7 +59,7 @@ export function CashFlowClient({ monthlyData, currentBalance, totalInflow, total
           </motion.div>
         </div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-slate-900/40 border border-white/10 rounded-2xl p-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="clay-card p-6">
           <h3 className="text-lg font-semibold text-white mb-6">Cash Balance Projection</h3>
           <div className="h-[400px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -84,7 +84,7 @@ export function CashFlowClient({ monthlyData, currentBalance, totalInflow, total
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-slate-900/40 border border-white/10 rounded-2xl overflow-hidden">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="clay-card overflow-hidden">
           <div className="p-6 border-b border-white/10">
             <h3 className="text-lg font-semibold text-white">Monthly Breakdown</h3>
           </div>
