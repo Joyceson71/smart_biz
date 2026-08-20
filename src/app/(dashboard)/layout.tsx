@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Header } from "@/components/layout/Header";
+import { OSMenuBar } from "@/components/os/OSMenuBar";
+import { OSDock } from "@/components/os/OSDock";
+import { OSWindow } from "@/components/os/OSWindow";
 import { RealtimeProvider } from "@/components/os/RealtimeProvider";
 import { ShortcutHelp } from "@/components/os/ShortcutHelp";
 
@@ -17,13 +19,20 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex flex-col min-h-[100dvh] w-full font-sans antialiased text-slate-200">
-      <Header />
-      <main className="flex-1 w-full relative">
-        <div className="container max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 h-full">
+    <div className="flex flex-col h-screen w-screen overflow-hidden font-sans antialiased text-slate-200 bg-[#1e293b] relative select-none">
+      <OSMenuBar />
+      
+      <main className="flex-1 w-full relative z-0">
+        {/* The Desktop Background (can add a subtle grid or image here if desired) */}
+        <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:24px_24px]" />
+        
+        <OSWindow>
           {children}
-        </div>
+        </OSWindow>
       </main>
+
+      <OSDock />
+      
       <RealtimeProvider />
       <ShortcutHelp />
     </div>
