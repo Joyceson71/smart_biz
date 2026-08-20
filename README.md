@@ -1,5 +1,7 @@
 # SmartBiz OS 🚀
 
+[![Download App](https://img.shields.io/badge/Download-Android_App-3b82f6?style=for-the-badge&logo=android)](#)
+
 Welcome to **SmartBiz OS**, a premium, futuristic 3D business operating system designed to redefine enterprise software for Indian MSMEs. We've abandoned flat, traditional dashboards in favor of an immersive, interactive, and spatial digital command center.
 
 ## 🌌 Core Philosophy

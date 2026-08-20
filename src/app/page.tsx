@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Activity, Globe, Zap, Shield } from "lucide-react";
+import { ArrowRight, Activity, Globe, Zap, Shield, Download } from "lucide-react";
 
 export default function LandingPage() {
   return (
@@ -54,13 +54,22 @@ export default function LandingPage() {
               Not a dashboard. Not a CRM. An intelligent operating system that manages, analyzes, and grows your enterprise using autonomous AI.
             </p>
             
-            <Link 
-              href="/register" 
-              className="group/btn inline-flex items-center gap-2 px-8 py-4 clay-btn-primary text-lg w-max"
-            >
-              Enter the Workspace
-              <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-            </Link>
+            <div className="flex flex-wrap items-center gap-4">
+              <Link 
+                href="/register" 
+                className="group/btn inline-flex items-center gap-2 px-8 py-4 clay-btn-primary text-lg w-max"
+              >
+                Enter the Workspace
+                <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+              </Link>
+              <a 
+                href="#" 
+                className="group/btn inline-flex items-center gap-2 px-8 py-4 neo-flat text-slate-300 hover:text-white text-lg w-max rounded-2xl font-bold"
+              >
+                <Download className="w-5 h-5" />
+                Download App
+              </a>
+            </div>
           </motion.div>
 
           {/* Metric Box 1 */}
