@@ -59,7 +59,8 @@ export function OSDock() {
                 {isActive && (
                   <motion.div 
                     layoutId="activeIndicator"
-                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-slate-300 rounded-full"
+                    className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${item.color.replace('text-', 'bg-')}`}
+                    style={{ boxShadow: '0 0 8px currentColor', color: 'inherit' }}
                   />
                 )}
                 
