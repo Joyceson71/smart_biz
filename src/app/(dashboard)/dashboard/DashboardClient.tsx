@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import { Activity, DollarSign, Users, CreditCard, TrendingUp, BarChart3, Clock, Zap } from "lucide-react";
+import { Activity, DollarSign, Users, CreditCard, TrendingUp, BarChart3, Clock, Zap, Bot } from "lucide-react";
 import Link from "next/link";
 
 interface DashboardClientProps {
