@@ -123,8 +123,8 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Soft neomorphic background */
-    background-color: #e0e5ec;
+    /* Soft dark neomorphic background */
+    background-color: #1e293b;
   }
   html {
     @apply font-sans;
@@ -133,64 +133,64 @@
 
 @layer utilities {
   .neo-flat {
-    background-color: #e0e5ec;
-    box-shadow: 9px 9px 16px rgb(163, 177, 198, 0.6), 
-               -9px -9px 16px rgba(255, 255, 255, 0.5);
+    background-color: #1e293b;
+    box-shadow: 9px 9px 16px rgba(15, 23, 42, 0.8), 
+               -9px -9px 16px rgba(255, 255, 255, 0.05);
   }
   
   .neo-pressed {
-    background-color: #e0e5ec;
-    box-shadow: inset 6px 6px 10px 0 rgba(163, 177, 198, 0.7), 
-                inset -6px -6px 10px 0 rgba(255, 255, 255, 0.8);
+    background-color: #1e293b;
+    box-shadow: inset 6px 6px 10px 0 rgba(15, 23, 42, 0.8), 
+                inset -6px -6px 10px 0 rgba(255, 255, 255, 0.05);
   }
 
   .clay-card {
-    background-color: #e0e5ec;
+    background-color: #1e293b;
     border-radius: 2rem;
-    box-shadow: 12px 12px 24px rgba(163, 177, 198, 0.5), 
-               -12px -12px 24px rgba(255, 255, 255, 0.8),
-               inset 4px 4px 8px rgba(255, 255, 255, 0.6), 
-               inset -4px -4px 8px rgba(163, 177, 198, 0.2);
+    box-shadow: 12px 12px 24px rgba(15, 23, 42, 0.6), 
+               -12px -12px 24px rgba(255, 255, 255, 0.05),
+               inset 4px 4px 8px rgba(255, 255, 255, 0.05), 
+               inset -4px -4px 8px rgba(15, 23, 42, 0.3);
     transition: all 0.3s ease;
   }
 
   .clay-card:hover {
-    box-shadow: 8px 8px 16px rgba(163, 177, 198, 0.6), 
-               -8px -8px 16px rgba(255, 255, 255, 0.9),
-               inset 6px 6px 12px rgba(255, 255, 255, 0.7), 
-               inset -6px -6px 12px rgba(163, 177, 198, 0.3);
+    box-shadow: 8px 8px 16px rgba(15, 23, 42, 0.8), 
+               -8px -8px 16px rgba(255, 255, 255, 0.08),
+               inset 6px 6px 12px rgba(255, 255, 255, 0.08), 
+               inset -6px -6px 12px rgba(15, 23, 42, 0.5);
     transform: translateY(-2px);
   }
   
   .clay-btn {
-    background-color: #e0e5ec;
+    background-color: #1e293b;
     border-radius: 9999px;
-    box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), 
-               -6px -6px 12px rgba(255, 255, 255, 0.8);
+    box-shadow: 6px 6px 12px rgba(15, 23, 42, 0.8), 
+               -6px -6px 12px rgba(255, 255, 255, 0.05);
     transition: all 0.2s ease;
     font-weight: 600;
-    color: #475569;
+    color: #cbd5e1;
   }
   
   .clay-btn:active {
-    box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.7), 
-                inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+    box-shadow: inset 4px 4px 8px rgba(15, 23, 42, 0.8), 
+                inset -4px -4px 8px rgba(255, 255, 255, 0.05);
   }
 
   .clay-btn-primary {
     background-color: #3b82f6;
     border-radius: 9999px;
-    box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), 
-               -6px -6px 12px rgba(255, 255, 255, 0.8),
-               inset 2px 2px 4px rgba(255,255,255,0.4),
-               inset -2px -2px 4px rgba(0,0,0,0.1);
+    box-shadow: 6px 6px 12px rgba(15, 23, 42, 0.5), 
+               -6px -6px 12px rgba(255, 255, 255, 0.02),
+               inset 2px 2px 4px rgba(255,255,255,0.2),
+               inset -2px -2px 4px rgba(0,0,0,0.2);
     transition: all 0.2s ease;
     font-weight: 600;
     color: white;
   }
 
   .clay-btn-primary:active {
-    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.2), 
-                inset -4px -4px 8px rgba(255, 255, 255, 0.3);
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.4), 
+                inset -4px -4px 8px rgba(255, 255, 255, 0.1);
   }
 }

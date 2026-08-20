@@ -6,7 +6,7 @@ import { ArrowRight, Activity, Globe, Zap, Shield } from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-[100dvh] text-slate-600 overflow-x-hidden selection:bg-blue-500/30 font-sans">
+    <div className="min-h-[100dvh] text-slate-300 overflow-x-hidden selection:bg-blue-500/30 font-sans">
       
       {/* Navigation */}
       <nav className="flex items-center justify-between px-4 sm:px-8 py-6 max-w-7xl mx-auto relative z-10">
@@ -14,7 +14,7 @@ export default function LandingPage() {
           <div className="w-10 h-10 shrink-0 clay-card flex items-center justify-center">
             <span className="text-blue-500 font-bold text-2xl">S</span>
           </div>
-          <span className="text-xl font-bold tracking-tight text-slate-700">SmartBiz</span>
+          <span className="text-xl font-bold tracking-tight text-slate-200">SmartBiz</span>
         </div>
         <div className="flex gap-4">
           <Link href="/login" className="px-6 py-2.5 clay-btn text-sm sm:text-base whitespace-nowrap hidden sm:block">
@@ -45,12 +45,12 @@ export default function LandingPage() {
               The Business OS
             </div>
             
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-slate-800 leading-[1.1]">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-white leading-[1.1]">
               One Platform.<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Infinite Scale.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Infinite Scale.</span>
             </h1>
             
-            <p className="text-lg sm:text-xl text-slate-500 mb-10 max-w-xl font-medium leading-relaxed">
+            <p className="text-lg sm:text-xl text-slate-400 mb-10 max-w-xl font-medium leading-relaxed">
               Not a dashboard. Not a CRM. An intelligent operating system that manages, analyzes, and grows your enterprise using autonomous AI.
             </p>
             
@@ -70,12 +70,12 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
             className="md:col-span-4 clay-card p-8 flex flex-col justify-between group hover:scale-[1.02]"
           >
-            <div className="w-12 h-12 neo-flat rounded-2xl flex items-center justify-center text-blue-500 mb-6">
+            <div className="w-12 h-12 neo-flat rounded-2xl flex items-center justify-center text-blue-400 mb-6">
               <Activity className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-800 mb-2">Predictive Analytics</h3>
-              <p className="text-slate-500 font-medium">Forecast revenue drops before they happen with neural networks.</p>
+              <h3 className="text-xl font-bold text-white mb-2">Predictive Analytics</h3>
+              <p className="text-slate-400 font-medium">Forecast revenue drops before they happen with neural networks.</p>
             </div>
           </motion.div>
 
@@ -86,12 +86,12 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             className="md:col-span-4 clay-card p-8 flex flex-col justify-between group hover:scale-[1.02]"
           >
-             <div className="w-12 h-12 neo-flat rounded-2xl flex items-center justify-center text-cyan-500 mb-6">
+             <div className="w-12 h-12 neo-flat rounded-2xl flex items-center justify-center text-cyan-400 mb-6">
               <Globe className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-800 mb-2">Global Intelligence</h3>
-              <p className="text-slate-500 font-medium">Real-time synchronization across your entire supply chain.</p>
+              <h3 className="text-xl font-bold text-white mb-2">Global Intelligence</h3>
+              <p className="text-slate-400 font-medium">Real-time synchronization across your entire supply chain.</p>
             </div>
           </motion.div>
 
@@ -102,12 +102,12 @@ export default function LandingPage() {
              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
              className="md:col-span-6 clay-card p-8 flex items-center gap-6 group hover:scale-[1.02]"
           >
-            <div className="w-16 h-16 shrink-0 neo-flat rounded-2xl flex items-center justify-center text-indigo-500">
+            <div className="w-16 h-16 shrink-0 neo-flat rounded-2xl flex items-center justify-center text-indigo-400">
               <Zap className="w-8 h-8" />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-slate-800 mb-2">Neural Automation</h3>
-              <p className="text-slate-500 font-medium">Automate invoice chasing and expense tracking without human intervention.</p>
+              <h3 className="text-2xl font-bold text-white mb-2">Neural Automation</h3>
+              <p className="text-slate-400 font-medium">Automate invoice chasing and expense tracking without human intervention.</p>
             </div>
           </motion.div>
 
@@ -118,12 +118,12 @@ export default function LandingPage() {
              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
              className="md:col-span-6 clay-card p-8 flex items-center gap-6 group hover:scale-[1.02]"
           >
-            <div className="w-16 h-16 shrink-0 neo-flat rounded-2xl flex items-center justify-center text-emerald-500">
+            <div className="w-16 h-16 shrink-0 neo-flat rounded-2xl flex items-center justify-center text-emerald-400">
               <Shield className="w-8 h-8" />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-slate-800 mb-2">Enterprise Security</h3>
-              <p className="text-slate-500 font-medium">Bank-grade encryption and automated compliance reporting built-in.</p>
+              <h3 className="text-2xl font-bold text-white mb-2">Enterprise Security</h3>
+              <p className="text-slate-400 font-medium">Bank-grade encryption and automated compliance reporting built-in.</p>
             </div>
           </motion.div>
 
@@ -131,7 +131,7 @@ export default function LandingPage() {
       </main>
       
       {/* Footer minimal */}
-      <footer className="max-w-7xl mx-auto px-4 sm:px-8 py-12 text-center text-slate-400 font-medium">
+      <footer className="max-w-7xl mx-auto px-4 sm:px-8 py-12 text-center text-slate-500 font-medium">
         <p>© {new Date().getFullYear()} SmartBiz. The Neomorphic Operating System.</p>
       </footer>
     </div>

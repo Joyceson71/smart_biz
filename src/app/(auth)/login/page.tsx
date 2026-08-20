@@ -1,7 +1,6 @@
 'use client'
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { login } from "../actions";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -66,7 +65,7 @@ export default function LoginPage() {
               placeholder="Email address" 
               required 
               type="email" 
-              className="w-full bg-slate-950/50 backdrop-blur-md border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all shadow-inner"
+              className="w-full neo-pressed rounded-2xl pl-12 pr-4 py-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all border-none bg-transparent"
             />
           </div>
         </motion.div>
@@ -85,7 +84,7 @@ export default function LoginPage() {
               placeholder="Password" 
               required 
               type="password" 
-              className="w-full bg-slate-950/50 backdrop-blur-md border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all shadow-inner"
+              className="w-full neo-pressed rounded-2xl pl-12 pr-4 py-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all border-none bg-transparent"
             />
           </div>
           <div className="flex justify-end pt-1">
@@ -100,9 +99,9 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <Button 
+          <button 
             disabled={isPending} 
-            className="group w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-6 rounded-2xl shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center gap-2" 
+            className="group w-full clay-btn-primary py-4 transition-all disabled:opacity-50 flex items-center justify-center gap-2" 
             type="submit"
           >
             {isPending ? (
@@ -116,7 +115,7 @@ export default function LoginPage() {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </>
             )}
-          </Button>
+          </button>
         </motion.div>
       </form>
 
@@ -127,10 +126,10 @@ export default function LoginPage() {
         className="relative my-6"
       >
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-white/10"></div>
+          <div className="w-full border-t border-slate-700/50"></div>
         </div>
         <div className="relative flex justify-center text-xs uppercase tracking-widest font-semibold">
-          <span className="bg-slate-900 px-4 text-slate-500 rounded-full">Or</span>
+          <span className="bg-[#1e293b] px-4 text-slate-500 rounded-full">Or</span>
         </div>
       </motion.div>
 
@@ -139,7 +138,7 @@ export default function LoginPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
-        <Button variant="outline" className="w-full py-6 rounded-2xl bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white transition-all shadow-inner" type="button">
+        <button className="w-full py-4 neo-flat rounded-full text-slate-300 hover:text-white transition-all flex items-center justify-center font-bold" type="button">
           <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -147,7 +146,7 @@ export default function LoginPage() {
             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
           </svg>
           Continue with Google
-        </Button>
+        </button>
       </motion.div>
 
       <motion.div 

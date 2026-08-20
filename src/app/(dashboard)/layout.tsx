@@ -17,7 +17,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex flex-col min-h-[100dvh] w-full font-sans antialiased text-slate-700">
+    <div className="flex flex-col min-h-[100dvh] w-full font-sans antialiased text-slate-200">
       <Header />
       <main className="flex-1 w-full relative">
         <div className="container max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 h-full">

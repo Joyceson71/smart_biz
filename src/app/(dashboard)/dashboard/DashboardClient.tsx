@@ -22,7 +22,7 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
       label: "Total Revenue", 
       value: formattedRevenue, 
       icon: DollarSign, 
-      color: "text-emerald-600",
+      color: "text-emerald-400",
       trend: "+12.5%",
       trendUp: true
     },
@@ -30,7 +30,7 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
       label: "Active Customers", 
       value: customerCount.toLocaleString(), 
       icon: Users, 
-      color: "text-blue-600",
+      color: "text-blue-400",
       trend: "+4.2%",
       trendUp: true
     },
@@ -38,7 +38,7 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
       label: "Pending Invoices", 
       value: pendingCount.toString(), 
       icon: CreditCard, 
-      color: "text-amber-600",
+      color: "text-amber-400",
       trend: "-2.1%",
       trendUp: false
     },
@@ -46,14 +46,14 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
       label: "System Health", 
       value: "99.9%", 
       icon: Activity, 
-      color: "text-purple-600",
+      color: "text-purple-400",
       trend: "Nominal",
       trendUp: true
     }
   ];
 
   return (
-    <div className="w-full flex flex-col gap-6 pb-12 text-slate-700">
+    <div className="w-full flex flex-col gap-6 pb-12 text-slate-200">
       
       {/* Header section */}
       <motion.div 
@@ -62,10 +62,10 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
         className="mb-4 px-2 flex justify-between items-end"
       >
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-800">
+          <h1 className="text-3xl font-extrabold tracking-tight text-white">
             Overview
           </h1>
-          <p className="text-slate-500 font-medium mt-1">
+          <p className="text-slate-400 font-medium mt-1">
             Welcome back. Here&apos;s what&apos;s happening with your business today.
           </p>
         </div>
@@ -91,16 +91,16 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
               <div className={`w-12 h-12 neo-flat rounded-2xl flex items-center justify-center ${stat.color}`}>
                 <stat.icon className="w-6 h-6" />
               </div>
-              <div className={`flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full ${stat.trendUp ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+              <div className={`flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full ${stat.trendUp ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
                 {stat.trendUp ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                 {stat.trend}
               </div>
             </div>
             
-            <h3 className="text-slate-500 text-sm font-bold uppercase tracking-wider mb-2">
+            <h3 className="text-slate-400 text-sm font-bold uppercase tracking-wider mb-2">
               {stat.label}
             </h3>
-            <p className="text-3xl font-black text-slate-800 tracking-tight">
+            <p className="text-3xl font-black text-white tracking-tight">
               {stat.value}
             </p>
           </motion.div>
@@ -117,17 +117,17 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
           className="lg:col-span-2 clay-card p-8 flex flex-col min-h-[400px]"
         >
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-blue-500" />
+            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-blue-400" />
               Revenue Forecast
             </h3>
-            <div className="neo-pressed px-4 py-1.5 rounded-full text-xs font-bold text-slate-500">
+            <div className="neo-pressed px-4 py-1.5 rounded-full text-xs font-bold text-slate-400">
               This Month
             </div>
           </div>
           
-          <div className="flex-1 neo-pressed rounded-2xl flex items-center justify-center border border-slate-200/50">
-             <p className="text-slate-400 font-medium">Chart visualization loading...</p>
+          <div className="flex-1 neo-pressed rounded-2xl flex items-center justify-center border border-white/5">
+             <p className="text-slate-500 font-medium">Chart visualization loading...</p>
           </div>
         </motion.div>
 
@@ -139,30 +139,30 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
           className="lg:col-span-1 clay-card p-8 flex flex-col min-h-[400px]"
         >
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-indigo-500" />
+            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <Clock className="w-5 h-5 text-indigo-400" />
               Recent Activity
             </h3>
           </div>
           
           <div className="flex flex-col gap-4 flex-1">
             {[1, 2, 3, 4].map((_, i) => (
-              <div key={i} className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-200/50 transition-colors cursor-pointer">
-                <div className="w-10 h-10 shrink-0 neo-flat rounded-full flex items-center justify-center text-slate-500">
+              <div key={i} className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-800/50 transition-colors cursor-pointer">
+                <div className="w-10 h-10 shrink-0 neo-flat rounded-full flex items-center justify-center text-slate-400">
                   <Activity className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-slate-700 truncate">System updated</p>
-                  <p className="text-xs text-slate-500 truncate">Automated sync completed successfully</p>
+                  <p className="text-sm font-bold text-slate-200 truncate">System updated</p>
+                  <p className="text-xs text-slate-400 truncate">Automated sync completed successfully</p>
                 </div>
-                <div className="text-xs font-bold text-slate-400">
+                <div className="text-xs font-bold text-slate-500">
                   {i + 1}h ago
                 </div>
               </div>
             ))}
           </div>
           
-          <button className="mt-4 py-3 neo-flat rounded-xl text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors">
+          <button className="mt-4 py-3 neo-flat rounded-xl text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors">
             View All Activity
           </button>
         </motion.div>
