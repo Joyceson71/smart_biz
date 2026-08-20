@@ -1,13 +1,8 @@
 "use client";
 
-import { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Box, Sphere, Float, Stars } from "@react-three/drei";
-import * as THREE from "three";
 import { motion } from "framer-motion";
-import { Activity, DollarSign, Users, CreditCard } from "lucide-react";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
+import { Activity, DollarSign, Users, CreditCard, ArrowRight, TrendingUp, TrendingDown, BarChart3, Clock } from "lucide-react";
+import Link from "next/link";
 
 interface DashboardClientProps {
   totalRevenue: number;
@@ -15,97 +10,7 @@ interface DashboardClientProps {
   pendingCount: number;
 }
 
-function Globe() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.15;
-      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.1;
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={1.5}>
-      <mesh ref={meshRef} position={[0, -0.5, 0]}>
-        <sphereGeometry args={[2, 32, 32]} />
-        <meshBasicMaterial color="#3b82f6" wireframe transparent opacity={0.15} />
-        <Sphere args={[1.9, 32, 32]}>
-          <meshStandardMaterial color="#020617" roughness={0.1} metalness={0.9} />
-        </Sphere>
-        <Sphere args={[2.1, 32, 32]}>
-          <meshBasicMaterial color="#60a5fa" transparent opacity={0.03} />
-        </Sphere>
-      </mesh>
-    </Float>
-  );
-}
-
-function FloatingChartBars() {
-  const groupRef = useRef<THREE.Group>(null);
-  const bars = useMemo(() => Array.from({ length: 12 }, () => Math.random() * 2.5 + 0.5), []);
-
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.08;
-    }
-  });
-
-  return (
-    <group ref={groupRef} position={[0, -1.5, 0]}>
-      {bars.map((height, i) => {
-        const angle = (i / bars.length) * Math.PI * 2;
-        const radius = 3.5;
-        const x = Math.cos(angle) * radius;
-        const z = Math.sin(angle) * radius;
-        
-        return (
-          <Float key={i} speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-            <Box args={[0.2, height, 0.2]} position={[x, height / 2, z]}>
-              <meshStandardMaterial 
-                color={height > 2 ? "#10b981" : "#8b5cf6"} 
-                emissive={height > 2 ? "#059669" : "#6d28d9"}
-                emissiveIntensity={0.8}
-                roughness={0.2}
-                transparent
-                opacity={0.9}
-              />
-            </Box>
-          </Float>
-        );
-      })}
-    </group>
-  );
-}
-
-function DesktopCanvas() {
-  return (
-    <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
-      <WebGLErrorBoundary>
-        <Canvas camera={{ position: [0, 3, 10], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[10, 10, 5]} intensity={1.5} color="#e0f2fe" />
-          <pointLight position={[-10, -10, -10]} color="#3b82f6" intensity={1} />
-          <Stars radius={50} depth={50} count={2000} factor={4} saturation={0} fade speed={1} />
-          <Globe />
-          <FloatingChartBars />
-          <OrbitControls 
-            enablePan={false} 
-            enableZoom={false} 
-            autoRotate={false}
-            maxPolarAngle={Math.PI / 2 + 0.1}
-            minPolarAngle={Math.PI / 3}
-            makeDefault
-          />
-        </Canvas>
-      </WebGLErrorBoundary>
-    </div>
-  );
-}
-
 export function DashboardClient({ totalRevenue, customerCount, pendingCount }: DashboardClientProps) {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
   const formattedRevenue = new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
@@ -113,61 +18,156 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
   }).format(totalRevenue);
 
   const STATS = [
-    { label: "Total Revenue", value: formattedRevenue, icon: DollarSign, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/30", glow: "shadow-[0_0_30px_rgba(16,185,129,0.15)]" },
-    { label: "Active Customers", value: customerCount.toLocaleString(), icon: Users, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/30", glow: "shadow-[0_0_30px_rgba(59,130,246,0.15)]" },
-    { label: "Pending Invoices", value: pendingCount.toString(), icon: CreditCard, color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/30", glow: "shadow-[0_0_30px_rgba(245,158,11,0.15)]" },
-    { label: "System Health", value: "99.9%", icon: Activity, color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/30", glow: "shadow-[0_0_30px_rgba(168,85,247,0.15)]" }
+    { 
+      label: "Total Revenue", 
+      value: formattedRevenue, 
+      icon: DollarSign, 
+      color: "text-emerald-600",
+      trend: "+12.5%",
+      trendUp: true
+    },
+    { 
+      label: "Active Customers", 
+      value: customerCount.toLocaleString(), 
+      icon: Users, 
+      color: "text-blue-600",
+      trend: "+4.2%",
+      trendUp: true
+    },
+    { 
+      label: "Pending Invoices", 
+      value: pendingCount.toString(), 
+      icon: CreditCard, 
+      color: "text-amber-600",
+      trend: "-2.1%",
+      trendUp: false
+    },
+    { 
+      label: "System Health", 
+      value: "99.9%", 
+      icon: Activity, 
+      color: "text-purple-600",
+      trend: "Nominal",
+      trendUp: true
+    }
   ];
 
   return (
-    <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
-      {!isMobile && <DesktopCanvas />}
-
-      <div className="relative z-10 p-8 pointer-events-none flex flex-col h-full">
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <h1 className="text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/40 drop-shadow-2xl">
-            Command Center
+    <div className="w-full flex flex-col gap-6 pb-12 text-slate-700">
+      
+      {/* Header section */}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-4 px-2 flex justify-between items-end"
+      >
+        <div>
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-800">
+            Overview
           </h1>
-          <p className="text-blue-400 font-mono text-xs mt-2 uppercase tracking-[0.2em]">
-            System Status: Nominal <span className="text-slate-500 mx-2">•</span> Location: Alpha Base
+          <p className="text-slate-500 font-medium mt-1">
+            Welcome back. Here&apos;s what&apos;s happening with your business today.
           </p>
+        </div>
+        
+        <Link href="/invoices/new" className="hidden sm:flex items-center gap-2 px-6 py-2.5 clay-btn-primary whitespace-nowrap">
+          Create Invoice
+          <ArrowRight className="w-4 h-4" />
+        </Link>
+      </motion.div>
+
+      {/* Main KPI Bento Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {STATS.map((stat, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: i * 0.1, type: "spring", stiffness: 100 }}
+            whileHover={{ y: -5 }}
+            className="clay-card p-6 flex flex-col relative overflow-hidden group cursor-pointer"
+          >
+            <div className="flex items-start justify-between mb-8">
+              <div className={`w-12 h-12 neo-flat rounded-2xl flex items-center justify-center ${stat.color}`}>
+                <stat.icon className="w-6 h-6" />
+              </div>
+              <div className={`flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full ${stat.trendUp ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+                {stat.trendUp ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                {stat.trend}
+              </div>
+            </div>
+            
+            <h3 className="text-slate-500 text-sm font-bold uppercase tracking-wider mb-2">
+              {stat.label}
+            </h3>
+            <p className="text-3xl font-black text-slate-800 tracking-tight">
+              {stat.value}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Secondary Bento Grid Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-2">
+        {/* Chart Area */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="lg:col-span-2 clay-card p-8 flex flex-col min-h-[400px]"
+        >
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-blue-500" />
+              Revenue Forecast
+            </h3>
+            <div className="neo-pressed px-4 py-1.5 rounded-full text-xs font-bold text-slate-500">
+              This Month
+            </div>
+          </div>
+          
+          <div className="flex-1 neo-pressed rounded-2xl flex items-center justify-center border border-slate-200/50">
+             <p className="text-slate-400 font-medium">Chart visualization loading...</p>
+          </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-auto pointer-events-auto">
-          {STATS.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, type: "spring", stiffness: 100 }}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className={`relative overflow-hidden p-6 rounded-2xl bg-slate-900/40 backdrop-blur-2xl border ${stat.border} ${stat.glow} transition-all duration-300 cursor-pointer group`}
-            >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-slate-500/10 transition-opacity duration-500" />
-              
-              <div className="relative z-10">
-                <div className="flex items-start justify-between mb-6">
-                  <div className={`p-3 rounded-xl bg-slate-950/50 shadow-inner border border-white/5 ${stat.color}`}>
-                    <stat.icon className="w-6 h-6" />
-                  </div>
-                  <div className="flex h-2 w-2 relative">
-                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${stat.bg.replace('/10', '')}`}></span>
-                    <span className={`relative inline-flex rounded-full h-2 w-2 ${stat.bg.replace('/10', '')}`}></span>
-                  </div>
+        {/* Recent Activity */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="lg:col-span-1 clay-card p-8 flex flex-col min-h-[400px]"
+        >
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-indigo-500" />
+              Recent Activity
+            </h3>
+          </div>
+          
+          <div className="flex flex-col gap-4 flex-1">
+            {[1, 2, 3, 4].map((_, i) => (
+              <div key={i} className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-200/50 transition-colors cursor-pointer">
+                <div className="w-10 h-10 shrink-0 neo-flat rounded-full flex items-center justify-center text-slate-500">
+                  <Activity className="w-4 h-4" />
                 </div>
-                <h3 className="text-slate-400 text-xs font-semibold uppercase tracking-widest mb-1">{stat.label}</h3>
-                <p className="text-3xl font-bold text-white tracking-tight">
-                  {stat.value}
-                </p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-slate-700 truncate">System updated</p>
+                  <p className="text-xs text-slate-500 truncate">Automated sync completed successfully</p>
+                </div>
+                <div className="text-xs font-bold text-slate-400">
+                  {i + 1}h ago
+                </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+          
+          <button className="mt-4 py-3 neo-flat rounded-xl text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors">
+            View All Activity
+          </button>
+        </motion.div>
       </div>
+
     </div>
   );
 }

@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { Stars } from "@react-three/drei";
 
 export default function AuthLayout({
   children,
@@ -10,26 +8,17 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative min-h-screen bg-slate-950 flex items-center justify-center overflow-hidden selection:bg-blue-500/30">
-      {/* 3D Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 1.5]} frameloop="demand">
-          <Stars radius={50} depth={50} count={3000} factor={4} saturation={0} fade speed={0} />
-        </Canvas>
-        {/* Glow effect behind the login card */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
-      </div>
-
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden selection:bg-blue-500/30 font-sans">
       <motion.div 
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.8, type: "spring" }}
+        transition={{ duration: 0.6, type: "spring" }}
         className="relative z-10 w-full max-w-md mx-4"
       >
-        <div className="bg-slate-900/60 backdrop-blur-2xl border border-white/10 p-6 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+        <div className="clay-card p-6 sm:p-10">
           <div className="flex justify-center mb-8">
-            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)]">
-              <span className="text-white font-bold text-2xl">S</span>
+            <div className="w-16 h-16 neo-flat rounded-2xl flex items-center justify-center">
+              <span className="text-blue-500 font-bold text-3xl">S</span>
             </div>
           </div>
           {children}
