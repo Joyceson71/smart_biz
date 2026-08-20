@@ -1,156 +1,139 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Sphere, MeshDistortMaterial, Stars, Grid } from "@react-three/drei";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRef } from "react";
-import * as THREE from "three";
-import { ArrowRight, Activity, Globe, Zap } from "lucide-react";
-
-function HeroOrb() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.1;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.15;
-    }
-  });
-
-  return (
-    <Sphere ref={meshRef} args={[1.5, 128, 128]} scale={1.2} position={[0, -1, -3]}>
-      <MeshDistortMaterial
-        color="#0ea5e9"
-        emissive="#0284c7"
-        emissiveIntensity={1}
-        distort={0.4}
-        speed={1.5}
-        roughness={0.2}
-        metalness={0.9}
-        wireframe={true}
-      />
-    </Sphere>
-  );
-}
+import { ArrowRight, Activity, Globe, Zap, Shield } from "lucide-react";
 
 export default function LandingPage() {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
   return (
-    <div className="bg-slate-950 min-h-[100dvh] text-slate-50 selection:bg-blue-500/30 overflow-x-hidden">
-      {/* 3D Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <Canvas camera={{ position: [0, 0, 5], fov: 60 }} dpr={[1, 1.5]} frameloop="demand">
-          <ambientLight intensity={0.2} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
-          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={0} />
-          <HeroOrb />
-          <Grid infiniteGrid fadeDistance={20} cellColor="#1e293b" sectionColor="#334155" position={[0, -2, 0]} />
-          <Environment preset="night" />
-        </Canvas>
-      </div>
+    <div className="min-h-[100dvh] text-slate-600 overflow-x-hidden selection:bg-blue-500/30 font-sans">
+      
+      {/* Navigation */}
+      <nav className="flex items-center justify-between px-4 sm:px-8 py-6 max-w-7xl mx-auto relative z-10">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 shrink-0 clay-card flex items-center justify-center">
+            <span className="text-blue-500 font-bold text-2xl">S</span>
+          </div>
+          <span className="text-xl font-bold tracking-tight text-slate-700">SmartBiz</span>
+        </div>
+        <div className="flex gap-4">
+          <Link href="/login" className="px-6 py-2.5 clay-btn text-sm sm:text-base whitespace-nowrap hidden sm:block">
+            Log in
+          </Link>
+          <Link href="/register" className="px-6 py-2.5 clay-btn-primary text-sm sm:text-base whitespace-nowrap">
+            Get Started
+          </Link>
+        </div>
+      </nav>
 
-      {/* Content */}
-      <div className="relative z-10">
-        {/* Navigation */}
-        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-6 max-w-7xl mx-auto">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 shrink-0 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">S</span>
+      {/* Main Bento Grid */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-8 py-12 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[minmax(180px,auto)]">
+          
+          {/* Hero Bento Box (Spans 8 cols) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="md:col-span-8 md:row-span-2 clay-card p-8 sm:p-12 flex flex-col justify-center relative overflow-hidden group"
+          >
+            {/* Decorative background element */}
+            <div className="absolute -right-20 -top-20 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl pointer-events-none group-hover:bg-blue-400/20 transition-all duration-700"></div>
+            
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full neo-flat text-blue-500 text-sm font-semibold mb-8 w-max">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              The Business OS
             </div>
-            <span className="text-lg sm:text-xl font-bold tracking-tight">SmartBiz</span>
-          </div>
-          <div className="flex gap-2 sm:gap-4">
-            <Link href="/login" className="px-4 py-2 sm:px-5 sm:py-2 rounded-full border border-white/20 hover:bg-white/10 transition-colors backdrop-blur-md text-sm sm:text-base whitespace-nowrap">
-              Log in
-            </Link>
-            <Link href="/register" className="px-4 py-2 sm:px-5 sm:py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors shadow-[0_0_15px_rgba(37,99,235,0.5)] text-sm sm:text-base whitespace-nowrap">
-              Get Started
-            </Link>
-          </div>
-        </nav>
-
-        {/* Hero Section */}
-        <motion.main 
-          style={{ y, opacity }}
-          className="min-h-[85dvh] flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 mb-8 backdrop-blur-md"
-          >
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            Introducing the Business Operating System
-          </motion.div>
-
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40 drop-shadow-2xl"
-          >
-            One Platform.<br />Infinite Scale.
-          </motion.h1>
-
-          <motion.p 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-lg sm:text-xl md:text-2xl text-slate-400 mb-10 max-w-2xl font-light leading-relaxed"
-          >
-            Not a dashboard. Not a CRM. An intelligent operating system that manages, analyzes, and grows your enterprise using autonomous AI.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          >
+            
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-slate-800 leading-[1.1]">
+              One Platform.<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Infinite Scale.</span>
+            </h1>
+            
+            <p className="text-lg sm:text-xl text-slate-500 mb-10 max-w-xl font-medium leading-relaxed">
+              Not a dashboard. Not a CRM. An intelligent operating system that manages, analyzes, and grows your enterprise using autonomous AI.
+            </p>
+            
             <Link 
               href="/register" 
-              className="group flex items-center gap-2 px-8 py-4 rounded-full bg-white text-slate-950 font-medium text-lg hover:bg-blue-50 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] hover:-translate-y-1"
+              className="group/btn inline-flex items-center gap-2 px-8 py-4 clay-btn-primary text-lg w-max"
             >
               Enter the Workspace
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
-        </motion.main>
 
-        {/* Feature Highlights */}
-        <div className="bg-slate-950/80 backdrop-blur-2xl border-t border-white/5 py-32">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { icon: Globe, title: "Global Intelligence", desc: "Real-time sync across your entire supply chain." },
-                { icon: Activity, title: "Predictive Analytics", desc: "Forecast revenue drops before they happen." },
-                { icon: Zap, title: "Neural Automation", desc: "Automate invoice chasing and expense tracking." },
-              ].map((feat, i) => (
-                <motion.div 
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.7, delay: i * 0.2 }}
-                  key={i} 
-                  className="relative p-8 rounded-3xl bg-slate-900/50 border border-white/10 hover:border-blue-500/50 transition-all duration-300 group hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] overflow-hidden"
-                >
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-transparent to-blue-500/10 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-300">
-                      <feat.icon className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3">{feat.title}</h3>
-                    <p className="text-slate-400 leading-relaxed">{feat.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
+          {/* Metric Box 1 */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            className="md:col-span-4 clay-card p-8 flex flex-col justify-between group hover:scale-[1.02]"
+          >
+            <div className="w-12 h-12 neo-flat rounded-2xl flex items-center justify-center text-blue-500 mb-6">
+              <Activity className="w-6 h-6" />
             </div>
-          </div>
+            <div>
+              <h3 className="text-xl font-bold text-slate-800 mb-2">Predictive Analytics</h3>
+              <p className="text-slate-500 font-medium">Forecast revenue drops before they happen with neural networks.</p>
+            </div>
+          </motion.div>
+
+          {/* Metric Box 2 */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            className="md:col-span-4 clay-card p-8 flex flex-col justify-between group hover:scale-[1.02]"
+          >
+             <div className="w-12 h-12 neo-flat rounded-2xl flex items-center justify-center text-cyan-500 mb-6">
+              <Globe className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-slate-800 mb-2">Global Intelligence</h3>
+              <p className="text-slate-500 font-medium">Real-time synchronization across your entire supply chain.</p>
+            </div>
+          </motion.div>
+
+          {/* Feature Box 1 */}
+          <motion.div 
+             initial={{ opacity: 0, scale: 0.95, y: 20 }}
+             animate={{ opacity: 1, scale: 1, y: 0 }}
+             transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+             className="md:col-span-6 clay-card p-8 flex items-center gap-6 group hover:scale-[1.02]"
+          >
+            <div className="w-16 h-16 shrink-0 neo-flat rounded-2xl flex items-center justify-center text-indigo-500">
+              <Zap className="w-8 h-8" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-slate-800 mb-2">Neural Automation</h3>
+              <p className="text-slate-500 font-medium">Automate invoice chasing and expense tracking without human intervention.</p>
+            </div>
+          </motion.div>
+
+          {/* Feature Box 2 */}
+          <motion.div 
+             initial={{ opacity: 0, scale: 0.95, y: 20 }}
+             animate={{ opacity: 1, scale: 1, y: 0 }}
+             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+             className="md:col-span-6 clay-card p-8 flex items-center gap-6 group hover:scale-[1.02]"
+          >
+            <div className="w-16 h-16 shrink-0 neo-flat rounded-2xl flex items-center justify-center text-emerald-500">
+              <Shield className="w-8 h-8" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-slate-800 mb-2">Enterprise Security</h3>
+              <p className="text-slate-500 font-medium">Bank-grade encryption and automated compliance reporting built-in.</p>
+            </div>
+          </motion.div>
+
         </div>
-      </div>
+      </main>
+      
+      {/* Footer minimal */}
+      <footer className="max-w-7xl mx-auto px-4 sm:px-8 py-12 text-center text-slate-400 font-medium">
+        <p>© {new Date().getFullYear()} SmartBiz. The Neomorphic Operating System.</p>
+      </footer>
     </div>
   );
 }

@@ -123,8 +123,74 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Soft neomorphic background */
+    background-color: #e0e5ec;
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .neo-flat {
+    background-color: #e0e5ec;
+    box-shadow: 9px 9px 16px rgb(163, 177, 198, 0.6), 
+               -9px -9px 16px rgba(255, 255, 255, 0.5);
+  }
+  
+  .neo-pressed {
+    background-color: #e0e5ec;
+    box-shadow: inset 6px 6px 10px 0 rgba(163, 177, 198, 0.7), 
+                inset -6px -6px 10px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  .clay-card {
+    background-color: #e0e5ec;
+    border-radius: 2rem;
+    box-shadow: 12px 12px 24px rgba(163, 177, 198, 0.5), 
+               -12px -12px 24px rgba(255, 255, 255, 0.8),
+               inset 4px 4px 8px rgba(255, 255, 255, 0.6), 
+               inset -4px -4px 8px rgba(163, 177, 198, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .clay-card:hover {
+    box-shadow: 8px 8px 16px rgba(163, 177, 198, 0.6), 
+               -8px -8px 16px rgba(255, 255, 255, 0.9),
+               inset 6px 6px 12px rgba(255, 255, 255, 0.7), 
+               inset -6px -6px 12px rgba(163, 177, 198, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  .clay-btn {
+    background-color: #e0e5ec;
+    border-radius: 9999px;
+    box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), 
+               -6px -6px 12px rgba(255, 255, 255, 0.8);
+    transition: all 0.2s ease;
+    font-weight: 600;
+    color: #475569;
+  }
+  
+  .clay-btn:active {
+    box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.7), 
+                inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+  }
+
+  .clay-btn-primary {
+    background-color: #3b82f6;
+    border-radius: 9999px;
+    box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), 
+               -6px -6px 12px rgba(255, 255, 255, 0.8),
+               inset 2px 2px 4px rgba(255,255,255,0.4),
+               inset -2px -2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    font-weight: 600;
+    color: white;
+  }
+
+  .clay-btn-primary:active {
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.2), 
+                inset -4px -4px 8px rgba(255, 255, 255, 0.3);
   }
 }
