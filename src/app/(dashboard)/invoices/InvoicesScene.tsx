@@ -8,6 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FileText, Search, CreditCard, Clock, AlertCircle, X, Download, Plus } from "lucide-react";
 import { addInvoice } from "./actions";
 
+// Shared geometries for performance optimization
+const invoiceGeometry = new THREE.BoxGeometry(2, 2.8, 0.1);
+const edgeGeometry = new THREE.BoxGeometry(2.05, 2.85, 0.02);
+
 export interface Invoice {
   id: string;
   invoice_number: string;
@@ -29,11 +33,16 @@ function InvoiceDocument({ data, isSelected, onClick }: { data: Invoice, isSelec
   const emissiveIntensity = isSelected ? 0.8 : 0.2;
 
   useFrame((state) => {
-    if (groupRef.current && !isSelected) {
-      groupRef.current.position.y += Math.sin(state.clock.elapsedTime * 2 + data.pos_x) * 0.002;
-    }
-    if (groupRef.current && isSelected) {
-      groupRef.current.rotation.y += 0.01;
+    // Floating animation removed for on-demand rendering performance.
+    // We only set a static rotation when selected.
+    if (groupRef.current) {
+      if (isSelected) {
+        groupRef.current.rotation.y = 0.2;
+        groupRef.current.position.y = data.pos_y + 0.2;
+      } else {
+        groupRef.current.rotation.y = 0;
+        groupRef.current.position.y = data.pos_y;
+      }
     }
   });
 
@@ -48,8 +57,7 @@ function InvoiceDocument({ data, isSelected, onClick }: { data: Invoice, isSelec
         onPointerOver={() => document.body.style.cursor = 'pointer'}
         onPointerOut={() => document.body.style.cursor = 'auto'}
       >
-        <mesh>
-          <boxGeometry args={[2, 2.8, 0.1]} />
+        <mesh geometry={invoiceGeometry}>
           <meshStandardMaterial 
             color="#0f172a" 
             emissive={color}
@@ -62,8 +70,7 @@ function InvoiceDocument({ data, isSelected, onClick }: { data: Invoice, isSelec
         </mesh>
         
         {/* Holographic glowing edge */}
-        <mesh position={[0, 0, -0.06]}>
-          <boxGeometry args={[2.05, 2.85, 0.02]} />
+        <mesh position={[0, 0, -0.06]} geometry={edgeGeometry}>
           <meshBasicMaterial color={color} transparent opacity={isSelected ? 0.6 : 0.2} />
         </mesh>
         
@@ -130,7 +137,7 @@ export default function InvoicesScene({ initialInvoices }: { initialInvoices: In
     <div className="w-full h-full flex flex-col bg-slate-950 overflow-hidden relative">
       {/* 3D Canvas Area */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 2, 12], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
+        <Canvas camera={{ position: [0, 2, 12], fov: 45 }} dpr={[1, 1.2]} frameloop="demand">
           <ambientLight intensity={0.5} />
           <directionalLight position={[5, 10, 5]} intensity={1.5} />
           <pointLight position={[-5, 5, -5]} intensity={0.5} color="#3b82f6" />

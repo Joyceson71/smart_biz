@@ -33,7 +33,7 @@ function AIBrain({ isThinking }: { isThinking: boolean }) {
 
   return (
     <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-      <Sphere ref={meshRef} args={[2, 64, 64]} scale={1.2}>
+      <Sphere ref={meshRef} args={[2, 32, 32]} scale={1.2}>
         <MeshDistortMaterial
           ref={materialRef}
           color={isThinking ? "#c084fc" : "#3b82f6"}
@@ -48,7 +48,7 @@ function AIBrain({ isThinking }: { isThinking: boolean }) {
       </Sphere>
       
       {/* Inner solid core */}
-      <Sphere args={[1.5, 32, 32]}>
+      <Sphere args={[1.5, 16, 16]}>
         <meshStandardMaterial 
           color="#000000" 
           emissive={isThinking ? "#4c1d95" : "#1e3a8a"} 
@@ -89,7 +89,7 @@ export default function AICoreScene() {
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
         <WebGLErrorBoundary>
-          <Canvas camera={{ position: [0, 0, 8], fov: 60 }} dpr={[1, 1.5]} frameloop="demand">
+          <Canvas camera={{ position: [0, 0, 8], fov: 60 }} dpr={[1, 1.2]} frameloop="always">
           <color attach="background" args={["#020617"]} />
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={2} color="#8b5cf6" />

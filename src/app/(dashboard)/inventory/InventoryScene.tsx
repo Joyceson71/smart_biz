@@ -9,6 +9,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Package, Search, AlertTriangle, CheckCircle, Plus, X } from "lucide-react";
 import { addInventoryItem } from "./actions";
 
+// Shared geometries for performance optimization
+const crateGeometry = new THREE.BoxGeometry(1, 1, 1);
+const wireframeGeometry = new THREE.BoxGeometry(1.05, 1.05, 1.05);
+
 export interface InventoryItem {
   id: string;
   name: string;
@@ -30,13 +34,14 @@ function InventoryCrate({ data, isSelected, onClick }: { data: InventoryItem, is
   const { invalidate } = useThree();
 
   useFrame((state) => {
-    if (meshRef.current && !isSelected) {
-      meshRef.current.position.y = 0.5 + Math.sin(state.clock.elapsedTime * 2 + data.pos_x) * 0.1;
-      invalidate();
-    }
-    if (meshRef.current && isSelected) {
-      meshRef.current.rotation.y += 0.02;
-      invalidate();
+    if (meshRef.current) {
+      if (isSelected) {
+        meshRef.current.rotation.y = 0.2;
+        meshRef.current.position.y = 0.7;
+      } else {
+        meshRef.current.rotation.y = 0;
+        meshRef.current.position.y = 0.5;
+      }
     }
   });
 
@@ -48,7 +53,7 @@ function InventoryCrate({ data, isSelected, onClick }: { data: InventoryItem, is
       onPointerOut={() => document.body.style.cursor = 'auto'}
     >
       {/* Base Crate */}
-      <Box ref={meshRef} args={[1, 1, 1]}>
+      <mesh ref={meshRef as React.RefObject<THREE.Mesh>} geometry={crateGeometry}>
         <meshStandardMaterial 
           color="#0f172a" 
           emissive={color}
@@ -58,12 +63,12 @@ function InventoryCrate({ data, isSelected, onClick }: { data: InventoryItem, is
           transparent
           opacity={0.9}
         />
-      </Box>
+      </mesh>
       
       {/* Holographic glowing wireframe */}
-      <Box args={[1.05, 1.05, 1.05]} position={[0, 0, 0]}>
+      <mesh geometry={wireframeGeometry} position={[0, 0, 0]}>
         <meshBasicMaterial color={color} wireframe transparent opacity={isSelected ? 0.4 : 0.1} />
-      </Box>
+      </mesh>
     </group>
   );
 }
@@ -102,7 +107,7 @@ export default function InventoryScene({ initialInventory }: { initialInventory:
       <div className="absolute inset-0 z-0">
         <Canvas 
           camera={{ position: [0, 5, 12], fov: 45 }} 
-          dpr={[1, 1.5]}
+          dpr={[1, 1.2]}
           frameloop="demand"
           gl={{ powerPreference: "high-performance", antialias: false, stencil: false, depth: true }}
         >

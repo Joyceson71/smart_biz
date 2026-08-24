@@ -19,7 +19,7 @@ function HolographicOrb() {
 
   return (
     <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-      <Sphere ref={meshRef} args={[1, 64, 64]} scale={1.5}>
+      <Sphere ref={meshRef} args={[1, 32, 32]} scale={1.5}>
         <MeshDistortMaterial
           color="#8b5cf6"
           emissive="#a78bfa"
@@ -66,7 +66,7 @@ export function AICore() {
   return (
     <div className="w-full h-full flex flex-col bg-slate-950 text-white rounded-b-xl overflow-hidden shadow-[inset_0_0_100px_rgba(139,92,246,0.1)]">
       <div className="h-48 sm:h-64 relative w-full bg-gradient-to-b from-slate-900 to-slate-950 flex-shrink-0 border-b border-purple-500/10">
-        <Canvas camera={{ position: [0, 0, 4], fov: 45 }} dpr={[1, 1.5]} frameloop="demand">
+        <Canvas camera={{ position: [0, 0, 4], fov: 45 }} dpr={[1, 1.2]} frameloop="always">
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <HolographicOrb />
