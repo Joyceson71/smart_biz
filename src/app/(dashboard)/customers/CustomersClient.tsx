@@ -7,8 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Search, Plus, Edit, Trash2, Users, Activity, DollarSign } from "lucide-react";
-import { addCustomer, updateCustomer, deleteCustomer } from "./actions";
+import { deleteCustomer } from "./actions";
 import { motion, Variants } from "framer-motion";
+import dynamic from "next/dynamic";
+
+const AddCustomerForm = dynamic(() => import("./AddCustomerForm").then(mod => mod.AddCustomerForm), { ssr: false });
+const EditCustomerForm = dynamic(() => import("./EditCustomerForm").then(mod => mod.EditCustomerForm), { ssr: false });
 
 export interface Customer {
   id: string;
@@ -24,7 +28,6 @@ export default function CustomersClient({ initialCustomers }: { initialCustomers
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const filteredCustomers = initialCustomers.filter(c => 
     c.first_name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -74,41 +77,7 @@ export default function CustomersClient({ initialCustomers }: { initialCustomers
             <DialogHeader>
               <DialogTitle className="text-xl font-black text-purple-400">Add New Client</DialogTitle>
             </DialogHeader>
-            <form action={async (formData) => {
-              setIsSubmitting(true);
-              try {
-                await addCustomer(formData);
-                setIsAddOpen(false);
-              } finally {
-                setIsSubmitting(false);
-              }
-            }} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="first_name" className="text-slate-400">First Name</Label>
-                  <Input id="first_name" name="first_name" required className="neo-pressed border-white/5 text-white" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="last_name" className="text-slate-400">Last Name</Label>
-                  <Input id="last_name" name="last_name" required className="neo-pressed border-white/5 text-white" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-slate-400">Email</Label>
-                <Input id="email" name="email" type="email" required className="neo-pressed border-white/5 text-white" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="text-slate-400">Phone</Label>
-                <Input id="phone" name="phone" className="neo-pressed border-white/5 text-white" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="ltv" className="text-slate-400">Initial LTV ($)</Label>
-                <Input id="ltv" name="ltv" type="number" defaultValue="0" min="0" step="0.01" className="neo-pressed border-white/5 text-white" />
-              </div>
-              <Button type="submit" className="w-full clay-btn-primary mt-4" disabled={isSubmitting}>
-                {isSubmitting ? "Processing..." : "Add Client"}
-              </Button>
-            </form>
+            <AddCustomerForm onSuccess={() => setIsAddOpen(false)} />
           </DialogContent>
         </Dialog>
       </motion.div>
@@ -256,57 +225,7 @@ export default function CustomersClient({ initialCustomers }: { initialCustomers
             <DialogTitle className="text-xl font-black text-blue-400">Configure Node</DialogTitle>
           </DialogHeader>
           {editingCustomer && (
-            <form action={async (formData) => {
-              setIsSubmitting(true);
-              try {
-                formData.append("id", editingCustomer.id);
-                await updateCustomer(formData);
-                setEditingCustomer(null);
-              } finally {
-                setIsSubmitting(false);
-              }
-            }} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="edit_first_name" className="text-slate-400">First Name</Label>
-                  <Input id="edit_first_name" name="first_name" defaultValue={editingCustomer.first_name} required className="neo-pressed border-white/5 text-white" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="edit_last_name" className="text-slate-400">Last Name</Label>
-                  <Input id="edit_last_name" name="last_name" defaultValue={editingCustomer.last_name} required className="neo-pressed border-white/5 text-white" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="edit_email" className="text-slate-400">Email</Label>
-                <Input id="edit_email" name="email" type="email" defaultValue={editingCustomer.email || ""} required className="neo-pressed border-white/5 text-white" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="edit_phone" className="text-slate-400">Phone</Label>
-                <Input id="edit_phone" name="phone" defaultValue={editingCustomer.phone || ""} className="neo-pressed border-white/5 text-white" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="edit_status" className="text-slate-400">Status</Label>
-                  <select 
-                    id="edit_status" 
-                    name="status" 
-                    defaultValue={editingCustomer.status}
-                    className="flex h-10 w-full rounded-md border border-white/5 neo-pressed px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 text-white"
-                  >
-                    <option value="New" className="bg-slate-900 text-white">New</option>
-                    <option value="Active" className="bg-slate-900 text-white">Active</option>
-                    <option value="Inactive" className="bg-slate-900 text-white">Inactive</option>
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="edit_ltv" className="text-slate-400">LTV ($)</Label>
-                  <Input id="edit_ltv" name="ltv" type="number" defaultValue={editingCustomer.ltv} min="0" step="0.01" className="neo-pressed border-white/5 text-white" />
-                </div>
-              </div>
-              <Button type="submit" className="w-full clay-btn-primary mt-4" disabled={isSubmitting}>
-                {isSubmitting ? "Syncing..." : "Commit Changes"}
-              </Button>
-            </form>
+            <EditCustomerForm customer={editingCustomer} onSuccess={() => setEditingCustomer(null)} />
           )}
         </DialogContent>
       </Dialog>

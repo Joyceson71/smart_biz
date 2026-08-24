@@ -6,14 +6,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { InventoryItem } from "./InventoryScene";
 import { DataTable } from "@/components/inventory/data-table";
 import { columns, Product } from "@/components/inventory/columns";
-import { ProductFormModal } from "@/components/inventory/product-form-modal";
-import { AIInsightsPanel } from "@/components/inventory/ai-insights";
-import { SupplierInvoiceUpload } from "@/components/inventory/supplier-invoice-upload";
 import { InventoryHeader } from "@/components/inventory/InventoryHeader";
 import { InventoryStatCards } from "@/components/inventory/InventoryStatCards";
 import { WebGLErrorBoundary } from "@/components/os/WebGLErrorBoundary";
 
 const InventoryScene = dynamic(() => import("./InventoryScene"), { ssr: false });
+const ProductFormModal = dynamic(() => import("@/components/inventory/product-form-modal").then(mod => mod.ProductFormModal), { ssr: false });
+const AIInsightsPanel = dynamic(() => import("@/components/inventory/ai-insights").then(mod => mod.AIInsightsPanel), { ssr: false });
+const SupplierInvoiceUpload = dynamic(() => import("@/components/inventory/supplier-invoice-upload").then(mod => mod.SupplierInvoiceUpload), { ssr: false });
 
 interface InventoryDashboardProps {
   products: Product[];
