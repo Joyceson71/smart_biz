@@ -50,10 +50,16 @@ export function DashboardClient({ totalRevenue, customerCount, pendingCount }: D
           </p>
         </div>
         
-        <Link href="/invoices/new" className="hidden sm:flex items-center gap-2 px-6 py-3 clay-btn-primary whitespace-nowrap">
-          <Zap className="w-4 h-4" />
-          Initialize Invoice
-        </Link>
+        <div className="flex gap-4">
+          <a href="/smartbiz-os.apk" download="smartbiz-os.apk" className="hidden sm:flex items-center gap-2 px-6 py-3 clay-btn whitespace-nowrap text-blue-400 font-bold hover:text-blue-300">
+            <TrendingUp className="w-4 h-4" />
+            Download App
+          </a>
+          <Link href="/invoices/new" className="hidden sm:flex items-center gap-2 px-6 py-3 clay-btn-primary whitespace-nowrap">
+            <Zap className="w-4 h-4" />
+            Initialize Invoice
+          </Link>
+        </div>
       </motion.div>
 
       {/* Main KPI Bento Grid */}
