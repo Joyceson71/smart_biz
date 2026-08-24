@@ -12,11 +12,11 @@ export function InventoryHeader({ view, setView, onImport, onAddProduct }: Inven
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-end px-2 mb-6 mt-4">
       <div className="mb-4 md:mb-0">
-        <h1 className="text-3xl font-extrabold tracking-tight text-white">
-          Inventory Management
+        <h1 className="text-3xl font-black tracking-tight text-white drop-shadow-[0_2px_10px_rgba(56,189,248,0.3)]">
+          Inventory Core
         </h1>
-        <p className="text-slate-400 font-medium mt-1">
-          Manage products, stock levels, and view health scores.
+        <p className="text-cyan-400 font-bold mt-1 tracking-wide uppercase text-xs">
+          Manage products, stock levels, and node health.
         </p>
       </div>
       <div className="flex flex-wrap items-center gap-4">

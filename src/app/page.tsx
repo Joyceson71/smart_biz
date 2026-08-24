@@ -63,7 +63,8 @@ export default function LandingPage() {
                 <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
               <a 
-                href="#" 
+                href="/smartbiz-os.apk" 
+                download="smartbiz-os.apk"
                 className="group/btn inline-flex items-center gap-2 px-8 py-4 neo-flat text-slate-300 hover:text-white text-lg w-max rounded-2xl font-bold"
               >
                 <Download className="w-5 h-5" />
