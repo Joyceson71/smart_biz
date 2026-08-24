@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smartbiz-os-v1';
+const CACHE_NAME = 'smartbiz-os-v2';
 const urlsToCache = [
   '/',
   '/icon.svg',
