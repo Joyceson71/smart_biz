@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
     ],
   },
   async headers() {
+    const isDev = process.env.NODE_ENV !== 'production';
     return [
       {
         source: "/(.*)",
@@ -38,11 +39,12 @@ const nextConfig: NextConfig = {
             key: "X-XSS-Protection",
             value: "1; mode=block"
           },
+
           {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              `script-src 'self' ${isDev ? "'unsafe-eval'" : ""} 'unsafe-inline'`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' blob: data: https://*.supabase.co",
               "font-src 'self'",
